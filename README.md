@@ -10,11 +10,11 @@
 
 | 游戏 | 简介 | 文件 |
 | --- | --- | --- |
-| 晚自习 v5.8 · 红旗中学 | 1997 年冬，红旗中学，夜间留校档案 | [games/evening-study.html](games/evening-study.html) |
+| 晚自习 v6.1 · 红旗中学 | 1997 年冬，红旗中学，夜间留校档案 | [games/evening-study.html](games/evening-study.html) |
 | 守灯人 | 长夜五更，守住手里这盏灯，等到天亮 | [games/lamp-keeper.html](games/lamp-keeper.html) |
 | 算法小剧场 | 一步一步演示算法，边看边答题 | [games/algorithm-theater.html](games/algorithm-theater.html) |
 
-「晚自习」从 1.0 到 5.6 的旧版本保存在 [games/evening-study-archive](games/evening-study-archive)。
+「晚自习」从 1.0 到 5.8 的旧版本保存在 [games/evening-study-archive](games/evening-study-archive)。
 
 ## 工具
 
