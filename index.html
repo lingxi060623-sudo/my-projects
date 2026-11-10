@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>零欷的小作品</title>
+<style>
+  :root {
+    --bg: #f6f4ef; --card: #ffffff; --text: #23211d; --muted: #6f6a60;
+    --line: #e4dfd4; --accent: #b4532a;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #16151a; --card: #1f1e25; --text: #ecE9e2; --muted: #9a958a;
+      --line: #2e2c36; --accent: #e8a26b;
+    }
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; background: var(--bg); color: var(--text);
+    font-family: "Microsoft YaHei", "PingFang SC", system-ui, sans-serif;
+    line-height: 1.7;
+  }
+  main { max-width: 760px; margin: 0 auto; padding: 56px 16px 72px; }
+  h1 { font-size: 30px; margin: 0 0 6px; }
+  .lead { color: var(--muted); margin: 0 0 40px; }
+  h2 {
+    font-size: 14px; font-weight: 600; letter-spacing: .12em; color: var(--muted);
+    margin: 36px 0 12px; padding-bottom: 8px; border-bottom: 1px solid var(--line);
+  }
+  .card {
+    display: block; background: var(--card); border: 1px solid var(--line);
+    border-radius: 12px; padding: 18px 20px; margin-bottom: 12px;
+    color: inherit; text-decoration: none;
+    transition: border-color .15s, transform .15s;
+  }
+  .card:hover, .card:focus-visible { border-color: var(--accent); transform: translateY(-2px); outline: none; }
+  .card strong { font-size: 18px; }
+  .card span { display: block; color: var(--muted); font-size: 14px; margin-top: 2px; }
+  .tag { color: var(--accent); font-size: 13px; margin-left: 8px; font-weight: 400; }
+  .versions { font-size: 14px; color: var(--muted); margin: -4px 4px 0; }
+  .versions a { color: var(--accent); text-decoration: none; margin-right: 10px; white-space: nowrap; }
+  .versions a:hover { text-decoration: underline; }
+  footer { margin-top: 48px; font-size: 13px; color: var(--muted); }
+  footer a { color: var(--accent); }
+</style>
+</head>
+<body>
+<main>
+  <h1>零欷的小作品</h1>
+  <p class="lead">一些自己做的网页游戏和小工具，点开就能玩。</p>
+
+  <h2>游戏</h2>
+
+  <a class="card" href="games/evening-study.html">
+    <strong>晚自习<span class="tag" style="display:inline">v5.8 · 红旗中学</span></strong>
+    <span>1997 年冬，红旗中学，夜间留校档案。躲好，屏住呼吸。</span>
+  </a>
+  <p class="versions">旧版本：
+    <a href="games/evening-study-archive/v1.0.html">1.0</a>
+    <a href="games/evening-study-archive/v2.0.html">2.0</a>
+    <a href="games/evening-study-archive/v3.0.html">3.0</a>
+    <a href="games/evening-study-archive/v3.1.html">3.1</a>
+    <a href="games/evening-study-archive/v4.0.html">4.0</a>
+    <a href="games/evening-study-archive/v5.4.html">5.4</a>
+    <a href="games/evening-study-archive/v5.5.html">5.5</a>
+    <a href="games/evening-study-archive/v5.6.html">5.6</a>
+  </p>
+
+  <a class="card" href="games/lamp-keeper.html" style="margin-top:16px">
+    <strong>守灯人</strong>
+    <span>长夜五更，守住手里这盏灯，等到天亮。</span>
+  </a>
+
+  <a class="card" href="games/algorithm-theater.html">
+    <strong>算法小剧场</strong>
+    <span>把冒泡排序这样的算法一步一步演给你看，边看边答题。</span>
+  </a>
+
+  <h2>工具</h2>
+
+  <a class="card" href="https://github.com/lingxi060623-sudo/my-projects/tree/main/tools/auto-paste">
+    <strong>自动粘贴<span class="tag" style="display:inline">Windows · C#</span></strong>
+    <span>模拟键盘逐字输入，专门对付不让粘贴的输入框。含源码和可执行文件。</span>
+  </a>
+
+  <footer>
+    源码在 <a href="https://github.com/lingxi060623-sudo/my-projects">GitHub</a>。
+  </footer>
+</main>
+</body>
+</html>

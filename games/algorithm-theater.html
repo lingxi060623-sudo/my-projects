@@ -1,0 +1,1864 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<style>:root{color-scheme:light;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0;font-size:14px;font-family:system-ui,sans-serif}img{max-width:100%}[hidden]{display:none!important}</style>
+<title>算法小剧场</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=JetBrains+Mono:wght@400;600&family=ZCOOL+KuaiLe&display=swap">
+<style>
+/* Layout: 舞台 + 讲解 + 控制在左，代码与知识卡在右；手机上自上而下堆叠 */
+:root{
+  --bg:#E8F4F3; --surface:#FFFFFF; --surface2:#F2F8F8; --stage:#F4FAFA;
+  --ink:#2F2C45; --ink2:#6B6884; --line:#D2E2E3;
+  --accent:#F2558C; --accent-soft:#FFE1EC;
+  --sky:#2F9FDD; --sky-soft:#D9EFFB;
+  --lemon:#EDAE12; --lemon-soft:#FFF2C9;
+  --mint:#25B285; --mint-soft:#D3F3E7;
+  --curtain:#FF8DB0; --wood:#EBC08C; --wood2:#D49D60; --spot:rgba(255,255,255,.95);
+  --wall:#BEB7DC; --wall2:#988FC4;
+  --box-r:rgba(47,159,221,.10); --box-w:rgba(237,174,18,.14); --box-s:rgba(37,178,133,.12); --box-p:rgba(242,85,140,.10);
+  --code-bg:#F7FBFB; --code-hl:#FFE6EF; --k:#C02C74; --n:#2477B8; --f:#7448CC; --cm:#8A999E;
+  --shadow:0 1px 0 rgba(47,44,69,.04),0 10px 24px -14px rgba(47,44,69,.22);
+  --f-display:"ZCOOL KuaiLe","PingFang SC","Hiragino Sans GB","Microsoft YaHei",system-ui,sans-serif;
+  --f-num:"Fredoka","Nunito",ui-rounded,"SF Pro Rounded",system-ui,sans-serif;
+  --f-body:-apple-system,BlinkMacSystemFont,"PingFang SC","Hiragino Sans GB","Microsoft YaHei","Noto Sans SC",system-ui,sans-serif;
+  --f-mono:"JetBrains Mono",ui-monospace,"SF Mono",Menlo,Consolas,monospace;
+  --dur:400ms; --r:18px;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#151826; --surface:#1F2335; --surface2:#272C42; --stage:#1A1E30;
+    --ink:#F1EFFA; --ink2:#A9A6C3; --line:#343A54;
+    --accent:#FF7AA6; --accent-soft:#4A2639;
+    --sky:#62BFF0; --sky-soft:#1C3A4F;
+    --lemon:#FFD15A; --lemon-soft:#463C17;
+    --mint:#4BD3A5; --mint-soft:#173E33;
+    --curtain:#C4587F; --wood:#8E6B45; --wood2:#6E5134; --spot:rgba(255,232,200,.07);
+    --wall:#4E4A74; --wall2:#37335C;
+    --box-r:rgba(98,191,240,.12); --box-w:rgba(255,209,90,.12); --box-s:rgba(75,211,165,.12); --box-p:rgba(255,122,166,.12);
+    --code-bg:#1A1E2E; --code-hl:#3E2335; --k:#FF86B8; --n:#7CC6F5; --f:#B79CFF; --cm:#7E8AA2;
+    --shadow:0 1px 0 rgba(0,0,0,.2),0 12px 28px -16px rgba(0,0,0,.6);
+    color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#151826; --surface:#1F2335; --surface2:#272C42; --stage:#1A1E30;
+  --ink:#F1EFFA; --ink2:#A9A6C3; --line:#343A54;
+  --accent:#FF7AA6; --accent-soft:#4A2639;
+  --sky:#62BFF0; --sky-soft:#1C3A4F;
+  --lemon:#FFD15A; --lemon-soft:#463C17;
+  --mint:#4BD3A5; --mint-soft:#173E33;
+  --curtain:#C4587F; --wood:#8E6B45; --wood2:#6E5134; --spot:rgba(255,232,200,.07);
+  --wall:#4E4A74; --wall2:#37335C;
+  --box-r:rgba(98,191,240,.12); --box-w:rgba(255,209,90,.12); --box-s:rgba(75,211,165,.12); --box-p:rgba(255,122,166,.12);
+  --code-bg:#1A1E2E; --code-hl:#3E2335; --k:#FF86B8; --n:#7CC6F5; --f:#B79CFF; --cm:#7E8AA2;
+  --shadow:0 1px 0 rgba(0,0,0,.2),0 12px 28px -16px rgba(0,0,0,.6);
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:15px;line-height:1.6;-webkit-font-smoothing:antialiased}
+button,input,select{font:inherit;color:inherit}
+button{cursor:pointer}
+:focus-visible{outline:3px solid var(--sky);outline-offset:2px}
+.app{max-width:1200px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:16px 36px;display:flex;flex-direction:column;gap:14px}
+
+/* header */
+.top{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:10px 16px}
+.brand{display:flex;align-items:center;gap:10px;min-width:0}
+.brand .face{width:48px;height:48px;flex:none;border-radius:50%;background:var(--accent-soft);overflow:hidden}
+.brand .face svg{width:100%;height:100%;display:block}
+.brand h1{font-family:var(--f-display);font-weight:400;font-size:30px;line-height:1.05;margin:0;letter-spacing:.03em;text-wrap:balance}
+.brand p{margin:3px 0 0;color:var(--ink2);font-size:13px;line-height:1.4}
+.modes{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.seg{display:inline-flex;background:var(--surface);border:2px solid var(--line);border-radius:999px;padding:3px;gap:2px}
+.seg button{border:0;background:transparent;color:var(--ink2);font-weight:600;font-size:14px;padding:5px 14px;border-radius:999px;line-height:1.4}
+.seg button[aria-pressed="true"]{background:var(--ink);color:var(--surface)}
+.score{font-family:var(--f-num);font-weight:600;font-size:13.5px;padding:4px 11px;border-radius:999px;background:var(--lemon-soft);border:2px solid var(--lemon);font-variant-numeric:tabular-nums}
+
+/* picker */
+.picker{display:flex;flex-direction:column;gap:10px;min-width:0}
+.cats{display:flex;gap:6px;flex-wrap:wrap}
+.cat{border:0;background:transparent;color:var(--ink2);font-family:var(--f-display);font-size:18px;padding:2px 10px 4px;border-radius:10px;position:relative}
+.cat[aria-pressed="true"]{color:var(--ink)}
+.cat[aria-pressed="true"]::after{content:"";position:absolute;left:10px;right:10px;bottom:0;height:4px;border-radius:4px;background:var(--accent)}
+.cat small{font-family:var(--f-num);font-size:12px;color:var(--ink2);margin-left:3px}
+.chips{display:flex;gap:8px;overflow-x:auto;padding:2px 2px 6px;scrollbar-width:none;min-width:0}
+.chips::-webkit-scrollbar{display:none}
+.chip{flex:none;border:2px solid var(--line);background:var(--surface);border-radius:14px;padding:6px 13px 7px;font-weight:600;display:flex;flex-direction:column;align-items:flex-start;line-height:1.3;text-align:left}
+.chip small{font-family:var(--f-num);font-weight:500;font-size:12px;color:var(--ink2)}
+.chip:hover{border-color:var(--accent)}
+.chip[aria-pressed="true"]{border-color:var(--accent);background:var(--accent-soft)}
+
+/* main grid */
+.main{display:grid;grid-template-columns:minmax(0,1fr);gap:14px}
+@media (min-width:980px){.main{grid-template-columns:minmax(0,1.42fr) minmax(0,1fr);align-items:start}}
+.col{display:flex;flex-direction:column;gap:14px;min-width:0}
+.card{background:var(--surface);border:2px solid var(--line);border-radius:var(--r)}
+
+/* stage */
+.stage-card{padding:12px 12px 10px;box-shadow:var(--shadow)}
+.stage-head{display:flex;flex-wrap:wrap;align-items:center;gap:6px 8px;padding:0 4px 10px}
+.stage-head h2{font-family:var(--f-display);font-weight:400;font-size:25px;line-height:1.1;margin:0 4px 0 0}
+.tag{font-family:var(--f-num);font-size:12.5px;font-weight:600;padding:1px 9px;border-radius:999px;background:var(--surface2);border:1.5px solid var(--line);color:var(--ink2);white-space:nowrap}
+.tag.need{background:var(--lemon-soft);border-color:var(--lemon);color:var(--ink);font-family:var(--f-body)}
+.stepno{margin-left:auto;font-family:var(--f-num);font-size:13.5px;color:var(--ink2);font-variant-numeric:tabular-nums;white-space:nowrap}
+.stage{position:relative;border-radius:14px;overflow:hidden;background:radial-gradient(ellipse 72% 58% at 50% 0%,var(--spot),transparent 72%),var(--stage);height:300px}
+.curtain{position:absolute;left:0;right:0;top:0;height:15px;background:radial-gradient(circle at 13px 0,var(--curtain) 11.5px,transparent 12.3px) 0 0/26px 15px repeat-x;z-index:6;pointer-events:none}
+.floor{position:absolute;left:0;right:0;height:9px;background:linear-gradient(var(--wood),var(--wood2));box-shadow:inset 0 2px 0 rgba(255,255,255,.35);z-index:1}
+.layer{position:absolute;inset:0}
+.noanim *, .noanim{transition:none!important}
+
+.it{position:absolute;left:0;display:flex;flex-direction:column;align-items:center;z-index:2;transition:transform var(--dur) cubic-bezier(.34,1.3,.64,1),opacity var(--dur),filter var(--dur);will-change:transform}
+.fx{position:relative;width:var(--cw);height:var(--ch)}
+.fx .ch{width:100%;height:100%;display:block;overflow:visible;transform-origin:50% 100%;animation:idle 2.6s ease-in-out infinite}
+.fx.hop{animation:hop var(--dur) ease-out}
+@keyframes hop{0%{transform:none}35%{transform:translateY(-15px)}70%{transform:translateY(0) scale(1.06,.94)}100%{transform:none}}
+@keyframes idle{0%,100%{transform:none}50%{transform:scaleY(1.018)}}
+.ped{width:var(--pw);border-radius:9px 9px 3px 3px;background:var(--surface2);border:2px solid var(--line);border-bottom:0;display:flex;justify-content:center;padding-top:4px;transition:height var(--dur),background-color var(--dur),border-color var(--dur)}
+.num{font-family:var(--f-num);font-weight:600;font-size:var(--fs);line-height:1;color:var(--ink);font-variant-numeric:tabular-nums}
+.it[data-st="cmp"] .ped{background:var(--sky-soft);border-color:var(--sky)}
+.it[data-st="swap"] .ped,.it[data-st="key"] .ped{background:var(--accent-soft);border-color:var(--accent)}
+.it[data-st="done"] .ped{background:var(--mint-soft);border-color:var(--mint)}
+.it[data-st="found"] .ped{background:var(--lemon-soft);border-color:var(--lemon);box-shadow:0 0 0 4px var(--box-w)}
+.it[data-st="mark"] .ped{background:var(--lemon-soft);border-color:var(--lemon)}
+.it[data-st="out"]{opacity:.32;filter:grayscale(.85)}
+.it[data-st="dim"]{opacity:.45}
+.crown{position:absolute;left:50%;top:-11%;width:40%;transform:translate(-50%,6px) scale(.5);opacity:0;transition:opacity var(--dur),transform var(--dur);pointer-events:none}
+.it[data-st="mark"] .crown{opacity:1;transform:translate(-50%,0) scale(1)}
+.spark{position:absolute;inset:-14% -18% 10%;pointer-events:none;opacity:0;transition:opacity var(--dur)}
+.spark svg{position:absolute;width:26%;animation:tw 1.2s ease-in-out infinite}
+.spark svg:nth-child(1){left:0;top:12%}
+.spark svg:nth-child(2){right:0;top:0;animation-delay:.4s;width:20%}
+.spark svg:nth-child(3){right:6%;top:55%;animation-delay:.8s;width:16%}
+.it[data-st="found"] .spark{opacity:1}
+@keyframes tw{0%,100%{transform:scale(.6) rotate(0);opacity:.5}50%{transform:scale(1.1) rotate(20deg);opacity:1}}
+.ghost{position:absolute;border:2px dashed var(--line);border-bottom:0;border-radius:9px 9px 3px 3px;display:flex;justify-content:center;padding-top:3px;font-family:var(--f-mono);font-size:11px;color:var(--ink2);z-index:1}
+
+.ch .x{display:none}
+.ch[data-ex="normal"] .x-normal,.ch[data-ex="cmp"] .x-cmp,.ch[data-ex="swap"] .x-swap,.ch[data-ex="done"] .x-done,.ch[data-ex="out"] .x-out,.ch[data-ex="found"] .x-found,.ch[data-ex="mark"] .x-mark,.ch[data-ex="key"] .x-key,.ch[data-ex="talk"] .x-talk{display:inline}
+
+.box{position:absolute;border-radius:14px;border:2px dashed var(--sky);background:var(--box-r);z-index:0;transition:left var(--dur) cubic-bezier(.34,1.2,.64,1),width var(--dur) cubic-bezier(.34,1.2,.64,1),opacity var(--dur)}
+.box span{position:absolute;left:6px;top:4px;font-size:11px;font-weight:700;line-height:1.3;color:var(--sky);white-space:nowrap;overflow:hidden;max-width:calc(100% - 10px)}
+.box.k-w{border-color:var(--lemon);background:var(--box-w)} .box.k-w span{color:var(--ink)}
+.box.k-s{border-color:var(--mint);background:var(--box-s)} .box.k-s span{color:var(--mint)}
+.box.k-p{border-color:var(--accent);background:var(--box-p)} .box.k-p span{color:var(--accent)}
+.gd{position:absolute;width:0;border-left:2px dashed var(--accent);z-index:1;transform:translateX(-1px);opacity:.75}
+
+.ix{position:absolute;top:0;transform:translateX(-50%);font-family:var(--f-mono);font-size:11px;color:var(--ink2);line-height:1}
+.ix.end{opacity:.55}
+.ptr{position:absolute;left:0;top:0;display:flex;flex-direction:column;align-items:center;z-index:3;transition:transform var(--dur) cubic-bezier(.34,1.3,.64,1)}
+.ptr i{width:0;height:0;border-left:5px solid transparent;border-right:5px solid transparent;border-bottom:6px solid var(--pc)}
+.ptr span{font-family:var(--f-mono);font-size:11.5px;font-weight:600;line-height:1;padding:2px 6px 3px;border-radius:7px;background:var(--surface);border:2px solid var(--pc);color:var(--ink);white-space:nowrap}
+.ptr.c-a{--pc:var(--accent)} .ptr.c-b{--pc:var(--sky)} .ptr.c-c{--pc:var(--lemon)} .ptr.c-d{--pc:var(--mint)}
+.ax{position:absolute;top:0;display:flex;flex-direction:column;align-items:center;gap:2px;transform:translateX(-50%)}
+.ax i{font-style:normal;font-family:var(--f-mono);font-size:10px;color:var(--ink2);line-height:1.2}
+.ax b{min-width:var(--aw);height:26px;padding:0 3px;display:grid;place-items:center;border-radius:8px;border:2px solid var(--line);background:var(--surface);font-family:var(--f-num);font-weight:600;font-size:13px;transition:background-color var(--dur),border-color var(--dur)}
+.ax.on b{border-color:var(--accent);background:var(--accent-soft)}
+.ax.empty b{color:var(--ink2);border-style:dashed}
+.aux-cap{margin:8px 4px 0;font-size:12.5px;color:var(--ink2)}
+
+/* 迷宫 */
+.gc{position:absolute;cursor:pointer;-webkit-tap-highlight-color:transparent}
+.gc::before{content:"";position:absolute;inset:2px;border-radius:7px;background:var(--surface);border:1.5px solid var(--line);transition:background-color var(--dur),border-color var(--dur)}
+.gc:hover::before{border-color:var(--ink2)}
+.gc[data-s="wall"]::before{background:var(--wall);border:0;box-shadow:inset 0 -4px 0 var(--wall2),inset 0 2px 0 rgba(255,255,255,.28)}
+.gc[data-s="front"]::before{background:var(--sky-soft);border:2px dashed var(--sky)}
+.gc[data-s="new"]::before{background:var(--sky-soft);border:2px solid var(--sky)}
+.gc[data-s="seen"]::before{background:var(--mint-soft);border-color:var(--mint-soft)}
+.gc[data-s="cur"]::before,.gc[data-s="path"]::before{background:var(--accent-soft);border:2px solid var(--accent)}
+.gc[data-s="dead"]::before{background:var(--surface2);border-color:var(--line)}
+.gc[data-s="dead"]::after{content:"×";position:absolute;inset:0;display:grid;place-items:center;font-family:var(--f-num);font-weight:600;color:var(--ink2);font-size:calc(var(--gcs) * .44)}
+.gc[data-s="route"]::before{background:var(--lemon-soft);border:2px solid var(--lemon)}
+.gc b{position:absolute;left:6px;top:4px;font-family:var(--f-num);font-weight:600;font-size:max(10px,calc(var(--gcs) * .27));line-height:1;color:var(--ink);z-index:1;pointer-events:none}
+.gc[data-s="new"] b,.gc[data-s="front"] b{color:var(--sky)}
+.gc[data-s="cur"] b,.gc[data-s="path"] b{color:var(--accent)}
+.gl{position:absolute;font-family:var(--f-mono);font-size:10.5px;color:var(--ink2);transform:translate(-50%,-50%);line-height:1;pointer-events:none}
+.gs{position:absolute;font-size:10px;font-weight:700;color:var(--accent);background:var(--surface);border:1.5px solid var(--accent);border-radius:6px;padding:0 4px;line-height:1.45;z-index:2;pointer-events:none}
+.gg{position:absolute;z-index:2;pointer-events:none}
+.gg svg{width:100%;height:100%;display:block}
+.groute{position:absolute;left:0;top:0;overflow:visible;pointer-events:none;z-index:3}
+.groute polyline{fill:none;stroke:var(--accent);stroke-linecap:round;stroke-linejoin:round;opacity:.7}
+.gexp{position:absolute;left:0;top:0;z-index:5;pointer-events:none;transition:transform var(--dur) cubic-bezier(.34,1.3,.64,1)}
+.gexp[data-st="found"] .spark{opacity:1}
+.gds{position:absolute;left:10px;right:10px}
+.gds-h{font-size:12px;font-weight:700;color:var(--ink2);line-height:1.4}
+.gds-row{display:flex;flex-wrap:wrap;gap:6px;margin-top:6px}
+.qc{font-family:var(--f-mono);font-size:11.5px;padding:2px 7px;border-radius:8px;border:2px solid var(--line);background:var(--surface);line-height:1.35;white-space:nowrap}
+.qc i{font-style:normal;font-family:var(--f-body);font-size:10px;font-weight:700;color:var(--accent);margin-right:3px}
+.qc.head{border-color:var(--accent)}
+.qc.new{border-color:var(--sky);background:var(--sky-soft)}
+.qc.more{border-style:dashed;color:var(--ink2);font-family:var(--f-body)}
+
+/* talk */
+.talk{display:flex;gap:8px;align-items:flex-start}
+.mascot{width:70px;flex:none;margin-top:2px}
+.mascot svg{width:100%;height:auto;display:block;overflow:visible}
+.mascot.bob svg{animation:bob .45s ease-out}
+@keyframes bob{0%{transform:none}40%{transform:translateY(-6px)}100%{transform:none}}
+.bubble{position:relative;flex:1;min-width:0;background:var(--surface);border:2px solid var(--line);border-radius:18px;padding:9px 14px 12px;box-shadow:var(--shadow)}
+.bubble::before{content:"";position:absolute;left:-9px;top:24px;width:14px;height:14px;background:var(--surface);border-left:2px solid var(--line);border-bottom:2px solid var(--line);transform:rotate(45deg)}
+.who{font-family:var(--f-display);font-size:15px;color:var(--accent);line-height:1.3;display:flex;gap:8px;align-items:baseline}
+.who small{font-family:var(--f-body);font-size:12px;color:var(--ink2)}
+.msg{font-size:15px;line-height:1.7;min-height:3.4em;overflow-wrap:anywhere}
+.msg b,.fb b{font-family:var(--f-num);font-weight:600;color:var(--accent);font-size:1.05em}
+.qtag,.oktag{display:inline-block;font-size:12px;font-weight:700;padding:0 8px;border-radius:999px;margin-right:6px;vertical-align:2px;line-height:1.7}
+.qtag{background:var(--sky-soft);color:var(--sky)}
+.oktag{background:var(--mint-soft);color:var(--mint)}
+.note{font-size:13px;color:var(--ink2);border-left:3px solid var(--lemon);padding-left:8px;margin:2px 0 6px}
+.opts{display:flex;flex-wrap:wrap;gap:8px;margin-top:9px}
+.opt{border:2px solid var(--sky);background:var(--surface);border-radius:999px;padding:5px 14px;font-weight:600;font-size:14px;line-height:1.5}
+.opt:hover{background:var(--sky-soft)}
+.opt.bad{border-color:var(--accent);background:var(--accent-soft);color:var(--ink2);animation:shake .35s}
+.opts.nudge{animation:shake .35s}
+@keyframes shake{0%,100%{transform:none}25%{transform:translateX(-5px)}75%{transform:translateX(5px)}}
+.fb{font-size:13.5px;color:var(--ink2);margin-top:7px}
+
+/* controls */
+.ctrl{padding:12px 14px;display:flex;flex-direction:column;gap:10px}
+.btns{display:flex;align-items:center;justify-content:center;gap:10px}
+.ib{width:44px;height:44px;border-radius:50%;border:2px solid var(--line);background:var(--surface);display:grid;place-items:center;flex:none}
+.ib svg{width:20px;height:20px;fill:currentColor}
+.ib:hover:not(:disabled){border-color:var(--accent);color:var(--accent)}
+.ib.play{width:58px;height:58px;background:var(--accent);border-color:var(--accent);color:#fff}
+.ib.play:hover:not(:disabled){color:#fff;filter:brightness(1.06)}
+.ib.play svg{width:24px;height:24px}
+.ib:disabled{opacity:.35;cursor:default}
+.slide-row{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.slide-row input[type=range]{flex:1 1 180px;min-width:0;accent-color:var(--accent)}
+.seg.sm button{font-size:13px;padding:3px 11px}
+
+/* data form */
+.in-card{padding:12px 14px 14px;display:flex;flex-direction:column;gap:10px}
+.card-h{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap}
+.card-h h3{font-family:var(--f-display);font-weight:400;font-size:19px;margin:0;line-height:1.2}
+.rand{display:flex;align-items:center;gap:6px;font-size:13px;color:var(--ink2)}
+.field{display:flex;flex-direction:column;gap:4px;min-width:0}
+.field>span{font-size:12.5px;font-weight:600;color:var(--ink2)}
+.inp{width:100%;min-width:0;border:2px solid var(--line);background:var(--surface2);border-radius:11px;padding:7px 10px;font-family:var(--f-num);font-size:15px;font-weight:500}
+.inp:focus{border-color:var(--sky);outline:none}
+select.inp{padding:4px 8px;width:auto;font-size:14px}
+.row{display:flex;gap:8px;align-items:stretch}
+.row .inp{flex:1}
+.in-sec{display:flex;flex-direction:column;gap:10px}
+.btn-row{display:flex;gap:8px;flex-wrap:wrap}
+.params{display:grid;grid-template-columns:repeat(auto-fill,minmax(118px,1fr));gap:8px}
+.btn{border:2px solid var(--line);background:var(--surface);border-radius:11px;padding:6px 14px;font-weight:700;font-size:14px;white-space:nowrap}
+.btn:hover{border-color:var(--accent)}
+.btn.main{background:var(--accent);border-color:var(--accent);color:#fff}
+.hint{margin:0;font-size:12.5px;color:var(--ink2)}
+.err{margin:0;font-size:13px;color:var(--accent);font-weight:600}
+.ok{margin:0;font-size:13px;color:var(--mint);font-weight:600}
+
+/* code */
+.code-card{overflow:hidden;box-shadow:var(--shadow)}
+.code-h{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:10px 14px}
+.code-h h3{font-family:var(--f-display);font-weight:400;font-size:19px;margin:0;line-height:1.2}
+.vars{display:flex;flex-wrap:wrap;gap:6px;padding:0 14px 10px;min-height:34px;align-items:center}
+.var{font-family:var(--f-mono);font-size:12.5px;background:var(--surface2);border:1.5px solid var(--line);border-radius:8px;padding:1px 8px;white-space:nowrap}
+.var b{color:var(--accent);font-weight:600}
+.var.c{font-family:var(--f-body);background:transparent;border-style:dashed}
+.var.c b{font-family:var(--f-num);color:var(--ink)}
+.code{max-height:440px;overflow:auto;background:var(--code-bg);border-top:2px solid var(--line);padding:8px 0;font-family:var(--f-mono);font-size:12.5px;line-height:1.8}
+.code-in{display:inline-block;min-width:100%}
+.ln{display:flex;white-space:pre;padding-right:16px;border-left:3px solid transparent;transition:background-color .2s}
+.ln i{font-style:normal;width:2.7em;flex:none;text-align:right;padding-right:12px;color:var(--ink2);opacity:.55;user-select:none}
+.ln.cur{background:var(--code-hl);border-left-color:var(--accent)}
+.ln.cur i{opacity:1;color:var(--accent)}
+.tk{color:var(--k);font-weight:600}.tn{color:var(--n)}.tf{color:var(--f)}.tc{color:var(--cm)}
+
+/* info */
+.info{padding:14px 16px 16px;display:flex;flex-direction:column;gap:12px}
+.info h3{font-family:var(--f-display);font-weight:400;font-size:19px;margin:0;line-height:1.2}
+.info p{margin:0;max-width:65ch}
+.cx{display:grid;grid-template-columns:repeat(auto-fill,minmax(104px,1fr));gap:8px}
+.cx div{background:var(--surface2);border-radius:12px;padding:7px 10px;display:flex;flex-direction:column;gap:1px}
+.cx span{font-size:12px;color:var(--ink2)}
+.cx b{font-family:var(--f-num);font-weight:600;font-size:15px}
+.tip{display:flex;flex-direction:column;gap:3px;padding-left:12px;border-left:4px solid var(--sky)}
+.tip.warn{border-left-color:var(--accent)}
+.tip b{font-size:13px}
+.tip p{font-size:14px;color:var(--ink)}
+
+.foot{color:var(--ink2);font-size:12.5px;text-align:center;line-height:1.6}
+.foot kbd{font-family:var(--f-mono);font-size:11.5px;border:1.5px solid var(--line);border-bottom-width:3px;border-radius:6px;padding:0 5px;background:var(--surface)}
+@media (hover:none){.foot .keys{display:none}}
+
+@media (max-width:520px){
+  .brand h1{font-size:26px}
+  .stage-card{padding:10px 8px 8px}
+  .stage-head{padding:0 4px 8px}
+  .stage-head h2{font-size:22px}
+  .mascot{width:58px}
+  .msg{font-size:14.5px}
+  .ib{width:40px;height:40px}
+  .ib.play{width:54px;height:54px}
+}
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation:none!important;transition-duration:1ms!important}
+}
+</style>
+</head>
+<body>
+<div class="app">
+  <header class="top">
+    <div class="brand">
+      <div class="face" id="brandFace"></div>
+      <div>
+        <h1>算法小剧场</h1>
+        <p>排序、二分、双指针……让小人们排队演给你看，一步一步对着代码看懂。</p>
+      </div>
+    </div>
+    <div class="modes">
+      <span class="score" id="score" hidden>答对 0 / 0</span>
+      <div class="seg" role="group" aria-label="模式">
+        <button type="button" id="mWatch" aria-pressed="true">观看</button>
+        <button type="button" id="mQuiz" aria-pressed="false" title="关键的一步先回答，答对才继续">闯关</button>
+      </div>
+    </div>
+  </header>
+
+  <nav class="picker" aria-label="选择算法">
+    <div class="cats" id="cats"></div>
+    <div class="chips" id="chips"></div>
+  </nav>
+
+  <div class="main">
+    <div class="col">
+      <section class="card stage-card" aria-label="演示舞台">
+        <div class="stage-head">
+          <h2 id="algoName">冒泡排序</h2>
+          <span class="tag" id="algoCx">O(n²)</span>
+          <span class="tag need" id="algoNeed" hidden>要求有序</span>
+          <span class="stepno" id="stepNo">第 1 / 1 步</span>
+        </div>
+        <div class="stage" id="stage">
+          <div class="curtain"></div>
+          <div class="layer" id="boxLayer"></div>
+          <div class="layer" id="guideLayer"></div>
+          <div class="layer" id="itemLayer"></div>
+          <div class="floor" id="floor"></div>
+          <div class="layer" id="ixLayer"></div>
+          <div class="layer" id="ptrLayer"></div>
+          <div class="layer" id="auxLayer"></div>
+          <div class="layer" id="gridLayer" hidden></div>
+        </div>
+        <p class="aux-cap" id="auxCap" hidden>下面一排是前缀和 s[k]：第 k 条竖线左边所有数加起来。</p>
+      </section>
+
+      <section class="talk" aria-live="polite">
+        <div class="mascot" id="mascot"></div>
+        <div class="bubble">
+          <div class="who">阿零 <small>讲解员 · 数组下标从 0 开始</small></div>
+          <div class="note" id="note" hidden></div>
+          <div class="msg" id="msg"></div>
+          <div class="opts" id="opts" hidden></div>
+          <div class="fb" id="fb" hidden></div>
+        </div>
+      </section>
+
+      <section class="card ctrl" aria-label="播放控制">
+        <div class="btns">
+          <button type="button" class="ib" id="bFirst" aria-label="回到开头"><svg viewBox="0 0 24 24"><path d="M6 5h2v14H6zM20 6.5v11a1 1 0 0 1-1.5.86L10 13.2a1.4 1.4 0 0 1 0-2.4l8.5-5.16A1 1 0 0 1 20 6.5z"/></svg></button>
+          <button type="button" class="ib" id="bPrev" aria-label="上一步"><svg viewBox="0 0 24 24"><path d="M15.5 5.2v13.6a1 1 0 0 1-1.6.8L5.7 13.2a1.5 1.5 0 0 1 0-2.4l8.2-6.4a1 1 0 0 1 1.6.8z"/></svg></button>
+          <button type="button" class="ib play" id="bPlay" aria-label="播放"><svg viewBox="0 0 24 24" id="playIcon"><path d="M8 5.6v12.8a1.2 1.2 0 0 0 1.8 1l10-6.4a1.2 1.2 0 0 0 0-2L9.8 4.6A1.2 1.2 0 0 0 8 5.6z"/></svg></button>
+          <button type="button" class="ib" id="bNext" aria-label="下一步"><svg viewBox="0 0 24 24"><path d="M8.5 5.2v13.6a1 1 0 0 0 1.6.8l8.2-6.4a1.5 1.5 0 0 0 0-2.4L10.1 4.4a1 1 0 0 0-1.6.8z"/></svg></button>
+          <button type="button" class="ib" id="bLast" aria-label="跳到结尾"><svg viewBox="0 0 24 24"><path d="M16 5h2v14h-2zM4 6.5v11a1 1 0 0 0 1.5.86L14 13.2a1.4 1.4 0 0 0 0-2.4L5.5 5.64A1 1 0 0 0 4 6.5z"/></svg></button>
+        </div>
+        <div class="slide-row">
+          <input type="range" id="scrub" min="0" max="0" value="0" aria-label="拖动到第几步">
+          <div class="seg sm" role="group" aria-label="速度">
+            <button type="button" data-sp="slow" aria-pressed="false">慢</button>
+            <button type="button" data-sp="mid" aria-pressed="true">中</button>
+            <button type="button" data-sp="fast" aria-pressed="false">快</button>
+          </div>
+        </div>
+      </section>
+
+      <form class="card in-card" id="inForm" autocomplete="off">
+        <div class="card-h">
+          <h3 id="inTitle">换一组数据</h3>
+          <div class="rand" id="arrRand">
+            <label for="nSel">人数</label>
+            <select class="inp" id="nSel"></select>
+            <button type="button" class="btn" id="bRand">随机一组</button>
+          </div>
+          <div class="rand" id="gridRand" hidden>
+            <label for="gSel">大小</label>
+            <select class="inp" id="gSel"><option value="5x6">5 × 6</option><option value="6x8">6 × 8</option><option value="7x10">7 × 10</option></select>
+            <button type="button" class="btn" id="bMaze">随机迷宫</button>
+          </div>
+        </div>
+        <div class="in-sec" id="gridCtl" hidden>
+          <p class="hint">点舞台上的格子就能放墙、拆墙。BFS 和 DFS 用的是同一个迷宫，方便对比。起点在左上角，终点在右下角，格子坐标写成（行,列）。</p>
+          <div class="btn-row">
+            <button type="button" class="btn" id="bClear">拆掉所有墙</button>
+            <button type="button" class="btn" id="bDefault">换回示例迷宫</button>
+          </div>
+        </div>
+        <div class="in-sec" id="arrCtl">
+        <label class="field">
+          <span>数组 a[]</span>
+          <div class="row">
+            <input class="inp" id="arrIn" inputmode="numeric" spellcheck="false">
+            <button type="submit" class="btn main">开演</button>
+          </div>
+        </label>
+        <div class="params">
+          <label class="field" id="fX"><span id="xLabel">要找的数 x</span><input class="inp" id="xIn" type="number" inputmode="numeric"></label>
+          <label class="field" id="fK"><span>窗口长度 k</span><input class="inp" id="kIn" type="number" inputmode="numeric"></label>
+          <label class="field" id="fL"><span>区间左端 l</span><input class="inp" id="lIn" type="number" inputmode="numeric"></label>
+          <label class="field" id="fR"><span>区间右端 r</span><input class="inp" id="rIn" type="number" inputmode="numeric"></label>
+        </div>
+        <p class="hint">用空格或逗号隔开，2～12 个 0～99 的整数，比如 <span style="font-family:var(--f-num)">2 3 7 8 5 6 4 1</span>。</p>
+        </div>
+        <p class="err" id="inErr" role="alert" hidden></p>
+        <p class="ok" id="inOk" hidden></p>
+      </form>
+    </div>
+
+    <div class="col">
+      <section class="card code-card" aria-label="代码">
+        <div class="code-h">
+          <h3>C++ 代码</h3>
+          <button type="button" class="btn" id="bCopy">复制代码</button>
+        </div>
+        <div class="vars" id="vars"></div>
+        <div class="code" id="code"></div>
+      </section>
+
+      <section class="card info" aria-label="知识卡">
+        <h3 id="infoTitle">这个算法在做什么</h3>
+        <p id="infoIdea"></p>
+        <div class="cx" id="infoCx"></div>
+        <div class="tip"><b>打个比方</b><p id="infoAna"></p></div>
+        <div class="tip warn"><b>容易写错的地方</b><p id="infoPit"></p></div>
+      </section>
+    </div>
+  </div>
+
+  <footer class="foot">
+    <span class="keys">键盘：<kbd>←</kbd> <kbd>→</kbd> 单步，<kbd>空格</kbd> 播放 / 暂停。</span>
+    圆环颜色：<span style="color:var(--sky)">蓝</span> 正在比较，<span style="color:var(--accent)">粉</span> 正在移动，<span style="color:var(--mint)">绿</span> 已到最终位置，<span style="color:var(--lemon)">黄</span> 特别角色或答案。
+  </footer>
+</div>
+
+<script>
+/*LOGIC-START*/
+const B = v => '<b>' + v + '</b>';
+const P = (n, p, c) => ({ n, p, c });
+const Q = (q, opts, ans, hint) => ({ q, opts, ans, hint });
+
+function numOpts(c, alts, seed) {
+  const s = [c];
+  alts.forEach(a => { if (s.length < 3 && Number.isFinite(a) && a >= 0 && !s.includes(a)) s.push(a); });
+  for (let d = 1; s.length < 3; d++) {
+    if (!s.includes(c + d)) s.push(c + d);
+    else if (c - d >= 0 && !s.includes(c - d)) s.push(c - d);
+  }
+  const r = ((seed % 3) + 3) % 3, o = s.slice(r).concat(s.slice(0, r));
+  return { opts: o.map(String), ans: o.indexOf(c) };
+}
+
+function parseCode(src) {
+  const lines = [], L = {};
+  src.replace(/^\n+|\n+$/g, '').split('\n').forEach((ln, i) => {
+    const m = ln.match(/\s+((?:@\w+)+)\s*$/);
+    if (m) { m[1].split('@').filter(Boolean).forEach(k => { L[k] = i + 1; }); ln = ln.slice(0, m.index); }
+    lines.push(ln.replace(/\s+$/, ''));
+  });
+  return { lines, L };
+}
+
+function Tape(items, L) { this.a = items.slice(); this.L = L; this.steps = []; this.c = {}; this.done = new Set(); this.out = new Set(); }
+Tape.prototype.init = function (names) { names.forEach(n => { this.c[n] = 0; }); };
+Tape.prototype.cnt = function (n, d) { this.c[n] = (this.c[n] || 0) + (d === undefined ? 1 : d); };
+Tape.prototype.v = function (i) { return this.a[i].v; };
+Tape.prototype.swap = function (i, j) { const t = this.a[i]; this.a[i] = this.a[j]; this.a[j] = t; };
+Tape.prototype.allDone = function () { for (let p = 0; p < this.a.length; p++) this.done.add(p); };
+Tape.prototype.snap = function (mk, msg, o) {
+  o = o || {};
+  const n = this.a.length, st = new Array(n).fill('');
+  this.done.forEach(p => { st[p] = 'done'; });
+  this.out.forEach(p => { st[p] = 'out'; });
+  if (o.focus) for (let p = 0; p < n; p++) if ((p < o.focus[0] || p > o.focus[1]) && !st[p]) st[p] = 'dim';
+  (o.st || []).forEach(([p, s]) => { if (p >= 0 && p < n && s) st[p] = s; });
+  const box = o.box ? (Array.isArray(o.box) ? o.box : [o.box]) : [];
+  this.steps.push({
+    order: this.a.map(x => x.id), vals: this.a.map(x => x.v), line: this.L[mk] || 0, msg, st,
+    ptrs: o.ptrs || [], vars: o.vars || {}, cnt: Object.assign({}, this.c), box,
+    aux: o.aux || null, guides: o.guides || [], quiz: o.quiz || null, mood: o.mood || 'talk'
+  });
+};
+
+/* 迷宫：格子编号 id = 行 * 列数 + 列，起点左上角，终点右下角 */
+const DIRS = [[-1, 0, '上'], [0, 1, '右'], [1, 0, '下'], [0, -1, '左']];
+const DEFAULT_MAZE = (() => {
+  const rows = ['........', '.######.', '.#......', '.#.###.#', '.#....#.', '........'];
+  return { R: 6, C: 8, w: rows.join('').split('').map(ch => (ch === '#' ? 1 : 0)) };
+})();
+function mazeShortest(m) {
+  const { R, C, w } = m, N = R * C, d = new Array(N).fill(-1), q = [0];
+  if (w[0] || w[N - 1]) return -1;
+  d[0] = 0;
+  while (q.length) {
+    const x = q.shift(); if (x === N - 1) return d[x];
+    const r = Math.floor(x / C), c = x % C;
+    DIRS.forEach(([dr, dc]) => {
+      const nr = r + dr, nc = c + dc; if (nr < 0 || nr >= R || nc < 0 || nc >= C) return;
+      const id = nr * C + nc; if (!w[id] && d[id] < 0) { d[id] = d[x] + 1; q.push(id); }
+    });
+  }
+  return -1;
+}
+function GTape(L) { this.L = L; this.steps = []; this.c = {}; }
+GTape.prototype.init = Tape.prototype.init;
+GTape.prototype.cnt = Tape.prototype.cnt;
+GTape.prototype.snap = function (mk, msg, o) {
+  this.steps.push({
+    grid: true, line: this.L[mk] || 0, msg, vars: o.vars || {}, cnt: Object.assign({}, this.c), quiz: o.quiz || null, mood: o.mood || 'talk',
+    st: [], ptrs: [], box: [], guides: [], aux: null,
+    g: { cells: o.cells.slice(), nums: o.nums.slice(), exp: o.exp, ex: o.ex || 'normal', ds: { kind: o.ds.kind, items: o.ds.items.slice(), hl: o.ds.hl || [] }, path: o.path || null }
+  });
+};
+
+const ALGOS = [
+/* ───────── 排序 ───────── */
+{
+  id: 'bubble', cat: 'sort', name: '冒泡排序', cx: 'O(n²)', kind: 'sort', layout: 'normal',
+  sample: { arr: [2, 3, 7, 8, 5, 6, 4, 1] },
+  table: [['最好', 'O(n)'], ['平均', 'O(n²)'], ['最坏', 'O(n²)'], ['额外空间', 'O(1)'], ['稳定', '是']],
+  idea: '从左到右，相邻两个数比一比，前面的大就交换。一轮下来，最大的数就被一路换到了最后。重复 n − 1 轮就排好了。',
+  ana: '像汽水里的气泡，大泡泡一路往上浮。',
+  pit: '内层循环只要跑到 n − 1 − i，后面 i 个已经排好了。加一个 swapped 标记，某一轮一次都没交换就能提前结束。',
+  code: `
+void bubbleSort(int a[], int n) {                 @sig
+    for (int i = 0; i < n - 1; i++) {             @outer
+        bool swapped = false;
+        for (int j = 0; j < n - 1 - i; j++) {
+            if (a[j] > a[j + 1]) {                @cmp
+                swap(a[j], a[j + 1]);             @swap
+                swapped = true;
+            }
+        }
+        if (!swapped) break;  // 没交换说明已有序    @early
+    }
+}                                                 @end`,
+  gen(c, T) {
+    const n = T.a.length; T.init(['比较', '交换']);
+    T.snap('sig', `冒泡排序：相邻的两个人比一比，前面的数更大就交换。每一轮最大的数会一路“冒”到最后。`);
+    for (let i = 0; i < n - 1; i++) {
+      const last = n - 1 - i, F = [0, last];
+      T.snap('outer', `第 ${i + 1} 轮：在 a[0..${last}] 里两两比较，把最大的送到 a[${last}]。`, { vars: { i }, focus: F });
+      let sw = false;
+      for (let j = 0; j < last; j++) {
+        const x = T.v(j), y = T.v(j + 1), gt = x > y; T.cnt('比较');
+        const ptrs = [P('j', j, 'a'), P('j+1', j + 1, 'b')];
+        T.snap('cmp', gt ? `${B(x)} > ${B(y)}，前面的更大，要交换。` : `${B(x)} ≤ ${B(y)}，顺序没问题，不用换。`,
+          { vars: { i, j }, st: [[j, 'cmp'], [j + 1, 'cmp']], ptrs, focus: F,
+            quiz: Q(`a[j] = ${B(x)}，a[j+1] = ${B(y)}，要交换吗？`, ['交换', '不交换'], gt ? 0 : 1, '前面的数更大才需要交换。') });
+        if (gt) {
+          T.swap(j, j + 1); T.cnt('交换'); sw = true;
+          T.snap('swap', `交换！${B(x)} 往后走，${B(y)} 往前走。`, { vars: { i, j }, st: [[j, 'swap'], [j + 1, 'swap']], ptrs, focus: F, mood: 'wow' });
+        }
+      }
+      T.done.add(last);
+      if (!sw) {
+        T.allDone();
+        T.snap('early', `这一轮一次都没交换（swapped = false），说明已经全部有序，提前结束！`, { vars: { i, swapped: 'false' }, mood: 'happy' });
+        break;
+      }
+      T.snap('early', `第 ${i + 1} 轮结束，${B(T.v(last))} 站到了最终位置 a[${last}]。这一轮有交换，继续下一轮。`, { vars: { i, swapped: 'true' } });
+    }
+    T.allDone();
+    T.snap('end', `排好啦！一共比较 ${T.c['比较']} 次，交换 ${T.c['交换']} 次。`, { mood: 'happy' });
+  }
+},
+{
+  id: 'selection', cat: 'sort', name: '选择排序', cx: 'O(n²)', kind: 'sort', layout: 'normal',
+  sample: { arr: [5, 9, 3, 7, 2, 8, 1, 6] },
+  table: [['最好', 'O(n²)'], ['平均', 'O(n²)'], ['最坏', 'O(n²)'], ['额外空间', 'O(1)'], ['稳定', '否']],
+  idea: '把数组分成“已排好”和“没排好”两段。每一轮在没排好的那段里找出最小值，换到这段的最前面。',
+  ana: '体育课排队，老师每次从剩下的同学里挑最矮的，叫到前面来。',
+  pit: '要先把一整轮找完，最后只交换一次；一边找一边换就成了别的算法。它不稳定：远距离交换可能打乱相同数字的先后顺序。',
+  code: `
+void selectionSort(int a[], int n) {              @sig
+    for (int i = 0; i < n - 1; i++) {
+        int minIdx = i;                           @initMin
+        for (int j = i + 1; j < n; j++) {
+            if (a[j] < a[minIdx]) {               @cmp
+                minIdx = j;                       @upd
+            }
+        }
+        swap(a[i], a[minIdx]);                    @swap
+    }
+}                                                 @end`,
+  gen(c, T) {
+    const n = T.a.length; T.init(['比较', '交换']);
+    T.snap('sig', `选择排序：每一轮从还没排好的人里挑出最小的，和这一轮的第一个位置交换。`);
+    for (let i = 0; i < n - 1; i++) {
+      let m = i; const F = [i, n - 1];
+      const pp = j => { const a = [P('i', i, 'a')]; if (j != null) a.push(P('j', j, 'b')); a.push(P('min', m, 'c')); return a; };
+      T.snap('initMin', `第 ${i + 1} 轮：先假设 a[${i}] = ${B(T.v(i))} 最小，minIdx = ${i}。`, { vars: { i, minIdx: m }, st: [[m, 'mark']], ptrs: pp(), focus: F });
+      for (let j = i + 1; j < n; j++) {
+        const x = T.v(j), y = T.v(m), lt = x < y; T.cnt('比较');
+        T.snap('cmp', lt ? `${B(x)} < ${B(y)}，发现更小的了！` : `${B(x)} ≥ ${B(y)}，没有比当前最小的更小。`,
+          { vars: { i, j, minIdx: m }, st: [[m, 'mark'], [j, 'cmp']], ptrs: pp(j), focus: F,
+            quiz: Q(`a[j] = ${B(x)}，当前最小值是 ${B(y)}，要更新 minIdx 吗？`, ['要，更新', '不用'], lt ? 0 : 1, '只有更小才更新。') });
+        if (lt) { m = j; T.snap('upd', `minIdx = ${j}，现在最小的是 ${B(x)}。`, { vars: { i, j, minIdx: m }, st: [[m, 'mark']], ptrs: pp(j), focus: F }); }
+      }
+      const mv = T.v(m);
+      if (m !== i) {
+        const iv = T.v(i); T.swap(i, m); T.cnt('交换'); T.done.add(i);
+        T.snap('swap', `这一轮最小的是 ${B(mv)}，和 a[${i}] = ${B(iv)} 交换。a[${i}] 排好了。`, { vars: { i, minIdx: m }, st: [[i, 'swap'], [m, 'swap']], ptrs: pp(), focus: F, mood: 'wow' });
+      } else {
+        T.done.add(i);
+        T.snap('swap', `最小的就是 a[${i}] = ${B(mv)} 自己，不用换。a[${i}] 排好了。`, { vars: { i, minIdx: m }, ptrs: pp(), focus: F });
+      }
+    }
+    T.allDone();
+    T.snap('end', `排好啦！比较 ${T.c['比较']} 次，交换 ${T.c['交换']} 次。不管数据长什么样，选择排序都要比较 n(n−1)/2 次。`, { mood: 'happy' });
+  }
+},
+{
+  id: 'insertion', cat: 'sort', name: '插入排序', cx: 'O(n²)', kind: 'sort', layout: 'normal',
+  sample: { arr: [4, 7, 2, 9, 5, 1, 8, 3] },
+  table: [['最好', 'O(n)'], ['平均', 'O(n²)'], ['最坏', 'O(n²)'], ['额外空间', 'O(1)'], ['稳定', '是']],
+  idea: '左边始终是排好的。每次拿起右边的下一个数，把比它大的都往右挪一格，再把它放进空出来的位置。',
+  ana: '打扑克时理手牌，新摸一张就插到合适的位置。',
+  pit: '一定要先用 key 存下 a[i]，否则挪动时会把它覆盖掉。while 里先判断 j >= 0，再访问 a[j]。',
+  code: `
+void insertionSort(int a[], int n) {              @sig
+    for (int i = 1; i < n; i++) {
+        int key = a[i];  // 拿起一张牌               @key
+        int j = i - 1;
+        while (j >= 0 && a[j] > key) {            @while
+            a[j + 1] = a[j];  // 大的往右挪          @shift
+            j--;
+        }
+        a[j + 1] = key;  // 放进空位                @place
+    }
+}                                                 @end`,
+  gen(c, T) {
+    const n = T.a.length; T.init(['比较', '移动']);
+    T.snap('sig', `插入排序：像整理手里的扑克牌。左边是理好的，每次拿起右边下一张，插到合适的位置。`, { box: { l: 0, r: 0, label: '有序区', k: 's' } });
+    for (let i = 1; i < n; i++) {
+      const k = T.v(i); let kp = i, j = i - 1; const box = { l: 0, r: i - 1, label: '有序区', k: 's' };
+      T.snap('key', `拿起 a[${i}] = ${B(k)}（key）。左边 a[0..${i - 1}] 已经有序，给她找个位置。`, { vars: { i, key: k }, st: [[kp, 'key']], ptrs: [P('i', i, 'a')], box });
+      for (;;) {
+        if (j < 0) { T.snap('while', `j = -1，左边没人了，${B(k)} 是目前最小的，站到最前面。`, { vars: { i, j, key: k }, st: [[kp, 'key']], box }); break; }
+        const x = T.v(j), gt = x > k; T.cnt('比较');
+        T.snap('while', gt ? `${B(x)} > ${B(k)}，${B(x)} 往右挪一格，给 key 腾位置。` : `${B(x)} ≤ ${B(k)}，不用再挪了，key 就插在她后面。`,
+          { vars: { i, j, key: k }, st: [[kp, 'key'], [j, 'cmp']], ptrs: [P('j', j, 'b')], box,
+            quiz: Q(`a[j] = ${B(x)}，手里的 key = ${B(k)}，a[j] 要往右挪吗？`, ['挪，她比 key 大', '不挪'], gt ? 0 : 1, '比 key 大的才需要往右挪。') });
+        if (!gt) break;
+        T.swap(j, kp); T.cnt('移动'); kp = j;
+        T.snap('shift', `a[${j + 1}] = a[${j}]：${B(x)} 挪到第 ${j + 1} 位。`, { vars: { i, j, key: k }, st: [[j + 1, 'swap'], [kp, 'key']], ptrs: [P('j', j, 'b')], box });
+        j--;
+      }
+      T.snap('place', `a[${j + 1}] = key：把 ${B(k)} 放下。现在 a[0..${i}] 都有序了。`, { vars: { i, j, key: k }, st: [[j + 1, 'swap']], box: { l: 0, r: i, label: '有序区', k: 's' } });
+    }
+    T.allDone();
+    T.snap('end', `排好啦！比较 ${T.c['比较']} 次，移动 ${T.c['移动']} 次。数据越接近有序，插入排序越快。`, { mood: 'happy' });
+  }
+},
+{
+  id: 'quick', cat: 'sort', name: '快速排序', cx: 'O(n log n)', kind: 'sort', layout: 'normal',
+  sample: { arr: [6, 2, 9, 4, 7, 1, 8, 3] },
+  table: [['最好', 'O(n log n)'], ['平均', 'O(n log n)'], ['最坏', 'O(n²)'], ['额外空间', 'O(log n)'], ['稳定', '否']],
+  idea: '选一个基准，扫描一遍，把比它小的放左边、其余放右边，基准就站到了最终位置。左右两边再各自重复，直到区间只剩 0 或 1 个数。',
+  ana: '体育老师说“比队长矮的站左边，其余站右边”，然后两边各选一个新队长继续分。',
+  pit: '总是选最右边当基准，遇到本来就有序的数组会退化成 O(n²)。实际写法常随机选基准。',
+  code: `
+int partition(int a[], int lo, int hi) {
+    int pivot = a[hi];  // 最右边当基准          @pivot
+    int i = lo;         // [lo, i) 都比基准小
+    for (int j = lo; j < hi; j++) {
+        if (a[j] < pivot) {                       @cmp
+            swap(a[i], a[j]);                     @swap
+            i++;
+        }
+    }
+    swap(a[i], a[hi]);  // 基准归位              @place
+    return i;
+}
+void quickSort(int a[], int lo, int hi) {         @sig@qs
+    if (lo >= hi) return;                         @base
+    int p = partition(a, lo, hi);
+    quickSort(a, lo, p - 1);
+    quickSort(a, p + 1, hi);
+}                                                 @end`,
+  gen(c, T) {
+    const n = T.a.length; T.init(['比较', '交换']);
+    T.snap('sig', `快速排序：选一个基准（pivot），比她小的站左边，其余站右边，她就站到了最终位置；再对左右两边重复这件事。`);
+    const qs = (lo, hi) => {
+      if (lo > hi) return;
+      const box = { l: lo, r: hi, label: `[${lo}, ${hi}]`, k: 'r' }, F = [lo, hi];
+      if (lo === hi) { T.done.add(lo); T.snap('base', `区间 [${lo}, ${hi}] 只剩 1 个人，不用排，她已经在正确位置。`, { vars: { lo, hi }, box, focus: F }); return; }
+      T.snap('qs', `开始处理区间 [${lo}, ${hi}]。`, { vars: { lo, hi }, box, focus: F });
+      const pv = T.v(hi); let i = lo;
+      T.snap('pivot', `选最右边的 a[${hi}] = ${B(pv)} 当基准。i 是“比基准小”那组的右边界，从 ${lo} 开始。`, { vars: { lo, hi, pivot: pv, i }, st: [[hi, 'mark']], ptrs: [P('i', i, 'a')], box, focus: F });
+      for (let j = lo; j < hi; j++) {
+        const x = T.v(j), lt = x < pv; T.cnt('比较'); const ptrs = [P('i', i, 'a'), P('j', j, 'b')];
+        T.snap('cmp', lt ? `${B(x)} < ${B(pv)}，属于“小”组，要换到 i 的位置。` : `${B(x)} ≥ ${B(pv)}，不属于“小”组，原地不动。`,
+          { vars: { lo, hi, pivot: pv, i, j }, st: [[hi, 'mark'], [j, 'cmp']], ptrs, box, focus: F,
+            quiz: Q(`a[j] = ${B(x)}，基准是 ${B(pv)}，她要换到 i 的位置吗？`, ['要，比基准小', '不用'], lt ? 0 : 1, '只有比基准小的才进“小”组。') });
+        if (lt) {
+          if (i !== j) { T.swap(i, j); T.cnt('交换'); T.snap('swap', `交换 a[${i}] 和 a[${j}]，“小”组多了一个人，i 右移。`, { vars: { lo, hi, pivot: pv, i, j }, st: [[hi, 'mark'], [i, 'swap'], [j, 'swap']], ptrs, box, focus: F, mood: 'wow' }); }
+          else T.snap('swap', `i 和 j 指着同一个人，自己和自己换，等于不动。i 右移。`, { vars: { lo, hi, pivot: pv, i, j }, st: [[hi, 'mark'], [i, 'swap']], ptrs, box, focus: F });
+          i++;
+        }
+      }
+      if (i !== hi) { T.swap(i, hi); T.cnt('交换'); }
+      T.done.add(i);
+      T.snap('place', `把基准 ${B(pv)} 换到 a[${i}]。她左边都比她小，右边都不比她小，她站定了！`, { vars: { lo, hi, pivot: pv, i }, st: [[i, 'swap']], ptrs: [P('i', i, 'a')], box, focus: F, mood: 'happy' });
+      qs(lo, i - 1); qs(i + 1, hi);
+    };
+    qs(0, n - 1);
+    T.allDone();
+    T.snap('end', `排好啦！比较 ${T.c['比较']} 次，交换 ${T.c['交换']} 次。`, { mood: 'happy' });
+  }
+},
+{
+  id: 'merge', cat: 'sort', name: '归并排序', cx: 'O(n log n)', kind: 'sort', layout: 'normal',
+  sample: { arr: [8, 3, 6, 1, 7, 2, 5, 4] },
+  table: [['最好', 'O(n log n)'], ['平均', 'O(n log n)'], ['最坏', 'O(n log n)'], ['额外空间', 'O(n)'], ['稳定', '是']],
+  idea: '分而治之：一直对半拆，拆到每段只有 1 个数；再把相邻两段有序的合并成一段。合并时只需要比较两段的排头。',
+  ana: '两摞已经按分数排好的试卷合成一摞：每次比较两摞最上面那张，分数低的先拿走。',
+  pit: '合并时 a[i] == a[j] 要先拿左边的，才能保持稳定。需要一个和原数组一样大的临时数组。',
+  code: `
+void merge(int a[], int l, int m, int r) {
+    vector<int> tmp;
+    int i = l, j = m + 1;                         @mergeStart
+    while (i <= m && j <= r) {
+        if (a[i] <= a[j]) tmp.push_back(a[i++]);  @cmp@takeL
+        else tmp.push_back(a[j++]);               @takeR
+    }
+    while (i <= m) tmp.push_back(a[i++]);         @restL
+    while (j <= r) tmp.push_back(a[j++]);         @restR
+    for (int k = 0; k < tmp.size(); k++) a[l + k] = tmp[k];   @copy
+}
+void mergeSort(int a[], int l, int r) {           @sig
+    if (l >= r) return;
+    int m = (l + r) / 2;                          @split
+    mergeSort(a, l, m);
+    mergeSort(a, m + 1, r);
+    merge(a, l, m, r);
+}                                                 @end`,
+  gen(c, T) {
+    const n = T.a.length; T.init(['比较', '写入']);
+    T.snap('sig', `归并排序：先把队伍一直对半拆，拆到每段只有 1 个人（1 个人当然有序）；再把相邻两段合并成有序的一段。`);
+    const ms = (l, r) => {
+      if (l >= r) return;
+      const m = (l + r) >> 1, F = [l, r];
+      T.snap('split', `把 [${l}, ${r}] 从中间切开：左半 [${l}, ${m}]，右半 [${m + 1}, ${r}]。`, { vars: { l, m, r }, box: [{ l, r: m, label: '左半', k: 'r' }, { l: m + 1, r, label: '右半', k: 'p' }], focus: F });
+      ms(l, m); ms(m + 1, r);
+      const Lq = T.a.slice(l, m + 1), Rq = T.a.slice(m + 1, r + 1), out = [];
+      const lay = () => { out.concat(Lq, Rq).forEach((it, t) => { T.a[l + t] = it; }); };
+      const bx = () => {
+        const a = []; let p = l;
+        if (out.length) { a.push({ l: p, r: p + out.length - 1, label: '已合并', k: 's' }); p += out.length; }
+        if (Lq.length) { a.push({ l: p, r: p + Lq.length - 1, label: '左队', k: 'r' }); p += Lq.length; }
+        if (Rq.length) a.push({ l: p, r: p + Rq.length - 1, label: '右队', k: 'p' });
+        return a;
+      };
+      T.snap('mergeStart', `合并左队 [${l}, ${m}] 和右队 [${m + 1}, ${r}]，两队各自都已经从小到大排好。`, { vars: { l, m, r }, box: bx(), focus: F });
+      while (Lq.length && Rq.length) {
+        const x = Lq[0].v, y = Rq[0].v, tl = x <= y; T.cnt('比较');
+        const pL = l + out.length, pR = pL + Lq.length;
+        T.snap('cmp', tl ? `左队排头 ${B(x)} ≤ 右队排头 ${B(y)}，${B(x)} 先站进去。` : `右队排头 ${B(y)} < 左队排头 ${B(x)}，${B(y)} 先站进去。`,
+          { vars: { l, m, r }, st: [[pL, 'cmp'], [pR, 'cmp']], ptrs: [P('左头', pL, 'a'), P('右头', pR, 'b')], box: bx(), focus: F,
+            quiz: Q(`左队排头 ${B(x)}，右队排头 ${B(y)}，谁先站进去？`, [`左边的 ${x}`, `右边的 ${y}`], tl ? 0 : 1, '两队排头里更小的先进去，一样大就先拿左边。') });
+        out.push(tl ? Lq.shift() : Rq.shift()); lay(); T.cnt('写入');
+        const pos = l + out.length - 1;
+        T.snap(tl ? 'takeL' : 'takeR', `${B(out[out.length - 1].v)} 站到第 ${pos} 位。${x === y ? '一样大时先拿左队的，相等元素的先后顺序就不会变，这叫稳定。' : ''}`, { vars: { l, m, r }, st: [[pos, 'swap']], box: bx(), focus: F, mood: 'wow' });
+      }
+      if (Lq.length) {
+        const vs = Lq.map(it => it.v), st = Lq.map((_, t) => [l + out.length + t, 'swap']);
+        out.push(...Lq.splice(0)); lay(); T.cnt('写入', vs.length);
+        T.snap('restL', `右队已经空了，左队剩下的 ${vs.map(v => B(v)).join('、')} 直接接在后面。`, { vars: { l, m, r }, st, box: bx(), focus: F });
+      }
+      if (Rq.length) {
+        const vs = Rq.map(it => it.v), st = Rq.map((_, t) => [l + out.length + t, 'swap']);
+        out.push(...Rq.splice(0)); lay(); T.cnt('写入', vs.length);
+        T.snap('restR', `左队已经空了，右队剩下的 ${vs.map(v => B(v)).join('、')} 直接接在后面。`, { vars: { l, m, r }, st, box: bx(), focus: F });
+      }
+      if (l === 0 && r === n - 1) T.allDone();
+      T.snap('copy', `把 tmp 抄回 a[${l}..${r}]，这一段现在有序了。`, { vars: { l, m, r }, box: { l, r, label: '有序', k: 's' }, focus: F });
+    };
+    ms(0, n - 1);
+    T.allDone();
+    T.snap('end', `排好啦！比较 ${T.c['比较']} 次。不管数据长什么样，归并排序都是 O(n log n)。`, { mood: 'happy' });
+  }
+},
+/* ───────── 查找 ───────── */
+{
+  id: 'linear', cat: 'search', name: '顺序查找', cx: 'O(n)', kind: 'linear', layout: 'normal', params: ['x'], xLabel: '要找的数 x',
+  sample: { arr: [7, 2, 9, 4, 6, 1, 8, 3], x: 6 },
+  table: [['最好', 'O(1)'], ['平均', 'O(n)'], ['最坏', 'O(n)'], ['额外空间', 'O(1)'], ['前提', '无，乱序也行']],
+  idea: '从第一个开始，一个一个比较，直到找到，或者全部看完也没有。',
+  ana: '在没整理过的书架上，一本一本地找你要的那本书。',
+  pit: '没找到时要有明确的返回值（比如 −1），调用的人要记得判断。',
+  code: `
+int linearSearch(int a[], int n, int x) {         @sig
+    for (int i = 0; i < n; i++) {
+        if (a[i] == x) return i;                  @cmp@ret
+    }
+    return -1;                                    @fail
+}`,
+  gen(c, T) {
+    const n = T.a.length, x = c.x; T.init(['比较']);
+    T.snap('sig', `顺序查找：从第一个人开始，挨个问“你是 ${B(x)} 吗？”`, { vars: { x } });
+    for (let i = 0; i < n; i++) {
+      const v = T.v(i), eq = v === x; T.cnt('比较');
+      T.snap('cmp', eq ? `a[${i}] = ${B(v)}，正是要找的 ${B(x)}！` : `a[${i}] = ${B(v)}，不是 ${B(x)}，问下一个。`,
+        { vars: { x, i }, st: [[i, 'cmp']], ptrs: [P('i', i, 'a')], quiz: Q(`a[i] = ${B(v)}，是要找的 ${B(x)} 吗？`, ['是', '不是'], eq ? 0 : 1) });
+      if (eq) { T.snap('ret', `找到啦，返回下标 ${i}。一共问了 ${T.c['比较']} 个人。`, { vars: { x, i }, st: [[i, 'found']], ptrs: [P('i', i, 'a')], mood: 'happy' }); return; }
+      T.out.add(i);
+    }
+    T.snap('fail', `所有人都问过了，没有 ${B(x)}，返回 -1。最坏要问 n = ${n} 次，所以是 O(n)。`, { vars: { x }, mood: 'oops' });
+  }
+},
+{
+  id: 'binary', cat: 'search', name: '二分查找', cx: 'O(log n)', kind: 'binary', layout: 'normal', params: ['x'], xLabel: '要找的数 x', sorted: true,
+  sample: { arr: [1, 3, 4, 6, 8, 11, 13, 15], x: 11 },
+  table: [['最好', 'O(1)'], ['平均', 'O(log n)'], ['最坏', 'O(log n)'], ['额外空间', 'O(1)'], ['前提', '数组有序']],
+  idea: '数组有序时，看正中间那个数：等于就找到了；比目标小，答案只可能在右半边；比目标大，只可能在左半边。每比一次就排除一半。',
+  ana: '猜数字游戏：1～100 里猜一个数，每次猜中间，最多 7 次就能猜中。',
+  pit: 'mid 写成 lo + (hi − lo) / 2，可以避免 lo + hi 太大溢出。hi 初值是 n − 1，循环条件就要用 lo <= hi，两者要配套。',
+  code: `
+int binarySearch(int a[], int n, int x) {
+    int lo = 0, hi = n - 1;                       @init
+    while (lo <= hi) {
+        int mid = lo + (hi - lo) / 2;             @mid
+        if (a[mid] == x) return mid;              @eq
+        else if (a[mid] < x) lo = mid + 1;        @lt
+        else hi = mid - 1;                        @gt
+    }
+    return -1;                                    @fail
+}`,
+  gen(c, T) {
+    const n = T.a.length, x = c.x; T.init(['比较']);
+    let lo = 0, hi = n - 1;
+    const pp = mid => { const a = [P('lo', lo, 'a')]; if (mid != null) a.push(P('mid', mid, 'c')); a.push(P('hi', hi, 'b')); return a; };
+    const bx = () => (lo <= hi ? { l: lo, r: hi, label: '搜索范围', k: 'r' } : null);
+    T.snap('init', `数组已经从小到大排好。要找 ${B(x)}，一开始整个数组都是搜索范围：lo = 0，hi = ${n - 1}。`, { vars: { x, lo, hi }, ptrs: pp(), box: bx() });
+    for (;;) {
+      if (lo > hi) { T.snap('fail', `lo = ${lo} > hi = ${hi}，范围空了，说明数组里没有 ${B(x)}，返回 -1。`, { vars: { x, lo, hi }, ptrs: pp(), mood: 'oops' }); break; }
+      const mid = lo + ((hi - lo) >> 1), v = T.v(mid); T.cnt('比较');
+      const ans = v === x ? 0 : (v < x ? 1 : 2);
+      T.snap('mid', `范围 [${lo}, ${hi}] 里还有 ${hi - lo + 1} 个人。看正中间：mid = ${lo} + (${hi} − ${lo}) / 2 = ${mid}，a[mid] = ${B(v)}。`,
+        { vars: { x, lo, hi, mid }, st: [[mid, 'cmp']], ptrs: pp(mid), box: bx(),
+          quiz: Q(`a[mid] = ${B(v)}，要找 ${B(x)}，接下来？`, ['找到了', '去右半边找', '去左半边找'], ans, '数组是从小到大排的：中间的数太小，答案就在右边。') });
+      if (ans === 0) { T.snap('eq', `a[mid] = ${B(x)}，找到啦！返回 ${mid}。只比较了 ${T.c['比较']} 次，顺序查找最坏要 ${n} 次。`, { vars: { x, lo, hi, mid }, st: [[mid, 'found']], ptrs: pp(mid), box: bx(), mood: 'happy' }); break; }
+      if (ans === 1) {
+        for (let p = lo; p <= mid; p++) T.out.add(p);
+        lo = mid + 1;
+        T.snap('lt', `${B(v)} < ${B(x)}：mid 和她左边的都太小，一起排除。lo = mid + 1 = ${lo}。`, { vars: { x, lo, hi, mid }, ptrs: pp(), box: bx() });
+      } else {
+        for (let p = mid; p <= hi; p++) T.out.add(p);
+        hi = mid - 1;
+        T.snap('gt', `${B(v)} > ${B(x)}：mid 和她右边的都太大，一起排除。hi = mid − 1 = ${hi}。`, { vars: { x, lo, hi, mid }, ptrs: pp(), box: bx() });
+      }
+    }
+  }
+},
+{
+  id: 'lowerbound', cat: 'search', name: '二分 · 第一个 ≥ x', cx: 'O(log n)', kind: 'lower', layout: 'end', params: ['x'], xLabel: '找第一个 ≥ x，x =', sorted: true,
+  sample: { arr: [1, 2, 4, 4, 4, 6, 8, 9], x: 4 },
+  table: [['时间', 'O(log n)'], ['额外空间', 'O(1)'], ['前提', '数组有序'], ['C++ 里', 'lower_bound']],
+  idea: '不问“有没有”，而问“第一个 ≥ x 的在哪”。a[mid] ≥ x 时 mid 可能就是答案，所以 r = mid 把它留下；否则 l = mid + 1。l 和 r 相遇的地方就是答案。',
+  ana: '队伍按身高排好了，找第一个不比你矮的同学，你就该站在他前面。',
+  pit: 'r 初值是 n，循环条件是 l < r，更新是 r = mid（不是 mid − 1）。三处要配套，和上一种写法混着用，容易死循环或者漏掉答案。',
+  code: `
+// 返回第一个 >= x 的下标；都比 x 小就返回 n
+int lowerBound(int a[], int n, int x) {
+    int l = 0, r = n;  // 答案在 [l, r] 里       @init
+    while (l < r) {
+        int mid = (l + r) / 2;                    @mid
+        if (a[mid] >= x) r = mid;  // mid 可能是答案  @ge
+        else l = mid + 1;          // mid 太小      @lt
+    }
+    return l;          // 此时 l == r           @ret
+}`,
+  gen(c, T) {
+    const n = T.a.length, x = c.x; T.init(['比较']);
+    let l = 0, r = n;
+    const mk = () => (r < n ? [[r, 'mark']] : []);
+    const bx = () => ({ l, r, label: '答案范围', k: 'r' });
+    const pp = mid => { const a = [P('l', l, 'a')]; if (mid != null) a.push(P('mid', mid, 'c')); a.push(P('r', r, 'b')); return a; };
+    T.snap('init', `找第一个 ≥ ${B(x)} 的位置。答案一定在 [l, r] 里：l = 0，r = n = ${n}（r = n 代表“所有数都比 ${x} 小”）。`, { vars: { x, l, r }, ptrs: pp(), box: bx() });
+    while (l < r) {
+      const mid = (l + r) >> 1, v = T.v(mid), ge = v >= x; T.cnt('比较');
+      T.snap('mid', `l = ${l} < r = ${r}，还有 ${r - l + 1} 个候选位置。mid = (${l} + ${r}) / 2 = ${mid}，a[mid] = ${B(v)}。`,
+        { vars: { x, l, r, mid }, st: mk().concat([[mid, 'cmp']]), ptrs: pp(mid), box: bx(),
+          quiz: Q(`a[mid] = ${B(v)}，它 ≥ ${B(x)} 吗？`, ['是，r = mid', '不是，l = mid + 1'], ge ? 0 : 1, '≥ x 时 mid 可能就是答案，不能把它丢掉。') });
+      if (ge) {
+        for (let p = mid + 1; p <= Math.min(r, n - 1); p++) T.out.add(p);
+        r = mid;
+        T.snap('ge', `${B(v)} ≥ ${B(x)}：mid 可能就是答案，但左边也许还有更早的。r = mid = ${r}，把 mid 留在范围里。`, { vars: { x, l, r, mid }, st: mk(), ptrs: pp(), box: bx() });
+      } else {
+        for (let p = l; p <= mid; p++) T.out.add(p);
+        l = mid + 1;
+        T.snap('lt', `${B(v)} < ${B(x)}：mid 和她左边的都太小，不可能是答案。l = mid + 1 = ${l}。`, { vars: { x, l, r, mid }, st: mk(), ptrs: pp(), box: bx() });
+      }
+    }
+    if (l < n) {
+      const v = T.v(l), cx = T.a.filter(it => it.v === x).length;
+      const note = cx > 1 ? `数组里有 ${cx} 个 ${x}，这种写法找到的是最左边那个。` : (cx === 1 ? '' : `数组里没有 ${x}，${v} 是第一个比 ${x} 大的，也就是 ${x} 应该插进去的位置。`);
+      T.snap('ret', `l = r = ${l}，第一个 ≥ ${B(x)} 的是 a[${l}] = ${B(v)}。${note}`, { vars: { x, l, r }, st: [[l, 'found']], ptrs: pp(), mood: 'happy' });
+    } else {
+      T.snap('ret', `l = r = ${n}，所有数都比 ${B(x)} 小，返回 n = ${n}。`, { vars: { x, l, r }, ptrs: pp(), mood: 'oops' });
+    }
+  }
+},
+/* ───────── 技巧 ───────── */
+{
+  id: 'twopointer', cat: 'trick', name: '双指针 · 两数之和', cx: 'O(n)', kind: 'twosum', layout: 'normal', params: ['x'], xLabel: '目标和 target', sorted: true,
+  sample: { arr: [1, 3, 4, 6, 8, 11, 13, 15], x: 17 },
+  table: [['时间', 'O(n)'], ['额外空间', 'O(1)'], ['前提', '数组有序'], ['暴力做法', 'O(n²)']],
+  idea: '左指针从最小的开始，右指针从最大的开始。和太小就让左指针右移，和太大就让右指针左移，每一步都能放心地排除一个数。',
+  ana: '跷跷板两头各坐一个人：左边轻了就换个重一点的，右边重了就换个轻一点的。',
+  pit: '只有有序数组才能这样排除。无序数组要先排序，或者改用哈希表。',
+  code: `
+// 有序数组里找两个数，和等于 target
+bool twoSum(int a[], int n, int target) {
+    int L = 0, R = n - 1;                         @init
+    while (L < R) {
+        int sum = a[L] + a[R];                    @sum
+        if (sum == target) return true;           @eq
+        else if (sum < target) L++;  // 和太小      @lt
+        else R--;                    // 和太大      @gt
+    }
+    return false;                                 @fail
+}`,
+  gen(c, T) {
+    const n = T.a.length, t = c.x; T.init(['比较']);
+    let L = 0, R = n - 1;
+    const pp = () => [P('L', L, 'a'), P('R', R, 'b')];
+    T.snap('init', `数组已经从小到大排好。找两个数，加起来等于 ${B(t)}。L 指向最小的，R 指向最大的。`, { vars: { target: t, L, R }, ptrs: pp() });
+    for (;;) {
+      if (L >= R) { T.snap('fail', `L 和 R 碰头了，没有两个数的和等于 ${B(t)}，返回 false。`, { vars: { target: t, L, R }, ptrs: pp(), mood: 'oops' }); break; }
+      const x = T.v(L), y = T.v(R), s = x + y; T.cnt('比较'); const ans = s === t ? 0 : (s < t ? 1 : 2);
+      T.snap('sum', `a[L] + a[R] = ${B(x)} + ${B(y)} = ${B(s)}，目标是 ${B(t)}。`,
+        { vars: { target: t, L, R, sum: s }, st: [[L, 'cmp'], [R, 'cmp']], ptrs: pp(),
+          quiz: Q(`和是 ${B(s)}，目标是 ${B(t)}，接下来？`, ['找到了', 'L 右移，让和变大', 'R 左移，让和变小'], ans, 'L 往右数变大，R 往左数变小。') });
+      if (ans === 0) { T.snap('eq', `${B(x)} + ${B(y)} = ${B(t)}，找到啦！每一步都排除一个人，最多走 n 步，O(n)。`, { vars: { target: t, L, R, sum: s }, st: [[L, 'found'], [R, 'found']], ptrs: pp(), mood: 'happy' }); break; }
+      if (ans === 1) { T.out.add(L); L++; T.snap('lt', `${B(s)} < ${B(t)}：${B(x)} 和最大的 ${B(y)} 配都不够，和谁配都不够。排除她，L 右移。`, { vars: { target: t, L, R, sum: s }, ptrs: pp() }); }
+      else { T.out.add(R); R--; T.snap('gt', `${B(s)} > ${B(t)}：${B(y)} 和最小的 ${B(x)} 配都太大，和谁配都太大。排除她，R 左移。`, { vars: { target: t, L, R, sum: s }, ptrs: pp() }); }
+    }
+  }
+},
+{
+  id: 'prefix', cat: 'trick', name: '前缀和', cx: '查询 O(1)', kind: 'prefix', layout: 'gap', aux: true, params: ['l', 'r'],
+  sample: { arr: [3, 1, 4, 1, 5, 9, 2, 6], l: 2, r: 5 },
+  table: [['预处理', 'O(n)'], ['每次查询', 'O(1)'], ['额外空间', 'O(n)'], ['暴力查询', 'O(n)']],
+  idea: '先算出 s[k] = 前 k 个数的和。想要 a[l] 到 a[r] 的和，用“到 r 为止的总和”减去“l 之前的总和”就行。',
+  ana: '记账本上写着“截至每天累计花了多少”。想知道第 3～6 天花了多少，两个累计数一减就出来了。',
+  pit: '下标最容易错。这里 s 比 a 多一格，a[l..r] 的和是 s[r+1] − s[l]。如果课本从 1 开始编号，公式会写成 s[r] − s[l−1]。',
+  code: `
+// s[k] = a[0] + a[1] + ... + a[k-1]
+int s[N];
+void build(int a[], int n) {                      @sig
+    s[0] = 0;                                     @s0
+    for (int i = 0; i < n; i++)
+        s[i + 1] = s[i] + a[i];                   @build
+}
+// 求 a[l] + ... + a[r]
+int query(int l, int r) {                         @qsig
+    return s[r + 1] - s[l];                       @query@check
+}`,
+  gen(c, T) {
+    const n = T.a.length, l = c.l, r = c.r; T.init(['加法', '减法']);
+    const s = new Array(n + 1).fill(null);
+    const A = hl => ({ vals: s.slice(), hl: hl || [] });
+    T.snap('sig', `前缀和：先花 O(n) 把 s 数组算好，之后任意一段的和都只要做一次减法。s[k] 就是第 k 条竖线左边所有数的和。`, { aux: A() });
+    s[0] = 0;
+    T.snap('s0', `s[0] = 0：第 0 条竖线左边一个数都没有。`, { aux: A([0]), guides: [0] });
+    for (let i = 0; i < n; i++) {
+      const v = T.v(i), val = s[i] + v; s[i + 1] = val; T.cnt('加法');
+      const no = numOpts(val, [s[i] + (i + 1 < n ? T.v(i + 1) : v + 2), val + 1, s[i]], i);
+      const q = Q(`s[${i + 1}] = s[${i}] + a[${i}] = ${s[i]} + ${B(v)} = ?`, no.opts, no.ans, '上一格的 s 加上这个数。');
+      q.hideAux = i + 1;
+      T.snap('build', `s[${i + 1}] = s[${i}] + a[${i}] = ${s[i]} + ${B(v)} = ${B(val)}`, { st: [[i, 'cmp']], aux: A([i, i + 1]), guides: [i + 1], quiz: q });
+    }
+    const ans = s[r + 1] - s[l];
+    const raw = [`s[${r + 1}] − s[${l}]`, `s[${r}] − s[${l}]`, `s[${r + 1}] − s[${l + 1}]`];
+    const rot = (l + r) % 3, opts = raw.slice(rot).concat(raw.slice(0, rot));
+    const box = { l, r, label: '要求和', k: 'w' };
+    const rng = []; for (let p = l; p <= r; p++) rng.push([p, 'mark']);
+    T.snap('qsig', `s 算好了！现在要求 a[${l}] + … + a[${r}]。`, { box, st: rng, aux: A(),
+      quiz: Q(`a[${l}] + … + a[${r}] 等于哪个？`, opts, opts.indexOf(raw[0]), 's[k] 是第 k 条竖线左边的和，想想哪两条线把这一段夹在中间。') });
+    T.cnt('减法');
+    const fd = rng.map(([p]) => [p, 'found']);
+    T.snap('query', `第 ${r + 1} 条线左边的和 s[${r + 1}] = ${s[r + 1]}，减去第 ${l} 条线左边的和 s[${l}] = ${s[l]}，剩下的正好是 a[${l}..${r}]：${s[r + 1]} − ${s[l]} = ${B(ans)}。`, { box, st: fd, aux: A([l, r + 1]), guides: [l, r + 1], mood: 'happy' });
+    const vals = []; for (let p = l; p <= r; p++) vals.push(T.v(p));
+    T.snap('check', `验算：${vals.join(' + ')} = ${B(ans)}，对上了。区间再长，查询也只要一次减法，O(1)。`, { box, st: fd, aux: A([l, r + 1]), guides: [l, r + 1], mood: 'happy' });
+  }
+},
+{
+  id: 'window', cat: 'trick', name: '滑动窗口', cx: 'O(n)', kind: 'window', layout: 'normal', params: ['k'],
+  sample: { arr: [2, 1, 5, 1, 3, 2, 6, 1], k: 3 },
+  table: [['时间', 'O(n)'], ['额外空间', 'O(1)'], ['暴力做法', 'O(n·k)']],
+  idea: '窗口往右滑一格，只有一个数进来、一个数出去。所以新的和 = 旧的和 + 进来的 − 出去的，不用重新把 k 个数加一遍。',
+  ana: '坐火车看窗外，窗框不动，风景一格一格地滑过去。',
+  pit: '第一个窗口要先单独算好；循环从 R = k 开始，出去的那个是 a[R − k]。',
+  code: `
+// 长度为 k 的连续子数组，最大和是多少
+int maxSum(int a[], int n, int k) {               @sig
+    int sum = 0;
+    for (int i = 0; i < k; i++) sum += a[i];      @init
+    int best = sum;                               @best0
+    for (int R = k; R < n; R++) {
+        sum += a[R] - a[R - k];  // 进一个，出一个   @slide
+        best = max(best, sum);                    @best
+    }
+    return best;                                  @ret
+}`,
+  gen(c, T) {
+    const n = T.a.length, k = c.k; T.init(['加法', '减法']);
+    let sum = 0;
+    const W = (L, R) => ({ l: L, r: R, label: `窗口 k=${k}`, k: 'w' });
+    T.snap('sig', `滑动窗口：找长度为 ${k} 的连续一段，让它的和最大。窗口每次右移一格，只要加上新进来的、减去刚出去的，不用从头再加。`, { vars: { k } });
+    for (let i = 0; i < k; i++) {
+      sum += T.v(i); T.cnt('加法');
+      T.snap('init', `a[${i}] = ${B(T.v(i))} 进入窗口，sum = ${B(sum)}。`, { vars: { k, i, sum }, box: W(0, i), st: [[i, 'cmp']] });
+    }
+    let best = sum, bl = 0;
+    T.snap('best0', `第一个窗口 a[0..${k - 1}] 的和是 ${B(sum)}，先记下 best = ${best}。`, { vars: { k, sum, best }, box: W(0, k - 1), ptrs: [P('L', 0, 'a'), P('R', k - 1, 'b')] });
+    for (let R = k; R < n; R++) {
+      const iv = T.v(R), ov = T.v(R - k), ns = sum + iv - ov;
+      const no = numOpts(ns, [sum + iv, sum - ov, ns + 1], R);
+      const ptrs = [P('L', R - k + 1, 'a'), P('R', R, 'b')];
+      T.snap('slide', `窗口右移一格：${B(iv)} 进来，${B(ov)} 出去。sum = ${sum} + ${iv} − ${ov} = ${B(ns)}。`,
+        { vars: { k, R, sum, best }, box: W(R - k + 1, R), st: [[R, 'cmp'], [R - k, 'out']], ptrs,
+          quiz: Q(`${B(iv)} 进来，${B(ov)} 出去，新的 sum = ${sum} + ${iv} − ${ov} = ?`, no.opts, no.ans, '加上进来的，减去出去的。') });
+      sum = ns; T.cnt('加法'); T.cnt('减法');
+      if (sum > best) { best = sum; bl = R - k + 1; T.snap('best', `${B(sum)} 比之前的最大值大，更新 best = ${B(best)}！`, { vars: { k, R, sum, best }, box: W(R - k + 1, R), ptrs, mood: 'wow' }); }
+      else T.snap('best', `${B(sum)} 没有超过 best = ${best}，不更新。`, { vars: { k, R, sum, best }, box: W(R - k + 1, R), ptrs });
+    }
+    const st = []; for (let p = bl; p < bl + k; p++) st.push([p, 'found']);
+    T.snap('ret', `最大和是 ${B(best)}，就是 a[${bl}..${bl + k - 1}]。每次只做一加一减，总共 O(n)；每个窗口重新加一遍要 O(n·k)。`, { vars: { k, best }, box: { l: bl, r: bl + k - 1, label: '最大的窗口', k: 'w' }, st, mood: 'happy' });
+  }
+},
+/* ───────── 搜索（迷宫） ───────── */
+{
+  id: 'bfs', cat: 'graph', name: 'BFS 走迷宫', cx: 'O(n·m)', view: 'grid',
+  table: [['时间', 'O(n·m)'], ['额外空间', 'O(n·m)'], ['用到', '队列'], ['最短路', '能求（每步一样长时）']],
+  idea: 'BFS 像往水里扔一颗石子，波纹一圈圈往外扩：先找遍 1 步能到的格子，再找遍 2 步能到的……用队列按“先进先出”的顺序处理，所以第一次走到终点时，步数一定最少。',
+  ana: '在电影院里找人：先问你身边一圈的人，再让他们问他们身边一圈的人，一层层往外传。',
+  pit: '格子要在入队时就标记成去过（这里是写 dist），而不是出队时才标记，否则同一个格子会被重复放进队列很多次。',
+  code: `
+int dx[4] = {-1, 0, 1, 0};  // 上 右 下 左
+int dy[4] = {0, 1, 0, -1};
+int bfs() {
+    queue<pair<int, int>> q;
+    memset(dist, -1, sizeof dist);  // -1 表示没去过
+    q.push({0, 0}); dist[0][0] = 0;               @init
+    while (!q.empty()) {
+        auto cur = q.front(); q.pop();
+        int x = cur.first, y = cur.second;        @pop
+        if (x == n - 1 && y == m - 1) return dist[x][y];  @goal
+        for (int d = 0; d < 4; d++) {             @look
+            int nx = x + dx[d], ny = y + dy[d];
+            if (nx < 0 || nx >= n || ny < 0 || ny >= m) continue;
+            if (g[nx][ny] == '#' || dist[nx][ny] != -1) continue;
+            dist[nx][ny] = dist[x][y] + 1;
+            q.push({nx, ny});
+        }
+    }
+    return -1;  // 走不到终点                     @fail
+}`,
+  gen(c, T) {
+    const { R, C, w } = c.maze, N = R * C, s = 0, t = N - 1;
+    const nm = id => `(${Math.floor(id / C)},${id % C})`;
+    T.init(['出队', '入队']);
+    const dist = new Array(N).fill(-1), par = new Array(N).fill(-1);
+    const cells = w.map(x => (x ? 'wall' : '')), nums = new Array(N).fill(''), q = [];
+    const ds = hl => ({ kind: 'queue', items: q, hl: hl || [] });
+    dist[s] = 0; q.push(s); cells[s] = 'front'; nums[s] = 0; T.cnt('入队');
+    T.snap('init', `BFS 要用一个队列。先把起点 ${nm(s)} 放进去，记下她离起点 0 步。终点在右下角 ${nm(t)}。`, { cells, nums, exp: s, ds: ds() });
+    let pops = 0, last = s;
+    while (q.length) {
+      let quiz = null;
+      if (q.length >= 2 && (pops < 6 || pops % 5 === 0)) {
+        const cand = [q[0], q[q.length - 1]], mid = q[Math.floor(q.length / 2)];
+        if (!cand.includes(mid)) cand.push(mid);
+        const rot = pops % cand.length, o = cand.slice(rot).concat(cand.slice(0, rot));
+        const shown = q.slice(0, 8).map(nm).join(' ') + (q.length > 8 ? ' …' : '');
+        quiz = Q(`队列里现在是 ${shown}（最左边是队头），下一个出队的是谁？`, o.map(nm), o.indexOf(q[0]), '队列先进先出：最早进来的排在最前面，先出队。');
+        quiz.usePrev = true;
+      }
+      const x = q.shift(); pops++; T.cnt('出队'); last = x;
+      const r = Math.floor(x / C), cc = x % C;
+      cells.forEach((v, i) => { if (v === 'cur') cells[i] = 'seen'; else if (v === 'new') cells[i] = 'front'; });
+      cells[x] = 'cur';
+      const vars = { x: r, y: cc, dist: dist[x] };
+      T.snap('pop', x === t ? `队头 ${nm(x)} 出队，她就是终点！` : `队头 ${nm(x)} 出队，她离起点 ${B(dist[x])} 步。看看她四周能去哪。`, { cells, nums, exp: x, ex: 'key', ds: ds(), vars, quiz });
+      if (x === t) {
+        const path = []; for (let p = t; p !== -1; p = par[p]) path.unshift(p);
+        path.forEach(p => { cells[p] = 'route'; });
+        T.snap('goal', `到终点啦！最短要走 ${B(dist[t])} 步。BFS 先走遍 1 步能到的格子，再走遍 2 步能到的……一圈圈往外扩，所以第一次碰到终点，走的一定是最短路。`, { cells, nums, exp: t, ex: 'found', ds: ds(), vars, path, mood: 'happy' });
+        return;
+      }
+      const parts = [], pushed = [];
+      DIRS.forEach(([dr, dc, dn]) => {
+        const nr = r + dr, nc = cc + dc;
+        if (nr < 0 || nr >= R || nc < 0 || nc >= C) { parts.push(`${dn}：出界`); return; }
+        const id = nr * C + nc;
+        if (w[id]) { parts.push(`${dn}：墙`); return; }
+        if (dist[id] !== -1) { parts.push(`${dn}：去过了`); return; }
+        dist[id] = dist[x] + 1; par[id] = x; q.push(id); cells[id] = 'new'; nums[id] = dist[id]; pushed.push(id); T.cnt('入队');
+        parts.push(`${dn}：${nm(id)} 入队，距离 ${B(dist[id])}`);
+      });
+      T.snap('look', `看四个方向。${parts.join('；')}。`, { cells, nums, exp: x, ex: pushed.length ? 'cmp' : 'swap', ds: ds(pushed), vars });
+    }
+    T.snap('fail', `队列空了，还没走到终点 ${nm(t)}，说明终点被墙围住了，返回 -1。`, { cells, nums, exp: last, ex: 'out', ds: ds(), mood: 'oops' });
+  }
+},
+{
+  id: 'dfs', cat: 'graph', name: 'DFS 走迷宫', cx: 'O(n·m)', view: 'grid',
+  table: [['时间', 'O(n·m)'], ['额外空间', 'O(n·m)'], ['用到', '递归（栈）'], ['最短路', '不保证']],
+  idea: 'DFS 一条路走到黑：按固定顺序（这里是上、右、下、左）挑第一个能走的方向一直走；走进死胡同就退回上一格，换下一个方向。递归函数一层层调用，本身就是一个栈。',
+  ana: '走迷宫时一直扶着一边的墙往前走，撞到死路就原路退回到上一个岔口。',
+  pit: '进入格子时要先标记 vis，否则会在两个格子之间来回绕，递归永远停不下来。格子特别多时，递归太深可能爆栈。',
+  code: `
+int dx[4] = {-1, 0, 1, 0};  // 上 右 下 左
+int dy[4] = {0, 1, 0, -1};
+bool dfs(int x, int y) {
+    vis[x][y] = true;                             @visit
+    if (x == n - 1 && y == m - 1) return true;    @goal
+    for (int d = 0; d < 4; d++) {
+        int nx = x + dx[d], ny = y + dy[d];
+        if (nx < 0 || nx >= n || ny < 0 || ny >= m) continue;
+        if (g[nx][ny] == '#' || vis[nx][ny]) continue;
+        if (dfs(nx, ny)) return true;  // 往这边走
+    }
+    return false;  // 四面都不通，回溯             @back@fail
+}`,
+  gen(c, T) {
+    const { R, C, w } = c.maze, N = R * C, s = 0, t = N - 1;
+    const nm = id => `(${Math.floor(id / C)},${id % C})`;
+    T.init(['前进', '回溯']);
+    const vis = new Array(N).fill(false), cells = w.map(x => (x ? 'wall' : '')), nums = new Array(N).fill(''), path = [];
+    const ds = () => ({ kind: 'stack', items: path });
+    const shortest = mazeShortest(c.maze);
+    const avail = x => {
+      const r = Math.floor(x / C), cc = x % C, out = [];
+      DIRS.forEach(([dr, dc, dn], d) => {
+        const nr = r + dr, nc = cc + dc; if (nr < 0 || nr >= R || nc < 0 || nc >= C) return;
+        const id = nr * C + nc; if (!w[id] && !vis[id]) out.push({ d, dn, id });
+      });
+      return out;
+    };
+    const vv = x => ({ x: Math.floor(x / C), y: x % C, 已走: path.length - 1 });
+    const dfs = (x, dn, quiz) => {
+      vis[x] = true; path.push(x); cells[x] = 'path'; nums[x] = path.length - 1; T.cnt('前进');
+      T.snap('visit', dn ? `往${dn}走到 ${nm(x)}，先标记成“去过了”。这条路已经走了 ${B(path.length - 1)} 步。` : `从起点 ${nm(x)} 出发，先把她标记成“去过了”。每到一格，都按 上→右→下→左 的顺序试方向。`, { cells, nums, exp: x, ex: 'key', ds: ds(), vars: vv(x), quiz });
+      if (x === t) {
+        const L = path.length - 1; path.forEach(p => { cells[p] = 'route'; });
+        const tail = L > shortest ? `但最短其实只要 ${B(shortest)} 步。DFS 一条路走到黑，找到的不一定是最短路；要最短路请用 BFS。` : `这次碰巧也是最短路。不过 DFS 一般不保证最短，要最短路请用 BFS。`;
+        T.snap('goal', `到终点啦！DFS 找到的这条路走了 ${B(L)} 步。${tail}`, { cells, nums, exp: x, ex: 'found', ds: ds(), vars: vv(x), path: path.slice(), mood: 'happy' });
+        return true;
+      }
+      for (;;) {
+        const av = avail(x); if (!av.length) break;
+        const nx = av[0];
+        let q = null;
+        if (av.length >= 2) { q = Q(`站在 ${nm(x)}，按 上→右→下→左 的顺序试，往哪走？`, ['上', '右', '下', '左'], nx.d, '从“上”开始数，第一个没出界、不是墙、也没去过的方向。'); q.usePrev = true; }
+        if (dfs(nx.id, nx.dn, q)) return true;
+      }
+      path.pop(); cells[x] = 'dead'; nums[x] = ''; T.cnt('回溯');
+      const back = path.length ? path[path.length - 1] : null;
+      const bq = Q(`${nm(x)} 四个方向都走不了（墙、出界或者去过了），接下来？`, ['退回上一格', '整个搜索结束'], back != null ? 0 : 1, '这一格的 dfs 返回 false，就回到了调用它的上一格。');
+      bq.usePrev = true;
+      if (back != null) T.snap('back', `${nm(x)} 是死路，函数返回 false，退回 ${nm(back)}，接着试她剩下的方向。`, { cells, nums, exp: back, ex: 'swap', ds: ds(), vars: vv(back), quiz: bq });
+      else T.snap('fail', `起点四个方向都试完了，走不到终点，返回 false。`, { cells, nums, exp: x, ex: 'out', ds: ds(), quiz: bq, mood: 'oops' });
+      return false;
+    };
+    dfs(s, null, null);
+  }
+}
+];
+ALGOS.forEach(a => { const p = parseCode(a.code); a.lines = p.lines; a.L = p.L; a.params = a.params || []; });
+
+function runAlgo(a, d) {
+  if (a.view === 'grid') { const G = new GTape(a.L); a.gen({ maze: d }, G); return { items: [], steps: G.steps }; }
+  const items = d.arr.map((v, i) => ({ id: i, v }));
+  const T = new Tape(items, a.L);
+  a.gen({ x: d.x, k: d.k, l: d.l, r: d.r }, T);
+  return { items, steps: T.steps };
+}
+/*LOGIC-END*/
+
+/* ───────── 小人 ───────── */
+const OUT = '#5B4152', SKIN = '#FFEADF', BLUSH = '#FF8FAA', MOUTH = '#E5607E', TONGUE = '#FF9DB2';
+const HAIRS = [
+  ['#FFA9C6', '#D9487A'], ['#8ED0FA', '#2F78C9'], ['#FFE08E', '#D9862B'], ['#C9B6FF', '#6E50CF'],
+  ['#A6E8CC', '#23946F'], ['#FF9A9A', '#C23A50'], ['#5A6488', '#5B6CD0'], ['#FFB683', '#D45E24'],
+  ['#C69B7E', '#7C4630'], ['#86D9E3', '#1F8796'], ['#F1EEF8', '#8A79D6'], ['#F3C4B6', '#B5605A']
+];
+const CLOTHES = ['#5D6CC2', '#FF8FB4', '#56BFA0', '#F4B647', '#9D8BE3', '#F27C7C'];
+const BOWS = ['#FF5C8A', '#4FA3E0', '#FFC93C', '#47C59A', '#A07BEA'];
+function star(cx, cy, R, r) {
+  let d = '';
+  for (let k = 0; k < 10; k++) { const a = -Math.PI / 2 + k * Math.PI / 5, q = k % 2 ? r : R; d += (k ? 'L' : 'M') + (cx + q * Math.cos(a)).toFixed(1) + ' ' + (cy + q * Math.sin(a)).toFixed(1); }
+  return d + 'Z';
+}
+function bowShape(x, y, rot, c, s) {
+  return `<g transform="translate(${x} ${y}) rotate(${rot}) scale(${s || 1})"><path d="M0 0L-10-6.5V6.5ZM0 0L10-6.5V6.5Z" fill="${c}" stroke="${OUT}" stroke-width="${1.6 / (s || 1)}" stroke-linejoin="round"/><circle r="2.8" fill="${c}" stroke="${OUT}" stroke-width="${1.6 / (s || 1)}"/></g>`;
+}
+function ahoge(h) {
+  return `<path d="M50 14C45 4 53 0 58 5" fill="none" stroke="${OUT}" stroke-width="4.6" stroke-linecap="round"/><path d="M50 14C45 4 53 0 58 5" fill="none" stroke="${h}" stroke-width="2.4" stroke-linecap="round"/>`;
+}
+const G = (list, inner) => `<g class="x ${list.split(' ').map(c => 'x-' + c).join(' ')}">${inner}</g>`;
+function chibi(o) {
+  const h = o.hair, eye = o.eye, cloth = o.cloth, bow = o.bow, style = o.style;
+  const sw = `stroke="${OUT}" stroke-linejoin="round"`;
+  const cap = `<path d="M16 50C14 22 32 10 50 10S86 22 84 50C84 61 80 69 75 73H25C20 69 16 61 16 50Z" fill="${h}" ${sw} stroke-width="2.4"/>`;
+  let back = cap, acc = '';
+  if (style === 0) {
+    back = `<path d="M22 34C6 40 3 64 9 84c2 7 9 9 11 3C16 71 18 55 27 43Z" fill="${h}" ${sw} stroke-width="2.2"/><path d="M78 34C94 40 97 64 91 84c-2 7-9 9-11 3C84 71 82 55 73 43Z" fill="${h}" ${sw} stroke-width="2.2"/>` + cap;
+    acc = `<circle cx="23" cy="38" r="4.2" fill="${bow}" ${sw} stroke-width="1.6"/><circle cx="77" cy="38" r="4.2" fill="${bow}" ${sw} stroke-width="1.6"/>`;
+  } else if (style === 1) {
+    back = `<path d="M16 48C14 20 32 9 50 9S86 20 84 48L87 92C77 98 66 97 61 92H39C34 97 23 98 13 92Z" fill="${h}" ${sw} stroke-width="2.4"/>`;
+    acc = bowShape(71, 21, 18, bow, 1);
+  } else if (style === 2) {
+    acc = `<path d="M22.5 32Q50 4 77.5 32" fill="none" stroke="${OUT}" stroke-width="7.2" stroke-linecap="round"/><path d="M22.5 32Q50 4 77.5 32" fill="none" stroke="${bow}" stroke-width="4.2" stroke-linecap="round"/>`;
+  } else if (style === 3) {
+    back = `<path d="M69 17C93 12 99 42 92 64c-2 8-9 11-10 4C88 52 86 35 72 28Z" fill="${h}" ${sw} stroke-width="2.2"/>` + cap;
+    acc = `<circle cx="73" cy="21" r="4" fill="${bow}" ${sw} stroke-width="1.6"/>` + ahoge(h);
+  } else if (style === 4) {
+    back = `<circle cx="25" cy="20" r="11.5" fill="${h}" ${sw} stroke-width="2.2"/><circle cx="75" cy="20" r="11.5" fill="${h}" ${sw} stroke-width="2.2"/>` + cap;
+    acc = `<path d="${star(72, 33, 5.6, 2.5)}" fill="#FFD54F" ${sw} stroke-width="1.4"/>`;
+  } else if (style === 5) {
+    back = `<path d="M21 30L17 5L41 18Z" fill="${h}" ${sw} stroke-width="2.2"/><path d="M79 30L83 5L59 18Z" fill="${h}" ${sw} stroke-width="2.2"/><path d="M23.5 25L21.5 12L33 18.5Z" fill="#FFB3C7"/><path d="M76.5 25L78.5 12L67 18.5Z" fill="#FFB3C7"/>` + cap;
+  }
+  if (o.zero) acc += `<ellipse cx="28" cy="31" rx="4" ry="5.4" fill="none" stroke="${OUT}" stroke-width="5"/><ellipse cx="28" cy="31" rx="4" ry="5.4" fill="none" stroke="#FF6FA0" stroke-width="2.6"/>` + ahoge(h);
+
+  const body =
+    `<rect x="40.5" y="97" width="7" height="11" rx="3.2" fill="${SKIN}" ${sw} stroke-width="2"/><rect x="52.5" y="97" width="7" height="11" rx="3.2" fill="${SKIN}" ${sw} stroke-width="2"/>` +
+    `<ellipse cx="43.5" cy="109.5" rx="5.6" ry="3.4" fill="#6E4A5E" ${sw} stroke-width="1.8"/><ellipse cx="56.5" cy="109.5" rx="5.6" ry="3.4" fill="#6E4A5E" ${sw} stroke-width="1.8"/>` +
+    `<path d="M35 73H65L71.5 99Q50 104.5 28.5 99Z" fill="${cloth}" ${sw} stroke-width="2.2"/>` +
+    `<ellipse cx="31.5" cy="84" rx="4.6" ry="7.5" transform="rotate(20 31.5 84)" fill="${cloth}" ${sw} stroke-width="2"/><ellipse cx="68.5" cy="84" rx="4.6" ry="7.5" transform="rotate(-20 68.5 84)" fill="${cloth}" ${sw} stroke-width="2"/>` +
+    `<circle cx="28.5" cy="91.5" r="3.9" fill="${SKIN}" ${sw} stroke-width="1.8"/><circle cx="71.5" cy="91.5" r="3.9" fill="${SKIN}" ${sw} stroke-width="1.8"/>` +
+    `<path d="M38.5 73L50 83.5L61.5 73Z" fill="#fff" ${sw} stroke-width="1.8"/>` + bowShape(50, 85, 0, bow, .62);
+  const head = `<ellipse cx="50" cy="47" rx="31" ry="28.5" fill="${SKIN}" ${sw} stroke-width="2.4"/>`;
+  const blush = `<ellipse cx="30.5" cy="61" rx="5" ry="2.7" fill="${BLUSH}" opacity=".55"/><ellipse cx="69.5" cy="61" rx="5" ry="2.7" fill="${BLUSH}" opacity=".55"/>`;
+  const eo = cx => `<ellipse cx="${cx}" cy="53" rx="5.7" ry="7.4" fill="${eye}" stroke="${OUT}" stroke-width="1.5"/><ellipse cx="${cx}" cy="55.2" rx="3.5" ry="4.3" fill="#2E1D33" opacity=".55"/><ellipse cx="${cx}" cy="58" rx="3.6" ry="1.9" fill="#fff" opacity=".3"/><path d="M${cx - 6} 49.2Q${cx} 44.2 ${cx + 6} 49.2" fill="none" stroke="${OUT}" stroke-width="2.7" stroke-linecap="round"/><circle cx="${cx - 2.1}" cy="50.3" r="2.3" fill="#fff"/><circle cx="${cx + 2.3}" cy="57" r="1.1" fill="#fff"/>`;
+  const ln = (d, w) => `<path d="${d}" fill="none" stroke="${OUT}" stroke-width="${w || 2.6}" stroke-linecap="round" stroke-linejoin="round"/>`;
+  const faces =
+    G('normal cmp mark key talk', eo(39) + eo(61)) +
+    G('done', ln('M33.5 55Q39 47.5 44.5 55') + ln('M55.5 55Q61 47.5 66.5 55')) +
+    G('swap', ln('M34.5 48.5L43 53L34.5 57.5') + ln('M65.5 48.5L57 53L65.5 57.5') + `<path d="M81 27c-3 4.2-4.2 6.4-2 8.4s5.6.2 4.4-3.2c-.5-1.6-1.3-3-2.4-5.2Z" fill="#9BD7F5" stroke="${OUT}" stroke-width="1.2"/>`) +
+    G('out', ln('M34 54Q39 56.5 44 54', 2.4) + ln('M56 54Q61 56.5 66 54', 2.4) + ln('M47.5 63.5H52.5', 1.8) + `<text x="77" y="27" font-size="12" font-weight="700" font-family="Fredoka,sans-serif" fill="#8A7A95">z</text>`) +
+    G('found', `<path d="${star(39, 53, 7.4, 3.3)}" fill="#FFD34D" stroke="${OUT}" stroke-width="1.4" stroke-linejoin="round"/><path d="${star(61, 53, 7.4, 3.3)}" fill="#FFD34D" stroke="${OUT}" stroke-width="1.4" stroke-linejoin="round"/>`) +
+    G('normal', ln('M46.5 62.5Q50 65.5 53.5 62.5', 1.8)) +
+    G('cmp', `<ellipse cx="50" cy="64" rx="2.3" ry="2.8" fill="${MOUTH}" stroke="${OUT}" stroke-width="1.4"/><text x="78" y="26" font-size="15" font-weight="700" font-family="Fredoka,sans-serif" fill="${OUT}">?</text>`) +
+    G('mark', ln('M46 63Q50.5 65.5 54.5 61.5', 1.8)) +
+    G('key found', `<path d="M44.5 61H55.5Q55.5 68.5 50 68.5T44.5 61Z" fill="${MOUTH}" stroke="${OUT}" stroke-width="1.5" stroke-linejoin="round"/><ellipse cx="50" cy="66.2" rx="2.6" ry="1.4" fill="${TONGUE}"/>`) +
+    G('done', `<path d="M45 61.5Q50 62.5 55 61.5Q54 68 50 68T45 61.5Z" fill="${MOUTH}" stroke="${OUT}" stroke-width="1.5" stroke-linejoin="round"/><ellipse cx="50" cy="66" rx="2.4" ry="1.3" fill="${TONGUE}"/>`) +
+    G('swap', ln('M45 63.5Q47.5 61 50 63.5T55 63.5', 1.8)) +
+    G('talk', `<path d="M47 62.5Q50 61.8 53 62.5Q52.5 66 50 66T47 62.5Z" fill="${MOUTH}" stroke="${OUT}" stroke-width="1.3"/>`);
+  const bangs = `<path d="M18.5 50C16 24 31 13 50 13S84 24 81.5 50C79.5 45 77.5 41.5 74.5 39C73.5 42 70.5 43 66 42.5C66 38 63.5 34.5 59.5 32.5C57.5 38.5 52.5 41.5 46 41.5C47 37.5 46.5 34 44.5 31.5C41.5 37.5 36.5 41.5 30 42C30 40 29.5 38.5 28.5 37.5C25 41 21.5 45 18.5 50Z" fill="${h}" ${sw} stroke-width="2.4"/>`;
+  const locks = `<path d="M19 46C15.5 56 16 66 21 75C23.5 67 24.5 57 24 48Z" fill="${h}" ${sw} stroke-width="2"/><path d="M81 46C84.5 56 84 66 79 75C76.5 67 75.5 57 76 48Z" fill="${h}" ${sw} stroke-width="2"/>`;
+  const shine = `<path d="M31 24Q40 18.5 49 19" fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round" opacity=".6"/><path d="M56 19.5Q62 20 66 22.5" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" opacity=".5"/>`;
+  return `<svg viewBox="${o.viewBox || '0 0 100 116'}" class="ch" data-ex="${o.ex || 'normal'}" aria-hidden="true">${back}${body}${head}${blush}${faces}${bangs}${locks}${shine}${acc}</svg>`;
+}
+const PAL = [0, 1, 2, 4, 3, 5, 6, 7, 9, 8, 11, 10];
+const STY = [0, 2, 1, 4, 3, 5];
+function girl(id) {
+  const [hair, eye] = HAIRS[PAL[id % 12]];
+  return chibi({ hair, eye, style: STY[id % 6], cloth: CLOTHES[(id * 5 + 2) % 6], bow: BOWS[(id * 3 + 1) % 5] });
+}
+const AZERO = { hair: '#EEEAF8', eye: '#8C6BE0', style: 1, cloth: '#4A56A8', bow: '#FF6FA0', zero: true };
+const CROWN = `<svg viewBox="0 0 24 16" aria-hidden="true"><path d="M2.5 14.5L1 4l6 4.5L12 1.5l5 7L23 4l-1.5 10.5Z" fill="#FFD54F" stroke="${OUT}" stroke-width="1.5" stroke-linejoin="round"/><circle cx="12" cy="10" r="1.6" fill="#FF6FA0"/></svg>`;
+const SPARK = `<svg viewBox="0 0 20 20" aria-hidden="true"><path d="M10 0C11 7 13 9 20 10C13 11 11 13 10 20C9 13 7 11 0 10C7 9 9 7 10 0Z" fill="#FFD54F" stroke="${OUT}" stroke-width=".8"/></svg>`;
+
+/* ───────── 状态 ───────── */
+const $ = s => document.getElementById(s);
+const stage = $('stage'), itemLayer = $('itemLayer'), ptrLayer = $('ptrLayer'), ixLayer = $('ixLayer'), boxLayer = $('boxLayer'), guideLayer = $('guideLayer'), auxLayer = $('auxLayer'), floorEl = $('floor'), gridLayer = $('gridLayer');
+const CATS = [{ id: 'sort', name: '排序' }, { id: 'search', name: '查找' }, { id: 'trick', name: '技巧' }, { id: 'graph', name: '搜索' }];
+const FLAG = `<svg viewBox="0 0 24 24" aria-hidden="true"><ellipse cx="7" cy="21.6" rx="4.2" ry="1.4" fill="${OUT}" opacity=".22"/><path d="M7 3V21.5" stroke="${OUT}" stroke-width="2" stroke-linecap="round"/><path d="M8 3.5h12l-3.2 4.2L20 12H8Z" fill="#FF6FA0" stroke="${OUT}" stroke-width="1.5" stroke-linejoin="round"/><path d="${star(13.2, 7.8, 2.7, 1.15)}" fill="#FFE27A"/></svg>`;
+const BY = {}; ALGOS.forEach(a => { BY[a.id] = a; });
+const EX = { '': 'normal', dim: 'normal', cmp: 'cmp', swap: 'swap', done: 'done', out: 'out', found: 'found', mark: 'mark', key: 'key' };
+const MOOD = { talk: 'talk', happy: 'done', wow: 'key', oops: 'swap' };
+const SPEED = { slow: { gap: 1500, dur: 560 }, mid: { gap: 850, dur: 400 }, fast: { gap: 380, dur: 220 } };
+const S = { algo: null, data: {}, items: [], steps: [], idx: 0, playing: false, timer: 0, mode: 'watch', speed: 'mid', answered: new Set(), tried: new Set(), score: { ok: 0, all: 0 }, justOk: false, note: '' };
+const els = {}, ptrEls = {};
+let geo = null, auxCells = [], ghost = null;
+
+const store = {
+  get(k) { try { return localStorage.getItem('algo-theater:' + k); } catch (e) { return null; } },
+  set(k, v) { try { localStorage.setItem('algo-theater:' + k, v); } catch (e) { /* 无痕模式等 */ } }
+};
+
+/* ───────── 随机数据 ───────── */
+const rnd = (a, b) => a + Math.floor(Math.random() * (b - a + 1));
+function shuffled(lo, hi) { const p = []; for (let v = lo; v <= hi; v++) p.push(v); for (let i = p.length - 1; i > 0; i--) { const j = rnd(0, i); [p[i], p[j]] = [p[j], p[i]]; } return p; }
+function missing(arr, lo, hi) { const c = []; for (let v = lo; v <= hi; v++) if (!arr.includes(v)) c.push(v); return c.length ? c[rnd(0, c.length - 1)] : hi + 1; }
+function randomData(a, n) {
+  const d = {};
+  switch (a.kind) {
+    case 'sort': d.arr = shuffled(1, Math.max(15, n + 3)).slice(0, n); break;
+    case 'linear': d.arr = shuffled(1, 15).slice(0, n); d.x = Math.random() < .8 ? d.arr[rnd(0, n - 1)] : missing(d.arr, 1, 15); break;
+    case 'binary': d.arr = shuffled(1, 20).slice(0, n).sort((p, q) => p - q); d.x = Math.random() < .75 ? d.arr[rnd(0, n - 1)] : missing(d.arr, 1, 20); break;
+    case 'lower': d.arr = Array.from({ length: n }, () => rnd(1, 9)).sort((p, q) => p - q); d.x = Math.random() < .75 ? d.arr[rnd(0, n - 1)] : rnd(1, 10); break;
+    case 'twosum': {
+      d.arr = shuffled(1, 20).slice(0, n).sort((p, q) => p - q);
+      if (Math.random() < .85) { const i = rnd(0, n - 2), j = rnd(i + 1, n - 1); d.x = d.arr[i] + d.arr[j]; } else d.x = rnd(3, 38);
+      break;
+    }
+    case 'prefix': d.arr = Array.from({ length: n }, () => rnd(1, 9)); d.l = rnd(0, n - 2); d.r = rnd(d.l + 1, n - 1); break;
+    case 'window': d.arr = Array.from({ length: n }, () => rnd(1, 9)); d.k = Math.min(n, Math.max(1, (S.data[a.id] && S.data[a.id].k) || 3)); break;
+  }
+  return d;
+}
+const cloneMaze = m => ({ R: m.R, C: m.C, w: m.w.slice() });
+function randomMaze(R, C) {
+  for (let t = 0; t < 400; t++) {
+    const w = Array.from({ length: R * C }, () => (Math.random() < .3 ? 1 : 0)); w[0] = 0; w[R * C - 1] = 0;
+    const sp = mazeShortest({ R, C, w });
+    if (sp >= R + C || (t > 200 && sp >= 0)) return { R, C, w }; // 尽量挑要绕路的迷宫
+  }
+  return { R, C, w: new Array(R * C).fill(0) };
+}
+
+/* ───────── 迷宫舞台 ───────── */
+let gEls = null, lastExp = -1;
+function buildGrid() {
+  const m = S.maze, N = m.R * m.C;
+  gridLayer.innerHTML = '';
+  const add = (cls, html) => { const e = document.createElement('div'); e.className = cls; if (html != null) e.innerHTML = html; gridLayer.appendChild(e); return e; };
+  const cells = []; for (let i = 0; i < N; i++) { const d = add('gc', '<b></b>'); d.dataset.i = i; cells.push(d); }
+  const rl = [], cl = [];
+  for (let r = 0; r < m.R; r++) { const e = add('gl'); e.textContent = r; rl.push(e); }
+  for (let c = 0; c < m.C; c++) { const e = add('gl'); e.textContent = c; cl.push(e); }
+  const gs = add('gs'); gs.textContent = '起点';
+  const gg = add('gg', FLAG);
+  const NS = 'http://www.w3.org/2000/svg', route = document.createElementNS(NS, 'svg'), poly = document.createElementNS(NS, 'polyline');
+  route.setAttribute('class', 'groute'); route.setAttribute('aria-hidden', 'true'); route.appendChild(poly); gridLayer.appendChild(route);
+  const exp = add('gexp', `<div class="fx"><div class="spark">${SPARK}${SPARK}${SPARK}</div>${girl(0)}</div>`);
+  const ds = add('gds', '<div class="gds-h"></div><div class="gds-row"></div>');
+  gEls = { cells, rl, cl, gs, gg, route, poly, exp, ds, dsH: ds.firstChild, dsRow: ds.lastChild };
+  lastExp = -1;
+}
+function layoutGrid() {
+  const m = S.maze, W = stage.clientWidth || 600;
+  const LG = 18, cs = Math.min((W - LG - 16) / m.C, 54), gw = cs * m.C, gh = cs * m.R;
+  const ox = Math.max(LG + 4, (W - gw + LG) / 2), oy = 44;
+  gEls.cells.forEach((d, i) => { const r = Math.floor(i / m.C), c = i % m.C; Object.assign(d.style, { left: ox + c * cs + 'px', top: oy + r * cs + 'px', width: cs + 'px', height: cs + 'px' }); });
+  gEls.rl.forEach((e, r) => { e.style.left = (ox - 10) + 'px'; e.style.top = (oy + r * cs + cs / 2) + 'px'; });
+  gEls.cl.forEach((e, c) => { e.style.left = (ox + c * cs + cs / 2) + 'px'; e.style.top = (oy - 12) + 'px'; });
+  Object.assign(gEls.gs.style, { left: ox + 4 + 'px', top: oy + cs - 18 + 'px' });
+  const fs = cs * .62;
+  Object.assign(gEls.gg.style, { width: fs + 'px', height: fs + 'px', left: ox + (m.C - 1) * cs + (cs - fs) / 2 + 'px', top: oy + (m.R - 1) * cs + (cs - fs) / 2 + 'px' });
+  gEls.route.setAttribute('width', W); gEls.route.setAttribute('height', oy + gh + 4);
+  gEls.poly.style.strokeWidth = Math.max(4, cs * .14) + 'px';
+  gEls.poly.style.strokeDasharray = `0.1 ${cs * .26}`;
+  const ew = cs * .92, eh = ew * 1.16;
+  stage.style.setProperty('--cw', ew + 'px'); stage.style.setProperty('--ch', eh + 'px'); stage.style.setProperty('--gcs', cs + 'px');
+  const dsTop = oy + gh + 16;
+  const maxItems = Math.max(1, ...S.steps.map(s => s.g.ds.items.length));
+  const chips = Math.min(maxItems, 12) + (maxItems > 12 ? 2 : 0);
+  const perRow = Math.max(1, Math.floor((W - 14) / 64));
+  const rows = Math.max(1, Math.ceil(chips / perRow));
+  gEls.ds.style.top = dsTop + 'px';
+  const H = dsTop + 26 + rows * 30 + 6;
+  stage.style.height = H + 'px';
+  geo = { grid: true, cs, ox, oy, ew, eh, W, H };
+}
+function renderGrid(st, noHop) {
+  const g = st.g, m = S.maze, cs = geo.cs, nm = id => `(${Math.floor(id / m.C)},${id % m.C})`;
+  gEls.cells.forEach((d, i) => { d.dataset.s = g.cells[i]; d.firstChild.textContent = g.cells[i] === 'wall' ? '' : g.nums[i]; });
+  const r = Math.floor(g.exp / m.C), c = g.exp % m.C;
+  const x = geo.ox + c * cs + cs / 2 - geo.ew / 2, y = geo.oy + (r + 1) * cs - geo.eh * .98 - 2;
+  gEls.exp.style.transform = `translate(${x}px,${y}px)`;
+  gEls.exp.dataset.st = g.ex;
+  gEls.exp.querySelector('.ch').dataset.ex = g.ex;
+  if (!noHop && lastExp !== -1 && g.exp !== lastExp) hop(gEls.exp.querySelector('.fx'));
+  lastExp = g.exp;
+  if (g.path) {
+    gEls.poly.setAttribute('points', g.path.map(id => `${geo.ox + (id % m.C) * cs + cs / 2},${geo.oy + Math.floor(id / m.C) * cs + cs / 2}`).join(' '));
+    gEls.route.style.display = '';
+  } else gEls.route.style.display = 'none';
+  const ds = g.ds, it = ds.items, n = it.length, MAX = 12;
+  gEls.dsH.textContent = ds.kind === 'queue' ? `队列 · 先进先出（队头出，队尾进）· 共 ${n} 个` : `栈 · 递归走过的路（后进先出）· 共 ${n} 个`;
+  let html = '';
+  if (!n) html = '<span class="qc more">空</span>';
+  else if (ds.kind === 'queue') {
+    html = it.slice(0, MAX).map((id, k) => `<span class="qc${k === 0 ? ' head' : ''}${ds.hl.includes(id) ? ' new' : ''}">${k === 0 ? '<i>头</i>' : ''}${nm(id)}</span>`).join('') + (n > MAX ? `<span class="qc more">后面还有 ${n - MAX} 个</span>` : '');
+  } else {
+    const s0 = Math.max(0, n - MAX);
+    html = (s0 ? `<span class="qc more">底下还有 ${s0} 个</span>` : '') + it.slice(s0).map((id, k) => { const top = s0 + k === n - 1; return `<span class="qc${top ? ' head' : ''}">${top ? '<i>顶</i>' : ''}${nm(id)}</span>`; }).join('');
+  }
+  gEls.dsRow.innerHTML = html;
+}
+
+/* ───────── 舞台 ───────── */
+function slotX(p) { return geo.layout === 'gap' ? (p + 1) * geo.w : (p + .5) * geo.w; }
+function bndX(k) { return (k + .5) * geo.w; }
+
+function buildStage() {
+  itemLayer.innerHTML = ''; ixLayer.innerHTML = ''; ptrLayer.innerHTML = ''; auxLayer.innerHTML = ''; boxLayer.innerHTML = ''; guideLayer.innerHTML = '';
+  Object.keys(els).forEach(k => delete els[k]); Object.keys(ptrEls).forEach(k => delete ptrEls[k]);
+  const isGrid = S.algo.view === 'grid';
+  [boxLayer, guideLayer, itemLayer, floorEl, ixLayer, ptrLayer, auxLayer].forEach(e => { e.hidden = isGrid; });
+  gridLayer.hidden = !isGrid;
+  if (isGrid) { auxCells = []; ghost = null; $('auxCap').hidden = true; buildGrid(); return; }
+  gridLayer.innerHTML = ''; gEls = null;
+  S.items.forEach(it => {
+    const el = document.createElement('div');
+    el.className = 'it';
+    el.innerHTML = `<div class="fx"><div class="crown">${CROWN}</div><div class="spark">${SPARK}${SPARK}${SPARK}</div>${girl(it.id)}</div><div class="ped"><span class="num">${it.v}</span></div>`;
+    itemLayer.appendChild(el); els[it.id] = el;
+  });
+  const a = S.algo, n = S.items.length, slots = a.layout === 'normal' ? n : n + 1;
+  ghost = null;
+  if (a.layout === 'end') { ghost = document.createElement('div'); ghost.className = 'ghost'; ghost.textContent = '空'; itemLayer.appendChild(ghost); }
+  for (let p = 0; p < (a.layout === 'end' ? n + 1 : n); p++) {
+    const s = document.createElement('div'); s.className = 'ix' + (p === n ? ' end' : ''); s.textContent = p === n ? `n=${n}` : p; ixLayer.appendChild(s);
+  }
+  auxCells = [];
+  if (a.aux) {
+    for (let k = 0; k <= n; k++) {
+      const c = document.createElement('div'); c.className = 'ax empty'; c.innerHTML = `<i>s[${k}]</i><b>?</b>`;
+      auxLayer.appendChild(c); auxCells.push({ el: c, b: c.querySelector('b') });
+    }
+  }
+  $('auxCap').hidden = !a.aux;
+  void slots;
+}
+
+function layout() {
+  if (S.algo.view === 'grid') return layoutGrid();
+  const a = S.algo, n = S.items.length;
+  const W = stage.clientWidth || 600;
+  const slots = a.layout === 'normal' ? n : n + 1;
+  const w = W / slots;
+  const cw = Math.min(w * .92, 66), ch = cw * 1.16;
+  const pedMax = Math.max(58, Math.min(118, cw * 1.85)), pedMin = Math.max(20, Math.min(26, cw * .55));
+  const top = 42, floorY = top + ch + pedMax, ixTop = floorY + 14, ptrTop = ixTop + 17;
+  const ptrH = S.maxStack ? 26 + (S.maxStack - 1) * 22 : 12, auxTop = ptrTop + ptrH + (a.aux ? 8 : 0), auxH = a.aux ? 50 : 0;
+  const H = auxTop + auxH + (a.aux ? 6 : 4);
+  geo = { w, cw, ch, pedMax, pedMin, floorY, ixTop, ptrTop, auxTop, H, layout: a.layout, slots, n };
+  stage.style.height = H + 'px';
+  stage.style.setProperty('--cw', cw + 'px');
+  stage.style.setProperty('--ch', ch + 'px');
+  stage.style.setProperty('--pw', Math.min(w * .76, 50) + 'px');
+  stage.style.setProperty('--fs', Math.max(11, Math.min(18, w * .3)) + 'px');
+  stage.style.setProperty('--aw', Math.min(w * .82, 44) + 'px');
+  const maxV = Math.max(1, ...S.items.map(it => it.v));
+  S.items.forEach(it => {
+    const el = els[it.id];
+    el.style.width = w + 'px';
+    el.style.bottom = (H - floorY) + 'px';
+    el.querySelector('.ped').style.height = (pedMin + (pedMax - pedMin) * it.v / maxV) + 'px';
+  });
+  if (ghost) {
+    const pw = Math.min(w * .76, 50);
+    Object.assign(ghost.style, { width: pw + 'px', height: (pedMin + 6) + 'px', bottom: (H - floorY) + 'px', left: (slotX(n) - pw / 2) + 'px' });
+  }
+  floorEl.style.top = floorY + 'px';
+  ixLayer.style.top = ixTop + 'px';
+  [...ixLayer.children].forEach((c, p) => { c.style.left = slotX(p) + 'px'; });
+  ptrLayer.style.top = ptrTop + 'px';
+  auxLayer.style.top = auxTop + 'px';
+  auxCells.forEach((c, k) => { c.el.style.left = bndX(k) + 'px'; });
+}
+
+function hop(fx) { fx.classList.remove('hop'); void fx.offsetWidth; fx.classList.add('hop'); }
+function quizPending() { const st = S.steps[S.idx]; return S.mode === 'quiz' && !!st && !!st.quiz && !S.answered.has(S.idx); }
+
+// 有的题要先看上一步的样子再作答（比如“下一个出队的是谁”），答完才揭晓
+function shownStep() { const cur = S.steps[S.idx]; return (quizPending() && cur.quiz.usePrev && S.idx > 0) ? S.steps[S.idx - 1] : cur; }
+function renderStage(noHop) {
+  const cur = S.steps[S.idx]; if (!cur || !geo) return;
+  const pending = quizPending(), st = shownStep();
+  if (S.algo.view === 'grid') { renderGrid(st, noHop); return; }
+  st.order.forEach((id, p) => {
+    const el = els[id], s = st.st[p] || '';
+    el.dataset.st = s;
+    el.querySelector('.ch').dataset.ex = EX[s] || 'normal';
+    el.style.transform = `translate(${slotX(p) - geo.w / 2}px,${s === 'key' ? -24 : 0}px)`;
+    el.style.zIndex = (s === 'key' || s === 'swap') ? 4 : 2;
+    if (s === 'swap' && !noHop) hop(el.querySelector('.fx'));
+  });
+  // 指针
+  const used = new Set(), stack = {};
+  st.ptrs.forEach(pt => {
+    if (pt.p < 0 || pt.p >= geo.slots) return;
+    const k = stack[pt.p] || 0; stack[pt.p] = k + 1;
+    let el = ptrEls[pt.n];
+    if (!el) { el = document.createElement('div'); el.innerHTML = '<i></i><span></span>'; ptrLayer.appendChild(el); ptrEls[pt.n] = el; el.querySelector('span').textContent = pt.n; }
+    el.className = 'ptr c-' + pt.c;
+    el.hidden = false;
+    el.style.transform = `translate(${slotX(pt.p)}px,${k * 22}px) translateX(-50%)`;
+    used.add(pt.n);
+  });
+  Object.keys(ptrEls).forEach(n => { if (!used.has(n)) ptrEls[n].hidden = true; });
+  // 范围框
+  const boxes = st.box.filter(b => b && b.l <= b.r);
+  while (boxLayer.children.length < boxes.length) { const b = document.createElement('div'); b.className = 'box'; b.innerHTML = '<span></span>'; boxLayer.appendChild(b); }
+  [...boxLayer.children].forEach((el, i) => {
+    const b = boxes[i];
+    if (!b) { el.hidden = true; return; }
+    el.hidden = false;
+    el.className = 'box k-' + (b.k || 'r');
+    const left = slotX(b.l) - geo.w / 2 + 2;
+    el.style.left = left + 'px';
+    el.style.width = Math.max(10, (b.r - b.l + 1) * geo.w - 4) + 'px';
+    el.style.top = '19px';
+    el.style.height = (geo.floorY - 17) + 'px';
+    el.querySelector('span').textContent = b.label || '';
+  });
+  // 竖线
+  guideLayer.innerHTML = st.guides.map(k => `<div class="gd" style="left:${bndX(k)}px;top:19px;height:${geo.auxTop - 17}px"></div>`).join('');
+  // 前缀和行
+  if (auxCells.length) {
+    const ax = st.aux;
+    auxCells.forEach((c, k) => {
+      let v = ax ? ax.vals[k] : null;
+      if (pending && cur.quiz.hideAux === k) v = null;
+      c.b.textContent = v == null ? '?' : v;
+      c.el.classList.toggle('on', !!ax && ax.hl.includes(k));
+      c.el.classList.toggle('empty', v == null);
+    });
+  }
+}
+
+function setMascot(ex) {
+  const m = $('mascot'), svg = m.querySelector('.ch');
+  if (svg) svg.dataset.ex = ex;
+  m.classList.remove('bob'); void m.offsetWidth; m.classList.add('bob');
+}
+
+function renderTalk() {
+  const st = S.steps[S.idx], pending = quizPending();
+  const note = $('note'), msg = $('msg'), opts = $('opts'), fb = $('fb');
+  note.hidden = !S.note; note.textContent = S.note;
+  fb.hidden = true; fb.textContent = '';
+  if (pending) {
+    msg.innerHTML = '<span class="qtag">想一想</span>' + st.quiz.q;
+    opts.innerHTML = '';
+    st.quiz.opts.forEach((t, k) => {
+      const b = document.createElement('button'); b.type = 'button'; b.className = 'opt'; b.textContent = t;
+      b.addEventListener('click', () => answer(k, b));
+      opts.appendChild(b);
+    });
+    opts.hidden = false;
+    setMascot('cmp');
+  } else {
+    msg.innerHTML = (S.justOk ? '<span class="oktag">答对啦</span>' : '') + st.msg;
+    opts.hidden = true; opts.innerHTML = '';
+    setMascot(S.justOk ? 'found' : (MOOD[st.mood] || 'talk'));
+  }
+}
+
+let curLine = null;
+function renderCode() {
+  const st = S.steps[S.idx];
+  if (curLine) curLine.classList.remove('cur');
+  curLine = st.line ? $('code').querySelector(`.ln[data-l="${st.line}"]`) : null;
+  if (curLine) {
+    curLine.classList.add('cur');
+    const box = $('code');
+    const t = curLine.offsetTop, h = curLine.offsetHeight;
+    if (t < box.scrollTop + 8 || t + h > box.scrollTop + box.clientHeight - 8) box.scrollTop = Math.max(0, t - box.clientHeight / 2 + h / 2);
+  }
+  const sv = shownStep();
+  const vars = Object.entries(sv.vars).map(([k, v]) => `<span class="var">${k} = <b>${v}</b></span>`);
+  const cnt = Object.entries(sv.cnt).map(([k, v]) => `<span class="var c">${k} <b>${v}</b> 次</span>`);
+  $('vars').innerHTML = vars.concat(cnt).join('') || '<span class="var c">还没有变量</span>';
+}
+
+function renderCtrl() {
+  const last = S.steps.length - 1, pending = quizPending();
+  $('stepNo').textContent = `第 ${S.idx + 1} / ${S.steps.length} 步`;
+  const sc = $('scrub'); sc.max = last; sc.value = S.idx;
+  $('bFirst').disabled = $('bPrev').disabled = S.idx === 0;
+  $('bLast').disabled = S.idx === last || S.mode === 'quiz';
+  $('bNext').disabled = S.idx === last;
+  $('bNext').setAttribute('aria-label', pending ? '先回答问题' : '下一步');
+  const playing = S.playing;
+  $('bPlay').setAttribute('aria-label', playing ? '暂停' : '播放');
+  $('playIcon').innerHTML = playing
+    ? '<path d="M7 5h3.5v14H7zM13.5 5H17v14h-3.5z"/>'
+    : '<path d="M8 5.6v12.8a1.2 1.2 0 0 0 1.8 1l10-6.4a1.2 1.2 0 0 0 0-2L9.8 4.6A1.2 1.2 0 0 0 8 5.6z"/>';
+}
+
+function render(o) {
+  o = o || {};
+  renderStage(o.noHop);
+  renderTalk();
+  renderCode();
+  renderCtrl();
+}
+
+function go(i) {
+  i = Math.max(0, Math.min(S.steps.length - 1, i));
+  if (i === S.idx) return;
+  S.idx = i; S.justOk = false; S.note = '';
+  render();
+}
+
+/* ───────── 播放 ───────── */
+function schedule(delay) {
+  clearTimeout(S.timer);
+  if (!S.playing || quizPending()) return;
+  S.timer = setTimeout(() => {
+    if (S.idx < S.steps.length - 1) { go(S.idx + 1); schedule(); } else pause();
+  }, delay != null ? delay : SPEED[S.speed].gap);
+}
+function play() { if (S.idx >= S.steps.length - 1) { S.idx = 0; S.justOk = false; render(); } S.playing = true; renderCtrl(); schedule(SPEED[S.speed].gap * .6); }
+function pause() { S.playing = false; clearTimeout(S.timer); renderCtrl(); }
+function nextStep() {
+  if (quizPending()) { const o = $('opts'); o.classList.remove('nudge'); void o.offsetWidth; o.classList.add('nudge'); return; }
+  go(S.idx + 1);
+}
+
+function answer(k, btn) {
+  const st = S.steps[S.idx], q = st.quiz;
+  if (!S.tried.has(S.idx)) { S.tried.add(S.idx); S.score.all++; if (k === q.ans) S.score.ok++; updateScore(); }
+  if (k === q.ans) {
+    S.answered.add(S.idx); S.justOk = true;
+    render({ noHop: true });
+    if (S.playing) schedule(SPEED[S.speed].gap + 500);
+  } else {
+    btn.classList.add('bad'); btn.disabled = true;
+    const fb = $('fb'); fb.hidden = false;
+    fb.textContent = '不对哦，再想想～' + (q.hint ? ' 提示：' + q.hint : '');
+    setMascot('swap');
+  }
+}
+function updateScore() { $('score').textContent = `答对 ${S.score.ok} / ${S.score.all}`; }
+
+/* ───────── 选择算法 / 数据 ───────── */
+function dataFor(a) {
+  if (a.view === 'grid') { if (!S.data.maze) S.data.maze = cloneMaze(DEFAULT_MAZE); return S.data.maze; } // BFS、DFS 共用一个迷宫
+  if (!S.data[a.id]) S.data[a.id] = JSON.parse(JSON.stringify(a.sample));
+  return S.data[a.id];
+}
+
+function renderPicker() {
+  const a = S.algo;
+  $('cats').innerHTML = CATS.map(c => {
+    const n = ALGOS.filter(x => x.cat === c.id).length;
+    return `<button type="button" class="cat" data-cat="${c.id}" aria-pressed="${c.id === a.cat}">${c.name}<small>${n}</small></button>`;
+  }).join('');
+  $('chips').innerHTML = ALGOS.filter(x => x.cat === a.cat).map(x =>
+    `<button type="button" class="chip" data-algo="${x.id}" aria-pressed="${x.id === a.id}">${x.name}<small>${x.cx}</small></button>`).join('');
+}
+
+function hl(line) {
+  const esc = s => s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+  let code = line, cmt = '';
+  const ci = line.indexOf('//'); if (ci >= 0) { code = line.slice(0, ci); cmt = line.slice(ci); }
+  let h = esc(code)
+    .replace(/\b(\d+)\b/g, '<span class="tn">$1</span>')
+    .replace(/\b(int|void|bool|for|while|if|else|return|break|continue|true|false|vector|queue|pair|auto|sizeof)\b/g, '<span class="tk">$1</span>')
+    .replace(/\b([a-zA-Z_]\w*)(?=\()/g, '<span class="tf">$1</span>');
+  if (cmt) h += '<span class="tc">' + esc(cmt) + '</span>';
+  return h;
+}
+
+function renderStatic() {
+  const a = S.algo, d = dataFor(a);
+  $('algoName').textContent = a.name;
+  $('algoCx').textContent = a.cx;
+  const need = $('algoNeed'); need.hidden = !a.sorted; need.textContent = '要求有序';
+  $('code').innerHTML = '<div class="code-in">' + a.lines.map((l, i) => `<div class="ln" data-l="${i + 1}"><i>${i + 1}</i><span>${hl(l) || ' '}</span></div>`).join('') + '</div>';
+  curLine = null; $('code').scrollTop = 0;
+  $('infoTitle').textContent = a.name + '在做什么';
+  $('infoIdea').textContent = a.idea;
+  $('infoCx').innerHTML = a.table.map(([k, v]) => `<div><span>${k}</span><b>${v}</b></div>`).join('');
+  $('infoAna').textContent = a.ana;
+  $('infoPit').textContent = a.pit;
+  // 输入框
+  const isGrid = a.view === 'grid';
+  $('arrRand').hidden = isGrid; $('arrCtl').hidden = isGrid;
+  $('gridRand').hidden = !isGrid; $('gridCtl').hidden = !isGrid;
+  $('inTitle').textContent = isGrid ? '换个迷宫' : '换一组数据';
+  $('inErr').hidden = true;
+  if (isGrid) { $('gSel').value = `${d.R}x${d.C}`; return; }
+  $('arrIn').value = d.arr.join(' ');
+  $('fX').hidden = !a.params.includes('x'); $('xLabel').textContent = a.xLabel || '要找的数 x';
+  $('fK').hidden = !a.params.includes('k');
+  $('fL').hidden = !a.params.includes('l');
+  $('fR').hidden = !a.params.includes('r');
+  if (d.x != null) $('xIn').value = d.x;
+  if (d.k != null) $('kIn').value = d.k;
+  if (d.l != null) $('lIn').value = d.l;
+  if (d.r != null) $('rIn').value = d.r;
+  $('nSel').value = String(d.arr.length);
+  $('inErr').hidden = true;
+}
+
+function build() {
+  pause();
+  const d = dataFor(S.algo);
+  if (S.algo.view === 'grid') S.maze = d;
+  const res = runAlgo(S.algo, d);
+  S.items = res.items; S.steps = res.steps; S.idx = 0; S.justOk = false;
+  S.maxStack = 0; // 同一格最多叠几个指针，用来定指针区的高度
+  S.steps.forEach(st => { const c = {}; st.ptrs.forEach(p => { c[p.p] = (c[p.p] || 0) + 1; S.maxStack = Math.max(S.maxStack, c[p.p]); }); });
+  S.answered.clear(); S.tried.clear();
+  stage.classList.add('noanim');
+  buildStage(); layout(); render({ noHop: true });
+  requestAnimationFrame(() => requestAnimationFrame(() => stage.classList.remove('noanim')));
+}
+
+function select(id, keepNote) {
+  const a = BY[id] || ALGOS[0];
+  S.algo = a;
+  if (!keepNote) S.note = '';
+  renderPicker(); renderStatic(); build();
+  $('inOk').hidden = true;
+  store.set('algo', a.id);
+  try { history.replaceState(null, '', '#' + a.id); } catch (e) { /* 不支持就算了 */ }
+}
+
+function parseArr(txt) {
+  const parts = txt.trim().split(/[\s,，、;；.。]+/).filter(Boolean);
+  if (parts.some(p => !/^\d{1,2}$/.test(p))) return { err: '只能填 0～99 的整数，用空格或逗号隔开。' };
+  const arr = parts.map(Number);
+  if (arr.length < 2 || arr.length > 12) return { err: `现在有 ${arr.length} 个数，需要 2～12 个。` };
+  return { arr };
+}
+function intIn(id) { const t = $(id).value.trim(); return /^-?\d+$/.test(t) ? Number(t) : NaN; }
+
+function showOk(t) { $('inErr').hidden = true; const o = $('inOk'); o.textContent = t; o.hidden = false; }
+function applyForm(e) {
+  e.preventDefault();
+  if (S.algo.view === 'grid') return;
+  const a = S.algo, err = $('inErr'), ok = $('inOk');
+  const showErr = m => { err.textContent = m; err.hidden = false; ok.hidden = true; };
+  const p = parseArr($('arrIn').value); if (p.err) return showErr(p.err);
+  let arr = p.arr, note = '';
+  const d = { arr };
+  if (a.sorted) {
+    const sorted = arr.slice().sort((x, y) => x - y);
+    if (sorted.join() !== arr.join()) note = `${a.name}要在有序数组上用，已经帮你从小到大排好。`;
+    d.arr = arr = sorted;
+  }
+  const n = arr.length;
+  if (a.params.includes('x')) {
+    const x = intIn('xIn'), max = a.kind === 'twosum' ? 198 : 99;
+    if (!(x >= 0 && x <= max)) return showErr(`${a.kind === 'twosum' ? 'target' : 'x'} 要填 0～${max} 的整数。`);
+    d.x = x;
+  }
+  if (a.params.includes('k')) {
+    const k = intIn('kIn'); if (!(k >= 1 && k <= n)) return showErr(`k 要在 1 到 ${n} 之间。`);
+    d.k = k;
+  }
+  if (a.params.includes('l')) {
+    const l = intIn('lIn'), r = intIn('rIn');
+    if (!(l >= 0 && r >= l && r <= n - 1)) return showErr(`需要 0 ≤ l ≤ r ≤ ${n - 1}。`);
+    d.l = l; d.r = r;
+  }
+  S.data[a.id] = d;
+  err.hidden = true;
+  $('arrIn').value = arr.join(' ');
+  renderStatic(); build();
+  ok.textContent = note || '换好啦，从第 1 步开始演。'; ok.hidden = false;
+}
+
+/* ───────── 事件 ───────── */
+$('cats').addEventListener('click', e => {
+  const b = e.target.closest('[data-cat]'); if (!b) return;
+  if (b.dataset.cat === S.algo.cat) return;
+  const first = ALGOS.find(x => x.cat === b.dataset.cat); select(first.id);
+});
+$('chips').addEventListener('click', e => { const b = e.target.closest('[data-algo]'); if (b && b.dataset.algo !== S.algo.id) select(b.dataset.algo); });
+$('bPlay').addEventListener('click', () => (S.playing ? pause() : play()));
+$('bNext').addEventListener('click', () => { pause(); nextStep(); });
+$('bPrev').addEventListener('click', () => { pause(); go(S.idx - 1); });
+$('bFirst').addEventListener('click', () => { pause(); go(0); });
+$('bLast').addEventListener('click', () => { pause(); go(S.steps.length - 1); });
+$('scrub').addEventListener('input', e => {
+  pause();
+  let t = +e.target.value;
+  if (S.mode === 'quiz') { // 闯关时不能跳过没答的题
+    for (let i = S.idx; i < t; i++) if (S.steps[i].quiz && !S.answered.has(i)) { t = i; break; }
+    e.target.value = t;
+  }
+  go(t);
+});
+document.querySelectorAll('[data-sp]').forEach(b => b.addEventListener('click', () => setSpeed(b.dataset.sp)));
+function setSpeed(sp) {
+  S.speed = SPEED[sp] ? sp : 'mid';
+  document.querySelectorAll('[data-sp]').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.sp === S.speed)));
+  document.documentElement.style.setProperty('--dur', SPEED[S.speed].dur + 'ms');
+  store.set('speed', S.speed);
+  if (S.playing) schedule();
+}
+function setMode(m) {
+  S.mode = m;
+  $('mWatch').setAttribute('aria-pressed', String(m === 'watch'));
+  $('mQuiz').setAttribute('aria-pressed', String(m === 'quiz'));
+  $('score').hidden = m !== 'quiz';
+  S.answered.clear(); S.tried.clear(); S.justOk = false;
+  S.note = m === 'quiz' ? '闯关模式：遇到关键的一步，阿零会先问你，答对了才往下走。' : '';
+  store.set('mode', m);
+  render({ noHop: true });
+  if (S.playing) schedule();
+}
+$('mWatch').addEventListener('click', () => setMode('watch'));
+$('mQuiz').addEventListener('click', () => setMode('quiz'));
+$('inForm').addEventListener('submit', applyForm);
+gridLayer.addEventListener('click', e => {
+  const cell = e.target.closest('.gc'); if (!cell || S.algo.view !== 'grid') return;
+  const m = S.data.maze, i = +cell.dataset.i, nm = `(${Math.floor(i / m.C)},${i % m.C})`;
+  if (i === 0 || i === m.R * m.C - 1) { showOk('起点和终点上不能放墙。'); return; }
+  m.w[i] = m.w[i] ? 0 : 1;
+  build();
+  showOk(m.w[i] ? `在 ${nm} 放了一堵墙，从第 1 步重新演。` : `拆掉了 ${nm} 的墙，从第 1 步重新演。`);
+});
+function newMaze(m, msg) { S.data.maze = m; renderStatic(); build(); showOk(msg); }
+$('gSel').addEventListener('change', e => { const [R, C] = e.target.value.split('x').map(Number); newMaze(randomMaze(R, C), `换成 ${R} 行 ${C} 列的随机迷宫。`); });
+$('bMaze').addEventListener('click', () => { const [R, C] = $('gSel').value.split('x').map(Number); newMaze(randomMaze(R, C), '换了一个随机迷宫。'); });
+$('bClear').addEventListener('click', () => { const m = S.data.maze; newMaze({ R: m.R, C: m.C, w: new Array(m.R * m.C).fill(0) }, '墙都拆掉了，点格子可以重新放。'); });
+$('bDefault').addEventListener('click', () => newMaze(cloneMaze(DEFAULT_MAZE), '换回了示例迷宫：这里 DFS 会绕远路，正好和 BFS 对比。'));
+$('bRand').addEventListener('click', () => {
+  const n = +$('nSel').value || 8;
+  S.data[S.algo.id] = randomData(S.algo, n);
+  $('inOk').hidden = true;
+  renderStatic(); build();
+});
+$('bCopy').addEventListener('click', () => {
+  const txt = S.algo.lines.join('\n'), btn = $('bCopy');
+  const done = m => { btn.textContent = m; setTimeout(() => { btn.textContent = '复制代码'; }, 1400); };
+  const fallback = () => {
+    const r = document.createRange(); r.selectNodeContents($('code'));
+    const sel = getSelection(); sel.removeAllRanges(); sel.addRange(r);
+    done('已选中，手动复制');
+  };
+  try { navigator.clipboard.writeText(txt).then(() => done('复制好了'), fallback); } catch (e) { fallback(); }
+});
+document.addEventListener('keydown', e => {
+  if (e.target.closest('input,select,textarea')) return;
+  if (e.key === 'ArrowRight') { e.preventDefault(); pause(); nextStep(); }
+  else if (e.key === 'ArrowLeft') { e.preventDefault(); pause(); go(S.idx - 1); }
+  else if (e.key === ' ' && !e.target.closest('button')) { e.preventDefault(); S.playing ? pause() : play(); }
+});
+let rzT = 0;
+new ResizeObserver(() => {
+  cancelAnimationFrame(rzT);
+  rzT = requestAnimationFrame(() => { if (!S.algo) return; stage.classList.add('noanim'); layout(); renderStage(true); requestAnimationFrame(() => stage.classList.remove('noanim')); });
+}).observe(stage);
+
+/* ───────── 启动 ───────── */
+$('nSel').innerHTML = Array.from({ length: 9 }, (_, i) => `<option value="${i + 4}">${i + 4}</option>`).join('');
+$('mascot').innerHTML = chibi(Object.assign({ ex: 'talk' }, AZERO));
+$('brandFace').innerHTML = chibi(Object.assign({ viewBox: '14 4 72 72', ex: 'done' }, AZERO));
+setSpeed(store.get('speed') || 'mid');
+const fromHash = (location.hash || '').slice(1);
+select(BY[fromHash] ? fromHash : (BY[store.get('algo')] ? store.get('algo') : 'bubble'));
+if (store.get('mode') === 'quiz') setMode('quiz');
+</script>
+
+</body>
+</html>
