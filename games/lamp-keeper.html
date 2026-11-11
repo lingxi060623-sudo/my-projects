@@ -43,7 +43,8 @@ button:focus-visible{outline:2px solid var(--lamp);outline-offset:3px}
 .hud-top{position:absolute;top:calc(env(safe-area-inset-top,0px) + 14px);left:max(14px,env(safe-area-inset-left,0px));right:max(14px,env(safe-area-inset-right,0px));
   display:flex;justify-content:space-between;align-items:flex-start;gap:12px}
 .hud-left{display:flex;flex-direction:column;gap:6px;min-width:0;max-width:34vw}
-.lvl{font-family:var(--font-display);font-size:26px;line-height:1;color:var(--lamp-soft);text-shadow:0 0 10px rgba(243,182,92,.5)}
+.lvl{font-family:var(--font-display);font-size:26px;line-height:1;color:var(--lamp-soft);text-shadow:0 0 10px rgba(243,182,92,.5);white-space:nowrap}
+.lvl small{font-family:var(--font-body);font-size:13px;font-weight:600;color:#ff9a7a;margin-left:10px;letter-spacing:.04em;text-shadow:0 1px 6px rgba(0,0,0,.85);font-variant-numeric:tabular-nums}
 .hud-mid{position:absolute;left:50%;top:0;transform:translateX(-50%);text-align:center}
 .clock{font-size:24px;font-weight:600;font-variant-numeric:tabular-nums;letter-spacing:.04em;line-height:1.1;text-shadow:0 1px 6px rgba(0,0,0,.8)}
 .phase{font-family:var(--font-display);font-size:17px;color:var(--mist);letter-spacing:.2em}
@@ -127,10 +128,28 @@ button:focus-visible{outline:2px solid var(--lamp);outline-offset:3px}
   .brand .how{font-size:13px}
 }
 @keyframes shake{20%{transform:translateX(-5px)}40%{transform:translateX(5px)}60%{transform:translateX(-3px)}80%{transform:translateX(3px)}}
-#nightSel{display:flex;flex-wrap:wrap;gap:6px}
-.nt{min-width:64px;padding:6px 12px;border:1px solid rgba(147,180,174,.35);background:rgba(8,18,22,.55);border-radius:3px;font-family:var(--font-display);font-size:19px;color:var(--mist)}
-.nt.sel{border-color:var(--lamp);color:var(--lamp-soft);background:rgba(243,182,92,.14)}
+#nightSel{display:flex;align-items:stretch;gap:6px}
+.nt{min-width:46px;padding:6px 12px;border:1px solid rgba(147,180,174,.35);background:rgba(8,18,22,.55);border-radius:3px;font-family:var(--font-display);font-size:24px;line-height:1;color:var(--lamp-soft)}
+.nt:hover:not(:disabled){background:rgba(243,182,92,.12)}
 .nt:disabled{opacity:.32;cursor:not-allowed}
+.ncur{flex:1;min-width:0;max-width:320px;display:flex;flex-direction:column;justify-content:center;gap:1px;padding:7px 14px;border:1px solid var(--lamp);background:rgba(243,182,92,.1);border-radius:3px}
+.ncur b{font-family:var(--font-display);font-weight:400;font-size:23px;line-height:1.2;color:var(--lamp-soft);letter-spacing:.06em}
+.ncur span{font-size:12.5px;color:#ff9a7a;font-variant-numeric:tabular-nums}
+/* the keeper's lasting progress */
+.hero{margin-top:12px;display:flex;flex-direction:column;gap:11px;padding:14px 16px;background:rgba(236,223,189,.05);border:1px solid rgba(236,223,189,.13);border-radius:3px}
+.hero-top{display:flex;align-items:center;gap:14px}
+.hero-lv{font-family:var(--font-display);font-size:40px;line-height:1;color:var(--lamp-soft);text-shadow:0 0 12px rgba(243,182,92,.45);white-space:nowrap}
+.hero-main{flex:1;min-width:0;display:flex;flex-direction:column;gap:5px}
+.hero-nm{font-weight:900;line-height:1.3}
+.hero-nm span{font-weight:400;font-size:13px;color:var(--mist);margin-left:8px}
+.bar{height:6px;background:rgba(147,180,174,.15);border-radius:3px;overflow:hidden}
+.bar i{display:block;height:100%;background:linear-gradient(90deg,var(--lamp),var(--ember))}
+.hero-sub{font-size:12.5px;color:var(--mist);font-variant-numeric:tabular-nums}
+.hero .srow{gap:9px 7px;padding-bottom:3px}
+.hero-next{margin:0;font-size:13px;color:var(--mist);line-height:1.7}
+.hero-next b{color:var(--gold);font-weight:600}
+.hero-foot{display:flex;flex-wrap:wrap;align-items:center;gap:6px 12px}
+.hero-foot small{font-size:12px;color:var(--mist-dim)}
 .menu-actions{display:flex;flex-wrap:wrap;align-items:center;gap:12px}
 .purse{font-size:15px;color:var(--mist)}
 .purse b{color:var(--lamp-soft);font-size:18px;font-variant-numeric:tabular-nums;margin-left:4px}
@@ -158,6 +177,8 @@ button.card:hover,button.card:focus-visible{transform:translateY(-6px) rotate(-.
 .card.evo{background:linear-gradient(180deg,#f9e49c,#e8b04a);box-shadow:0 14px 34px rgba(0,0,0,.55),0 0 30px rgba(242,207,107,.45)}
 .card.evo .seal{background:var(--paper-ink);color:var(--gold)}
 .card.supply .seal{background:#7a5a36}
+.card.temper .seal{background:linear-gradient(135deg,#7a2418,var(--ember))}
+.card.evo.temper .seal{background:var(--paper-ink);color:var(--gold)}
 @keyframes cardIn{from{transform:translateY(18px);opacity:0}}
 .lu-foot{display:flex;gap:10px;flex-wrap:wrap;justify-content:center}
 @media (max-width:560px){
@@ -206,6 +227,7 @@ button.card:hover,button.card:focus-visible{transform:translateY(-6px) rotate(-.
 .pips{display:flex;gap:3px;margin-top:3px}
 .pip{width:14px;height:4px;background:rgba(147,180,174,.22)}
 .pip.on{background:var(--lamp)}
+.pips .inf{font-size:12px;color:var(--lamp-soft);font-variant-numeric:tabular-nums}
 .mt .btn{grid-column:1/-1;margin-top:8px;padding:7px 12px;font-size:14px;font-variant-numeric:tabular-nums}
 .codex{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:10px}
 .cx{display:grid;grid-template-columns:auto 1fr;gap:2px 10px;align-items:center;padding:10px 12px;border:1px dashed rgba(147,180,174,.2);border-radius:3px}
@@ -223,7 +245,7 @@ button.card:hover,button.card:focus-visible{transform:translateY(-6px) rotate(-.
   <div class="xpbar"><div id="xpfill"></div></div>
   <div class="hud-top">
     <div class="hud-left">
-      <div class="lvl" id="lvl">Lv 1</div>
+      <div class="lvl"><span id="lvl">Lv 1</span><small id="mlv">妖 Lv 1</small></div>
       <div id="slots"></div>
     </div>
     <div class="hud-mid"><div class="clock" id="clock">00:00</div><div class="phase" id="phase">一更</div></div>
@@ -244,15 +266,20 @@ button.card:hover,button.card:focus-visible{transform:translateY(-6px) rotate(-.
     <header class="brand">
       <h1>守灯人</h1>
       <p class="tag">长夜五更，守住手里这盏灯，等到天亮。</p>
-      <p class="how">武器会自己出手。拾起萤火升级，挑选武器和随身物。武器满级后，带上与它共鸣的随身物，就能在升级或开宝箱时觉醒。每一夜攒下的余烬，可以在灯坊换成永久的本事。</p>
+      <p class="how">武器会自己出手。拾起萤火升级，挑选武器和随身物：等级和学到的本事都跟着守夜人，一夜一夜带下去，灯灭了也不会丢。夜越深，妖物的等级越高。武器满级后，带上与它共鸣的随身物就能觉醒，之后还能一直淬炼。攒下的余烬，可以在灯坊换成所有守夜人共用的本事。</p>
     </header>
     <div>
       <h2 class="sec-h">守夜人</h2>
       <div id="charList"></div>
+      <div class="hero" id="heroPanel"></div>
     </div>
     <div>
       <h2 class="sec-h">夜深</h2>
-      <div id="nightSel"></div>
+      <div id="nightSel">
+        <button class="nt" id="nightPrev" type="button" aria-label="上一夜">‹</button>
+        <div class="ncur" aria-live="polite"><b id="nightName"></b><span id="nightLv"></span></div>
+        <button class="nt" id="nightNext" type="button" aria-label="下一夜">›</button>
+      </div>
       <p class="note" id="nightDesc"></p>
     </div>
     <div class="menu-actions">
@@ -270,7 +297,7 @@ button.card:hover,button.card:focus-visible{transform:translateY(-6px) rotate(-.
   <div class="shop-wrap">
     <div class="shop-head">
       <h2>灯坊</h2>
-      <p>拿余烬换来的本事，往后每一夜都带在身上。</p>
+      <p>拿余烬换来的本事，所有守夜人共用，往后每一夜都带在身上。</p>
       <span class="purse">余烬<b id="shopEmbers">0</b></span>
       <button class="btn" id="shopBack" type="button">返回</button>
     </div>
@@ -289,7 +316,7 @@ button.card:hover,button.card:focus-visible{transform:translateY(-6px) rotate(-.
     <div class="cards" id="cards"></div>
     <div class="lu-foot">
       <button class="btn" id="rerollBtn" type="button">重抽</button>
-      <button class="btn ghost" id="skipBtn" type="button">都不要，回复 20 生命</button>
+      <button class="btn ghost" id="skipBtn" type="button">先不选，回复 20 生命（这次升级留到下一夜）</button>
     </div>
   </div>
 </section>
@@ -322,8 +349,8 @@ button.card:hover,button.card:focus-visible{transform:translateY(-6px) rotate(-.
     <p class="lead">鸡鸣声远远传来。你守住了五更长夜，灯还亮着。</p>
     <p class="unlock" id="vicUnlock" hidden></p>
     <div class="panel-actions">
-      <button class="btn primary" id="endlessBtn" type="button">接着守（无尽）</button>
-      <button class="btn" id="settleBtn" type="button">收灯结算</button>
+      <button class="btn primary" id="settleBtn" type="button">收灯结算</button>
+      <button class="btn" id="endlessBtn" type="button">不收灯，接着守（无尽）</button>
     </div>
   </div>
 </section>
@@ -332,9 +359,11 @@ button.card:hover,button.card:focus-visible{transform:translateY(-6px) rotate(-.
   <div class="panel">
     <h2 id="endTitle">灯灭了</h2>
     <p class="lead" id="endLead"></p>
+    <p class="unlock" id="endGrow"></p>
     <div class="end-stats" id="endStats"></div>
     <div class="ledger" id="endLedger"></div>
     <div class="panel-actions">
+      <button class="btn primary" id="nextBtn" type="button" hidden>走进下一夜</button>
       <button class="btn primary" id="againBtn" type="button">再守一夜</button>
       <button class="btn" id="toShopBtn" type="button">去灯坊</button>
       <button class="btn ghost" id="toMenuBtn" type="button">回到灯前</button>
@@ -418,9 +447,10 @@ const EN = {
   wraith: { hp: 40, spd: 100, dmg: 11, r: 12, xp: 3, color: '#2b3550', eye: '#bfe3ff' },
 };
 const BOSSES = {
-  bogmother: { name: '沼母', line: '沼泽深处，有什么东西翻了个身', hp: 1400, r: 44, spd: 46, dmg: 14, xp: 60, color: '#2e3a22', eye: '#d6f06a' },
-  mothking: { name: '千目蛾王', line: '黑暗里睁开了一千只眼睛', hp: 4500, r: 40, spd: 72, dmg: 18, xp: 120, color: '#4a3d2a', eye: '#ffb347' },
-  nightlord: { name: '长夜之主', line: '天亮之前最黑的时候，它来了', hp: 9000, r: 54, spd: 52, dmg: 22, xp: 200, color: '#0b0712', eye: '#c99bff', final: true },
+  // hp is what the boss has on the first night at its scheduled minute; ref is the monster hp multiplier at that minute, so hp / ref * hpMul() scales it to any monster level
+  bogmother: { name: '沼母', line: '沼泽深处，有什么东西翻了个身', hp: 1400, ref: 2.17, r: 44, spd: 46, dmg: 14, xp: 60, color: '#2e3a22', eye: '#d6f06a' },
+  mothking: { name: '千目蛾王', line: '黑暗里睁开了一千只眼睛', hp: 4500, ref: 3.88, r: 40, spd: 72, dmg: 18, xp: 120, color: '#4a3d2a', eye: '#ffb347' },
+  nightlord: { name: '长夜之主', line: '天亮之前最黑的时候，它来了', hp: 9000, ref: 6.13, r: 54, spd: 52, dmg: 22, xp: 200, color: '#0b0712', eye: '#c99bff', final: true },
 };
 const CHARS = [
   { id: 'keeper', name: '阿灯', title: '守灯人', glyph: '灯', weapon: 'bolt', cost: 0, cloak: '#3b4a4c', desc: '什么都会一点的老守夜人。', mods: {} },
@@ -443,23 +473,62 @@ const META = [
   { id: 'reroll', name: '卦签', glyph: '卦', max: 3, cost: [60, 120, 200], desc: '每局重抽次数 +1' },
   { id: 'greed', name: '聚宝盆', glyph: '宝', max: 3, cost: [100, 200, 320], desc: '结算余烬 +15%' },
   { id: 'revive', name: '还魂香', glyph: '魂', max: 1, cost: [500], desc: '每局倒下时复活一次' },
+  { id: 'eternal', name: '长明灯', glyph: '恒', max: Infinity, cost: (lv) => 150 + 50 * lv, desc: '伤害 +2%，最大生命 +4' },
 ];
+const metaCost = (m, lv) => (typeof m.cost === 'function' ? m.cost(lv) : m.cost[lv]);
 const NIGHT_NAMES = ['浅夜', '深夜', '暗夜', '永夜', '无光', '长眠'];
-const nightMods = (n) => ({ hp: 1 + .25 * n, dmg: 1 + .1 * n, spawn: 1 + .12 * n, spd: 1 + .04 * n, ember: 1 + .3 * n });
+const nightName = (n) => '第 ' + (n + 1) + ' 夜' + (NIGHT_NAMES[n] ? ' · ' + NIGHT_NAMES[n] : '');
+// Nights never run out. Each one starts its monsters two levels higher (L0) and they gain a level every watch.
+const nightMods = (n) => ({ L0: 1 + 2 * n, boss: 1 + .2 * Math.min(n, 15), spawn: Math.min(2, 1 + .12 * n), spd: 1 + Math.min(.3, .04 * n), ember: 1 + .15 * n, xp: 1 + .3 * n });
+const recLv = (n) => (n ? 15 + 22 * n : 1);
+// The keeper's level and build are permanent, so the build keeps opening up as the level climbs.
+const TEMPER = 1.03;
+const UNLOCKS = [[40, 'p'], [60, 'p'], [80, 'p'], [90, 'w'], [100, 'p'], [120, 'p'], [140, 'p']];
+const wSlots = (lv) => (lv >= 90 ? 7 : 6);
+const pSlots = (lv) => clamp(5 + Math.floor(lv / 20), 6, 12);
+const unlockText = (l, k) => (k === 'w' ? '解锁第七个武器栏' : '解锁第 ' + pSlots(l) + ' 个随身物栏');
+function nextUnlock(lv) { for (const [l, k] of UNLOCKS) if (lv < l) return { lv: l, text: unlockText(l, k) }; return null; }
 const WATCH_LINES = ['夜色降临，点亮你的灯', '夜更深了', '子时，阴气最重', '丑时，雾从沼泽里漫出来', '寅时，天亮之前最黑'];
 
 /* =================== save =================== */
 const SAVE_KEY = 'lampkeeper.save.v1';
-function defaultSave() { return { v: 1, embers: 0, total: 0, meta: {}, chars: { keeper: true }, char: 'keeper', night: 0, maxNight: 0, best: { time: 0, kills: 0, level: 0, wins: 0, runs: 0 }, codex: {}, sound: true, updatedAt: 0 }; }
+function defaultSave() { return { v: 1, embers: 0, total: 0, meta: {}, chars: { keeper: true }, char: 'keeper', night: 0, maxNight: 0, heroes: {}, best: { time: 0, kills: 0, level: 0, wins: 0, runs: 0 }, codex: {}, sound: true, updatedAt: 0 }; }
+// heroes[charId] is what a keeper carries from night to night: level, xp, weapons, passives, unspent level-ups (bank) and how deep they have gone.
+function normHero(h, cid) {
+  const c = CHARS.find((x) => x.id === cid); if (!c || !h || typeof h !== 'object') return null;
+  const sw = {}, sp = {};
+  const w = (Array.isArray(h.w) ? h.w : []).filter((x) => x && WEAPONS[x.id] && !sw[x.id] && (sw[x.id] = 1)).slice(0, 7)
+    .map((x) => { const lv = clamp(x.lv | 0, 1, 5); return { id: x.id, lv, evo: x.evo && lv >= 5 ? 1 : 0, plus: lv >= 5 ? Math.max(0, x.plus | 0) : 0 }; });
+  if (!w.length) w.push({ id: c.weapon, lv: 1, evo: 0, plus: 0 });
+  const p = (Array.isArray(h.p) ? h.p : []).filter((x) => x && PASSIVES[x.id] && !sp[x.id] && (sp[x.id] = 1)).slice(0, 12)
+    .map((x) => ({ id: x.id, lv: clamp(x.lv | 0, 1, PASSIVES[x.id].max) }));
+  const maxNight = Math.max(0, h.maxNight | 0);
+  return { lv: Math.max(1, h.lv | 0), xp: Math.max(0, +h.xp || 0), w, p, bank: Math.max(0, h.bank | 0), night: clamp(h.night | 0, 0, maxNight), maxNight };
+}
 function normalize(s) {
   const d = defaultSave(); if (!s || typeof s !== 'object' || s.v !== 1) return d;
   const o = Object.assign(d, s);
   o.meta = Object.assign({}, s.meta || {}); o.chars = Object.assign({ keeper: true }, s.chars || {});
   o.best = Object.assign(defaultSave().best, s.best || {}); o.codex = Object.assign({}, s.codex || {});
   o.night = clamp(o.night | 0, 0, o.maxNight | 0);
+  o.heroes = {};
+  if (s.heroes && typeof s.heroes === 'object') for (const id in s.heroes) { const h = normHero(s.heroes[id], id); if (h) o.heroes[id] = h; }
   return o;
 }
 let save = defaultSave();
+function curChar() { return CHARS.find((c) => c.id === save.char && save.chars[c.id]) || CHARS[0]; }
+function heroOf(id) {
+  let h = save.heroes[id];
+  if (!h) {
+    const c = CHARS.find((x) => x.id === id) || CHARS[0];
+    // save.maxNight is the account-wide unlock from before keepers had their own progress; honour it so nothing already earned is taken away
+    h = save.heroes[id] = { lv: 1, xp: 0, w: [{ id: c.weapon, lv: 1, evo: 0, plus: 0 }], p: [], bank: 0, night: 0, maxNight: Math.max(0, save.maxNight | 0) };
+  }
+  return h;
+}
+// every upgrade a hero has taken, minus the free starting weapon; 重修 hands these back to be chosen again
+function heroPicks(h) { let n = -1; for (const w of h.w) n += w.lv + (w.evo ? 1 : 0) + (w.plus | 0); for (const p of h.p) n += p.lv; return Math.max(0, n); }
+const respecCost = (h) => 50 + 2 * h.lv;
 try { const raw = localStorage.getItem(SAVE_KEY); if (raw) save = normalize(JSON.parse(raw)); } catch (e) { /* storage unavailable */ }
 function persist() { save.updatedAt = Date.now(); try { localStorage.setItem(SAVE_KEY, JSON.stringify(save)); } catch (e) { } cloudPush(); }
 const cloud = { ref: null, busy: false, again: false, synced: false };
@@ -582,7 +651,7 @@ const pLv = (id) => { const p = run.passives.find((q) => q.id === id); return p 
 const getW = (id) => run.weapons.find((w) => w.id === id);
 function recalc() {
   const m = save.meta, c = run.char.mods, s = {};
-  s.might = 1 + .05 * (m.might || 0) + (c.might || 0) + .1 * pLv('oil');
+  s.might = 1 + .05 * (m.might || 0) + .02 * (m.eternal || 0) + (c.might || 0) + .1 * pLv('oil');
   s.cdMul = Math.max(.35, 1 - .04 * (m.cd || 0) + (c.cd || 0) - .07 * pLv('bell'));
   s.area = 1 + (c.area || 0) + .1 * pLv('glass');
   s.dur = 1 + (c.dur || 0) + .12 * pLv('sand');
@@ -595,23 +664,29 @@ function recalc() {
   s.regen = .2 * (m.regen || 0) + .4 * pLv('gourd');
   s.crit = .05 + (c.crit || 0) + .03 * pLv('wick') + .04 * pLv('string');
   s.speed = 150 * (1 + .04 * (m.speed || 0) + (c.speed || 0) + .08 * pLv('wind'));
-  const maxHp = 120 + 10 * (m.hp || 0) + (c.hp || 0) + 15 * pLv('shell');
+  const maxHp = 120 + (run.lv - 1) + 10 * (m.hp || 0) + 4 * (m.eternal || 0) + (c.hp || 0) + 15 * pLv('shell');
   if (P.maxHp && maxHp > P.maxHp) P.hp += maxHp - P.maxHp;
   P.maxHp = maxHp; P.hp = Math.min(P.hp, maxHp);
   S = s;
 }
 const lightR = () => S.light * run.lightMul;
 const needXp = (lv) => Math.round(4 + lv * 3.6 + Math.pow(lv, 1.75) * .4);
-const hpMul = () => { const m = run.t / 60; let h = 1 + m * .3 + m * m * .03; if (m > 10) h *= Math.pow(1.1, m - 10); return h * run.nm.hp; };
-const dmgMul = () => (1 + run.t / 60 * .08) * run.nm.dmg;
-const spawnRate = (t) => { const m = t / 60; return (1.1 + m * 1.05 + Math.pow(m, 1.6) * .12) * run.nm.spawn; };
+// Monster level: starts at the night's L0 and rises one level per watch (2 min). Levels 1-6 follow the first night's original curve; past that, +12% hp per level.
+const mLevel = () => run.nm.L0 + run.t / 120;
+const hpOf = (L) => (L <= 6 ? 1 + .6 * (L - 1) + .12 * (L - 1) * (L - 1) : 7 * Math.pow(1.12, L - 6));
+const hpMul = () => { const m = run.t / 60; return hpOf(mLevel()) * (m > 10 ? Math.pow(1.06, m - 10) : 1); };
+const dmgMul = () => 1 + .16 * (mLevel() - 1);
+// A keeper who arrives already strong meets the crowd (and the tougher kinds) sooner; run.lead is that head start in minutes.
+const mEff = (m) => (m >= 11 ? m : Math.min(11, m + run.lead));
+const spawnRate = (t) => { const m = mEff(t / 60); return (1.1 + m * 1.05 + Math.pow(m, 1.6) * .12) * run.nm.spawn; };
 
 /* =================== run setup =================== */
 function newRun() {
-  const ch = CHARS.find((c) => c.id === save.char && save.chars[c.id]) || CHARS[0];
+  const ch = curChar(), h = heroOf(ch.id);
+  h.night = clamp(h.night | 0, 0, h.maxNight);
   run = {
-    t: 0, kills: 0, lv: 1, xp: 0, pendingLv: 0, char: ch, night: save.night, nm: nightMods(save.night),
-    weapons: [], passives: [], rerolls: 1 + (save.meta.reroll || 0), revive: (save.meta.revive || 0) > 0,
+    t: 0, kills: 0, lv: h.lv, lv0: h.lv, xp: h.xp, pendingLv: h.bank, banked: 0, hero: h, char: ch, night: h.night, nm: nightMods(h.night), lead: Math.min(6, .6 * h.night + h.lv / 15),
+    weapons: h.w.map((w) => mkWeapon(w.id, w.lv, !!w.evo, w.plus | 0)), passives: h.p.map((p) => ({ id: p.id, lv: p.lv })), rerolls: 1 + (save.meta.reroll || 0), revive: (save.meta.revive || 0) > 0,
     spawnAcc: 0, nextElite: 55, nextSwarm: 45, nextBoss: 0, events: schedule(), bossCount: 0, bossKills: 0,
     embersPicked: 0, victory: false, victoryT: 0, endless: false, dawn: 0, dmg: 0, chestQ: [], chests: 0,
     lightMul: 1, dimT: 0, watch: -1, propT: 0, gemCombo: 0, gemT: 0, over: false, deathT: 0, unlocked: false, blog: [],
@@ -620,7 +695,6 @@ function newRun() {
   enemies = []; shots = []; ebs = []; pickups = []; zones = []; warns = []; fx = []; parts = []; nums = []; props = [];
   eid = 0; gemCount = 0; S = null; grid.clear();
   recalc(); P.hp = P.maxHp;
-  addWeapon(ch.weapon);
   for (let i = 0; i < 5; i++) spawnProp(true);
   for (let i = 0; i < 5; i++) { const [x, y] = spawnPos(); makeEnemy('mite', x, y); }
   cam.x = 0; cam.y = 0; cam.shake = 0;
@@ -640,10 +714,19 @@ function schedule() {
     { t: 540, fn: () => spawnBoss('nightlord') },
   ].map((e) => Object.assign(e, { done: false }));
 }
-function addWeapon(id) {
-  const w = { id, lv: 1, evo: false, t: .4, ang: 0, active: true, hitMap: new Map(), orbs: [], rad: 0 };
-  if (id === 'orbit') w.t = WSTAT.orbit(0, false).on;
-  run.weapons.push(w);
+function mkWeapon(id, lv = 1, evo = false, plus = 0) {
+  const w = { id, lv, evo, plus, t: .4, ang: 0, active: true, hitMap: new Map(), orbs: [], rad: 0 };
+  if (id === 'orbit') w.t = WSTAT.orbit(lv - 1, evo).on;
+  return w;
+}
+function addWeapon(id) { run.weapons.push(mkWeapon(id)); }
+// write the run's level and build back onto the keeper, so nothing is lost when the night ends
+function syncHero() {
+  if (!run) return;
+  const h = run.hero;
+  h.lv = run.lv; h.xp = Math.floor(run.xp); h.bank = run.pendingLv + run.banked;
+  h.w = run.weapons.map((w) => ({ id: w.id, lv: w.lv, evo: w.evo ? 1 : 0, plus: w.plus | 0 }));
+  h.p = run.passives.map((p) => ({ id: p.id, lv: p.lv }));
 }
 
 /* =================== spawning =================== */
@@ -690,7 +773,7 @@ function horde(type, n) {
   toast('群潮来袭', '它们从四面围了上来，找到缺口突围');
 }
 function spawnBoss(id, scale = 1) {
-  const d = BOSSES[id], [x, y] = spawnPos(), hp = d.hp * run.nm.hp * scale;
+  const d = BOSSES[id], [x, y] = spawnPos(), hp = d.hp / d.ref * hpMul() * run.nm.boss * scale;
   const e = { id: ++eid, type: id, boss: id, name: d.name, x, y, r: d.r, hp, maxHp: hp, spd: d.spd * run.nm.spd, dmg: d.dmg * dmgMul(), xp: d.xp,
     color: d.color, eye: d.eye, kbRes: 1, kx: 0, ky: 0, flash: 0, atk: 0, t: 0, slow: 0, slowT: 0, stun: 0, dead: false, elite: false, zLast: -9,
     a1: 3, a2: 6, a3: 9, a4: 11, mode: 0, mt: 0, sa: 0, st: 0, dx: 0, dy: 0, final: !!d.final && !run.victory };
@@ -808,7 +891,11 @@ function openProp(p) {
 }
 
 /* =================== weapons =================== */
-const ws = (w) => WSTAT[w.id](w.lv - 1, w.evo);
+const ws = (w) => {
+  const s = WSTAT[w.id](w.lv - 1, w.evo);
+  if (w.plus) { const k = Math.pow(TEMPER, w.plus); s.dmg *= k; if (s.burn) s.burn *= k; }
+  return s;
+};
 const WTICK = {
   bolt(w, dt) {
     w.t -= dt; if (w.t > 0) return;
@@ -1009,17 +1096,17 @@ function updatePlayer(dt) {
   const aw = getW('aura'); if (aw && aw.evo) P.hp = Math.min(P.maxHp, P.hp + dt);
 }
 function director(dt) {
-  const t = run.t, m = t / 60;
+  const t = run.t, m = t / 60, me = mEff(m);
   if (!run.endless) {
     const wi = Math.min(4, Math.floor(t / 120));
-    if (wi !== run.watch) { run.watch = wi; toast(CN[wi + 1] + '更', WATCH_LINES[wi]); sfx('gong'); }
+    if (wi !== run.watch) { run.watch = wi; toast(CN[wi + 1] + '更', WATCH_LINES[wi] + ' · 妖物 Lv ' + Math.floor(mLevel() + .001)); sfx('gong'); }
   }
   for (const ev of run.events) if (!ev.done && t >= ev.t) { ev.done = true; ev.fn(); }
   if (run.endless && t >= run.nextBoss) { run.nextBoss = t + 120; spawnBoss(['bogmother', 'mothking', 'nightlord'][randi(0, 2)], 1 + (t - 540) / 240); }
   run.spawnAcc += spawnRate(t) * (run.bossCount > 0 ? .5 : 1) * dt;
-  while (run.spawnAcc >= 1) { run.spawnAcc -= 1; if (enemies.length < MAX_EN) { const [x, y] = spawnPos(); makeEnemy(pickType(m), x, y); } }
-  if (t >= run.nextSwarm) { run.nextSwarm = t + rand(17, 24); mothSwarm(Math.round(8 + m * 1.6)); }
-  if (t >= run.nextElite) { run.nextElite = t + (m < 5 ? 50 : 40); const [x, y] = spawnPos(); makeEnemy(pickEliteType(m), x, y, true); }
+  while (run.spawnAcc >= 1) { run.spawnAcc -= 1; if (enemies.length < MAX_EN) { const [x, y] = spawnPos(); makeEnemy(pickType(me), x, y); } }
+  if (t >= run.nextSwarm) { run.nextSwarm = t + rand(17, 24); mothSwarm(Math.round(8 + Math.min(me, 14) * 1.6)); }
+  if (t >= run.nextElite) { run.nextElite = t + Math.max(24, (m < 5 ? 50 : 40) - 2 * run.night); const [x, y] = spawnPos(); makeEnemy(pickEliteType(me), x, y, true); }
 }
 function updateEnemies(dt) {
   const far = Math.hypot(W, H) * .5 + 520, far2 = far * far;
@@ -1157,7 +1244,7 @@ function contacts() {
 }
 function collect(p) {
   switch (p.k) {
-    case 'gem': run.xp += p.v * S.xpMul; run.gemCombo++; run.gemT = .7; sfx('gem', run.gemCombo); break;
+    case 'gem': run.xp += p.v * S.xpMul * run.nm.xp; run.gemCombo++; run.gemT = .7; sfx('gem', run.gemCombo); break;
     case 'heal': healPlayer(30); sfx('pick'); break;
     case 'magnet': for (const g of pickups) if (g.k === 'gem' || g.k === 'ember') g.mag = true; fx.push({ k: 'ring', x: P.x, y: P.y, r: 200, t: 0, life: .5, c: '#9fd8ff', dead: false }); sfx('pick'); break;
     case 'bomb': bomb(); break;
@@ -1220,7 +1307,12 @@ function update(dt) {
   run.lightMul += ((run.dimT > 0 ? .45 : 1) - run.lightMul) * Math.min(1, dt * 2.5);
   if (run.endless && run.dawn > 0) run.dawn = Math.max(0, run.dawn - dt * .25);
   if (run.gemT > 0) { run.gemT -= dt; if (run.gemT <= 0) run.gemCombo = 0; }
-  while (run.xp >= needXp(run.lv)) { run.xp -= needXp(run.lv); run.lv++; run.pendingLv++; }
+  let leveled = false;
+  while (run.xp >= needXp(run.lv)) {
+    run.xp -= needXp(run.lv); run.lv++; run.pendingLv++; leveled = true;
+    for (const [l, k] of UNLOCKS) if (l === run.lv) toast(k === 'w' ? '第七样武器' : '行囊更大了', 'Lv ' + l + ' · ' + unlockText(l, k));
+  }
+  if (leveled) recalc();
   cam.x += (P.x - cam.x) * Math.min(1, dt * 8); cam.y += (P.y - cam.y) * Math.min(1, dt * 8);
   if (run.over) { run.deathT -= dt; if (run.deathT <= 0) endRun(); return; }
   if (run.victoryT > 0) { run.victoryT -= dt; run.dawn = Math.min(1, run.dawn + dt * .6); if (run.victoryT <= 0) { showVictory(); return; } }
@@ -1235,10 +1327,11 @@ function rollChoices() {
     const d = WEAPONS[w.id];
     if (w.lv >= 5 && !w.evo && pLv(d.evo) > 0) opts.push({ kind: 'evo', id: w.id, w: 1000 });
     else if (w.lv < 5) opts.push({ kind: 'wup', id: w.id, w: 10 });
+    else opts.push({ kind: 'temper', id: w.id, w: w.evo ? 6 : 3 });
   }
-  if (run.weapons.length < 6) for (const id in WEAPONS) if (!getW(id)) opts.push({ kind: 'wnew', id, w: 5.5 });
+  if (run.weapons.length < wSlots(run.lv)) for (const id in WEAPONS) if (!getW(id)) opts.push({ kind: 'wnew', id, w: 5.5 });
   for (const p of run.passives) if (p.lv < PASSIVES[p.id].max) opts.push({ kind: 'pup', id: p.id, w: 8 });
-  if (run.passives.length < 6) for (const id in PASSIVES) if (!pLv(id)) opts.push({ kind: 'pnew', id, w: 4.5 });
+  if (run.passives.length < pSlots(run.lv)) for (const id in PASSIVES) if (!pLv(id)) opts.push({ kind: 'pnew', id, w: 4.5 });
   const n = 3 + (Math.random() < S.luck * .25 ? 1 : 0), out = [];
   while (out.length < n && opts.length) { const o = pickW(opts); out.push(o); opts.splice(opts.indexOf(o), 1); }
   if (!out.length) out.push({ kind: 'heal' }, { kind: 'embers' });
@@ -1246,6 +1339,12 @@ function rollChoices() {
 }
 function cardInfo(o) {
   if (o.kind === 'evo') { const d = WEAPONS[o.id]; return { glyph: d.evoGlyph, name: d.evoName, tag: '觉醒 · ' + d.name, desc: d.evoDesc, cls: 'evo' }; }
+  if (o.kind === 'temper') {
+    const d = WEAPONS[o.id], w = getW(o.id), k = w.plus | 0, p = PASSIVES[d.evo];
+    return { glyph: w.evo ? d.evoGlyph : d.glyph, name: w.evo ? d.evoName : d.name, tag: '淬炼 · +' + k + ' → +' + (k + 1), cls: (w.evo ? 'evo' : 'weapon') + ' temper',
+      desc: '伤害再 +3%，没有上限。淬炼后累计 +' + Math.round((Math.pow(TEMPER, k + 1) - 1) * 100) + '%。',
+      hint: w.evo ? '' : save.codex[o.id] ? '带上「' + p.name + '」还能觉醒' : '还能与某样随身物共鸣' };
+  }
   if (o.kind === 'wup' || o.kind === 'wnew') {
     const d = WEAPONS[o.id], w = getW(o.id), lv = w ? w.lv : 0;
     const p = PASSIVES[d.evo], known = save.codex[o.id];
@@ -1269,6 +1368,7 @@ function applyChoice(o) {
       break;
     }
     case 'wnew': addWeapon(o.id); break;
+    case 'temper': { const w = getW(o.id); w.plus = (w.plus | 0) + 1; break; }
     case 'pup': run.passives.find((p) => p.id === o.id).lv++; recalc(); break;
     case 'pnew': run.passives.push({ id: o.id, lv: 1 }); recalc(); break;
     case 'heal': healPlayer(30); break;
@@ -1289,11 +1389,11 @@ function openLevelUp() {
 }
 function renderChoices() {
   $('#cards').innerHTML = curChoices.map((o, i) => cardHTML(cardInfo(o), i, 'button')).join('');
-  $('#luSub').textContent = '第 ' + (run.lv - run.pendingLv + 1) + ' 级 · 选一样带上';
+  $('#luSub').textContent = 'Lv ' + run.lv + (run.pendingLv > 1 ? ' · 还有 ' + run.pendingLv + ' 次升级待选' : ' · 选一样带上，往后每一夜都在');
   const rb = $('#rerollBtn'); rb.textContent = '重抽（剩 ' + run.rerolls + ' 次）'; rb.disabled = run.rerolls <= 0;
 }
 function finishLevel() {
-  run.pendingLv--;
+  run.pendingLv--; syncHero(); persist();
   if (run.pendingLv > 0) { curChoices = rollChoices(); renderChoices(); luOpenAt = performance.now(); sfx('level'); }
   else { $('#levelup').hidden = true; state = 'play'; }
 }
@@ -1302,7 +1402,8 @@ function chooseCard(i) {
   applyChoice(curChoices[i]); sfx('click'); finishLevel();
 }
 function reroll() { if (state !== 'levelup' || run.rerolls <= 0) return; run.rerolls--; curChoices = rollChoices(); renderChoices(); sfx('click'); }
-function skipLevel() { if (state !== 'levelup' || performance.now() - luOpenAt < 220) return; healPlayer(20); finishLevel(); }
+// a skipped level-up is not thrown away: it is banked and offered again at the start of the next night
+function skipLevel() { if (state !== 'levelup' || performance.now() - luOpenAt < 220) return; healPlayer(20); run.banked++; finishLevel(); }
 function openChest(big) {
   state = 'chest'; joy.active = false; joy.vx = joy.vy = 0; run.chests++;
   sfx('chest');
@@ -1315,6 +1416,7 @@ function openChest(big) {
       const ups = [];
       for (const w of run.weapons) if (w.lv < 5) ups.push({ kind: 'wup', id: w.id });
       for (const p of run.passives) if (p.lv < PASSIVES[p.id].max) ups.push({ kind: 'pup', id: p.id });
+      if (!ups.length) for (const w of run.weapons) ups.push({ kind: 'temper', id: w.id });
       o = ups.length ? ups[randi(0, ups.length - 1)] : (i % 2 ? { kind: 'heal' } : { kind: 'embers' });
     }
     got.push(cardInfo(o)); applyChoice(o);
@@ -1327,7 +1429,7 @@ function openChest(big) {
 }
 function closeChest() {
   if (state !== 'chest' || performance.now() - luOpenAt < 250) return;
-  $('#chest').hidden = true; state = 'play';
+  $('#chest').hidden = true; state = 'play'; syncHero(); persist();
   if (run.chestQ.length) openChest(run.chestQ.shift()); else if (run.pendingLv > 0) openLevelUp();
 }
 
@@ -1335,26 +1437,28 @@ function closeChest() {
 function onVictory() {
   run.victory = true; run.victoryT = 2.4;
   save.best.wins++;
-  if (run.night >= save.maxNight && save.maxNight < 5) { save.maxNight = run.night + 1; run.unlocked = true; }
+  const h = run.hero;
+  if (run.night >= h.maxNight) { h.maxNight = run.night + 1; run.unlocked = true; }
   for (const b of ebs) b.dead = true;
-  persist();
+  syncHero(); persist();
 }
 function showVictory() {
   state = 'victory'; joy.active = false;
-  const u = $('#vicUnlock');
-  if (run.unlocked) { u.hidden = false; u.textContent = '新的夜深已解锁：「' + NIGHT_NAMES[save.maxNight] + '」。敌人更强，余烬更多。'; } else u.hidden = true;
+  const u = $('#vicUnlock'), nn = nightMods(run.night + 1);
+  if (run.unlocked) { u.hidden = false; u.textContent = '下一夜已解锁：「' + nightName(run.night + 1) + '」，妖物 Lv ' + nn.L0 + '–' + (nn.L0 + 5) + '。萤火和余烬也更多。'; } else u.hidden = true;
   $('#victory').hidden = false;
 }
 function goEndless() {
   if (state !== 'victory') return;
   $('#victory').hidden = true; run.endless = true; run.nextBoss = run.t + 90; state = 'play';
-  toast('第二夜', '天又黑了下来，越往后越难');
+  toast('长夜未尽', '天又黑了下来，妖物还在一级一级往上涨');
 }
 function endRun() {
-  const r = run; state = 'end'; joy.active = false;
+  const r = run, h = r.hero; state = 'end'; joy.active = false;
   $('#hud').hidden = true; hideScreens();
-  const g = 1 + .15 * (save.meta.greed || 0);
-  const rows = [['斩妖 ' + r.kills, Math.floor(r.kills / 25)], ['守夜 ' + fmt(r.t), Math.floor(r.t / 6)], ['等级 ' + r.lv, r.lv], ['首领 ' + r.bossKills, r.bossKills * 25], ['拾得', r.embersPicked]];
+  syncHero();
+  const g = 1 + .15 * (save.meta.greed || 0), gained = r.lv - r.lv0;
+  const rows = [['斩妖 ' + r.kills, Math.floor(r.kills / 25)], ['守夜 ' + fmt(r.t), Math.floor(r.t / 6)], ['升级 +' + gained, gained * 2], ['首领 ' + r.bossKills, r.bossKills * 25], ['拾得', r.embersPicked]];
   if (r.victory) rows.push(['迎来天明', 100]);
   const base = rows.reduce((a, x) => a + x[1], 0), mult = g * r.nm.ember, total = Math.round(base * mult);
   save.embers += total; save.total += total;
@@ -1363,7 +1467,11 @@ function endRun() {
   persist();
   const where = r.victory ? (r.endless ? '天亮之后又守了 ' + fmt(r.t - 540) + '，' : '') + '你迎来了天明。' : r.t >= 600 ? '你倒在了天亮之前。' : '你倒在了' + CN[Math.min(4, Math.floor(r.t / 120)) + 1] + '更。';
   $('#endTitle').textContent = r.victory ? '收灯归家' : '灯灭了';
-  $('#endLead').textContent = where + '「' + NIGHT_NAMES[r.night] + '」· ' + r.char.title + r.char.name;
+  $('#endLead').textContent = where + '「' + nightName(r.night) + '」· ' + r.char.title + r.char.name;
+  $('#endGrow').textContent = (gained > 0 ? 'Lv ' + r.lv0 + ' → Lv ' + r.lv + '。' : 'Lv ' + r.lv + '。') + (r.victory ? '等级和本事都带在身上，下一夜接着用。' : '灯灭了，修为还在：等级和本事都留着，下一夜接着用。') + (h.bank > 0 ? '还有 ' + h.bank + ' 次升级没选，下一夜开头补上。' : '');
+  const canNext = r.victory && h.maxNight > r.night;
+  $('#nextBtn').hidden = !canNext; $('#nextBtn').textContent = '走进' + nightName(r.night + 1);
+  $('#againBtn').textContent = r.victory ? '再守这一夜' : '再守一夜'; $('#againBtn').classList.toggle('primary', !canNext);
   const badge = (on) => on ? '<em>新纪录</em>' : '';
   $('#endStats').innerHTML = '<div><b>' + fmt(r.t) + '</b><span>守夜时长</span>' + badge(rec.t) + '</div><div><b>' + r.lv + '</b><span>等级</span>' + badge(rec.l) + '</div><div><b>' + r.kills + '</b><span>斩妖</span>' + badge(rec.k) + '</div><div><b>' + r.bossKills + '</b><span>首领</span></div>';
   let led = rows.map((x) => '<div><span>' + x[0] + '</span><span>' + x[1] + '</span></div>').join('');
@@ -1381,7 +1489,7 @@ function buildHTML(withRecipe) {
     if (w.evo) rc = '已觉醒：' + d.evoDesc;
     else if (withRecipe) rc = (w.lv >= 5 || save.codex[w.id] || pLv(d.evo)) ? '觉醒：满级 + <b>' + p.name + '</b>' : '觉醒：满级 + ？（某样随身物）';
     else rc = d.up[0];
-    h += '<div class="brow' + (w.evo ? ' evo' : '') + '"><span class="seal">' + (w.evo ? d.evoGlyph : d.glyph) + '</span><span class="t">' + (w.evo ? d.evoName : d.name) + '<span>' + (w.evo ? '觉醒' : 'Lv ' + w.lv) + '</span></span><span class="d">' + rc + '</span></div>';
+    h += '<div class="brow' + (w.evo ? ' evo' : '') + '"><span class="seal">' + (w.evo ? d.evoGlyph : d.glyph) + '</span><span class="t">' + (w.evo ? d.evoName : d.name) + '<span>' + (w.evo ? '觉醒' : 'Lv ' + w.lv) + (w.plus ? ' · 淬炼 +' + w.plus : '') + '</span></span><span class="d">' + rc + '</span></div>';
   }
   for (const p of run.passives) { const d = PASSIVES[p.id]; h += '<div class="brow p"><span class="seal">' + d.glyph + '</span><span class="t">' + d.name + '<span>Lv ' + p.lv + '</span></span><span class="d">' + d.desc + '</span></div>'; }
   return h;
@@ -1391,7 +1499,8 @@ function buildHTML(withRecipe) {
 function pause() {
   if (state !== 'play') return;
   state = 'pause'; joy.active = false; joy.vx = joy.vy = 0;
-  $('#pauseLead').textContent = '已守 ' + fmt(run.t) + ' · 斩妖 ' + run.kills + ' · 生命 ' + Math.ceil(P.hp) + '/' + P.maxHp;
+  syncHero(); persist();
+  $('#pauseLead').textContent = 'Lv ' + run.lv + ' · 「' + nightName(run.night) + '」妖物 Lv ' + Math.floor(mLevel() + .001) + ' · 已守 ' + fmt(run.t) + ' · 斩妖 ' + run.kills + ' · 生命 ' + Math.ceil(P.hp) + '/' + P.maxHp;
   $('#pauseBuild').innerHTML = buildHTML(true);
   $('#pauseSound').textContent = '音效：' + (AU.on ? '开' : '关');
   $('#pause').hidden = false;
@@ -1401,20 +1510,22 @@ function resume() { if (state !== 'pause') return; $('#pause').hidden = true; st
 
 /* =================== HUD =================== */
 let hudAcc = 0;
-function refreshSlots() {
+function chipsHTML(ws, ps) {
   let h = '<div class="srow">';
-  for (const w of run.weapons) { const d = WEAPONS[w.id]; h += '<div class="slot' + (w.evo ? ' evo' : '') + '"><span>' + (w.evo ? d.evoGlyph : d.glyph) + '</span><i>' + (w.evo ? '觉' : w.lv) + '</i></div>'; }
+  for (const w of ws) { const d = WEAPONS[w.id]; h += '<div class="slot' + (w.evo ? ' evo' : '') + '" title="' + (w.evo ? d.evoName : d.name) + '"><span>' + (w.evo ? d.evoGlyph : d.glyph) + '</span><i>' + (w.plus ? '+' + w.plus : w.evo ? '觉' : w.lv) + '</i></div>'; }
   h += '</div><div class="srow">';
-  for (const p of run.passives) h += '<div class="slot p"><span>' + PASSIVES[p.id].glyph + '</span><i>' + p.lv + '</i></div>';
-  $('#slots').innerHTML = h + '</div>';
+  for (const p of ps) h += '<div class="slot p" title="' + PASSIVES[p.id].name + '"><span>' + PASSIVES[p.id].glyph + '</span><i>' + p.lv + '</i></div>';
+  return h + '</div>';
 }
+function refreshSlots() { $('#slots').innerHTML = chipsHTML(run.weapons, run.passives); }
 function hudTick(dt) {
   $('#xpfill').style.width = Math.min(100, run.xp / needXp(run.lv) * 100).toFixed(1) + '%';
   $('#dashBtn').style.setProperty('--cd', P.dashCd > 0 ? (1 - P.dashCd / 1.8).toFixed(3) : 1);
   hudAcc -= dt; if (hudAcc > 0) return; hudAcc = .1;
   $('#lvl').textContent = 'Lv ' + run.lv;
+  $('#mlv').textContent = '妖 Lv ' + Math.floor(mLevel() + .001);
   $('#clock').textContent = fmt(run.t);
-  $('#phase').textContent = run.endless ? '第二夜' : run.victory ? '天明' : CN[Math.min(4, Math.floor(run.t / 120)) + 1] + '更';
+  $('#phase').textContent = run.endless ? '无尽' : run.victory ? '天明' : CN[Math.min(4, Math.floor(run.t / 120)) + 1] + '更';
   $('#kills').textContent = run.kills;
   $('#hudEmbers').textContent = run.embersPicked;
   const boss = enemies.find((e) => e.boss && !e.dead), bb = $('#bossbar');
@@ -1859,12 +1970,39 @@ function renderRecords() {
   const b = save.best;
   $('#records').innerHTML = b.runs ? '最久守夜 <b>' + fmt(b.time) + '</b> · 最多斩妖 <b>' + b.kills + '</b> · 最高等级 <b>' + b.level + '</b> · 天明 <b>' + b.wins + '</b> 次 · 共守夜 <b>' + b.runs + '</b> 次' + (cloud.synced ? ' · 进度已存到云端' : '') : '还没有守过夜。第一夜，先活过一更。' + (cloud.synced ? ' 进度会存到云端。' : '');
 }
+function renderHero() {
+  const c = curChar(), h = heroOf(c.id), need = needXp(h.lv), nx = nextUnlock(h.lv), picks = heroPicks(h);
+  $('#heroPanel').innerHTML =
+    '<div class="hero-top"><span class="hero-lv">Lv ' + h.lv + '</span><div class="hero-main">' +
+    '<div class="hero-nm">' + c.title + c.name + '<span>' + (h.maxNight ? '已守到第 ' + h.maxNight + ' 夜天明' : '还没等到过天明') + '</span></div>' +
+    '<div class="bar"><i style="width:' + clamp(h.xp / need * 100, 0, 100).toFixed(1) + '%"></i></div>' +
+    '<div class="hero-sub">经验 ' + Math.floor(h.xp) + ' / ' + need + ' · 武器 ' + h.w.length + '/' + wSlots(h.lv) + ' · 随身物 ' + h.p.length + '/' + pSlots(h.lv) + '</div></div></div>' +
+    chipsHTML(h.w, h.p) +
+    '<p class="hero-next">等级、武器和随身物都跟着' + c.name + '，一夜结束也不会消失。' +
+    (nx ? '到 <b>Lv ' + nx.lv + '</b> ' + nx.text + '。' : '') + (h.bank > 0 ? '还有 <b>' + h.bank + '</b> 次升级待选，下一夜开头补上。' : '') + '</p>' +
+    (picks > 0 ? '<div class="hero-foot"><button class="btn ghost" type="button" id="respecBtn">重修 · ' + respecCost(h) + ' 余烬</button><small>等级不变，武器和随身物还原，下一夜开头重新挑</small></div>' : '');
+}
+function respec(b) {
+  const c = curChar(), h = heroOf(c.id), cost = respecCost(h), picks = heroPicks(h);
+  if (!picks) return;
+  if (save.embers < cost) { b.classList.remove('shake'); void b.offsetWidth; b.classList.add('shake'); b.textContent = '余烬不够（要 ' + cost + '）'; return; }
+  if (!b.dataset.confirm) { b.dataset.confirm = '1'; b.textContent = '再点一次，花 ' + cost + ' 余烬重修'; return; }
+  save.embers -= cost; h.bank += picks; h.w = [{ id: c.weapon, lv: 1, evo: 0, plus: 0 }]; h.p = [];
+  persist(); renderMenu(); sfx('chest');
+}
+function stepNight(d) {
+  const h = heroOf(curChar().id), n = clamp((h.night | 0) + d, 0, h.maxNight);
+  if (n === h.night) return;
+  h.night = n; persist(); renderMenu(); sfx('click');
+}
 function renderMenu() {
+  const cur = curChar(), hero = heroOf(cur.id);
+  hero.night = clamp(hero.night | 0, 0, hero.maxNight);
   const list = $('#charList'); list.innerHTML = '';
   for (const c of CHARS) {
     const owned = !!save.chars[c.id], b = document.createElement('button');
-    b.type = 'button'; b.className = 'ch' + (owned && save.char === c.id ? ' sel' : '') + (owned ? '' : ' locked');
-    b.innerHTML = '<span class="seal">' + c.glyph + '</span><span class="nm">' + c.name + '</span><span class="tt">' + c.title + ' · 起手「' + WEAPONS[c.weapon].name + '」</span><span class="ds">' + c.desc + '</span>' +
+    b.type = 'button'; b.className = 'ch' + (owned && cur.id === c.id ? ' sel' : '') + (owned ? '' : ' locked');
+    b.innerHTML = '<span class="seal">' + c.glyph + '</span><span class="nm">' + c.name + '</span><span class="tt">' + c.title + ' · ' + (owned ? 'Lv ' + heroOf(c.id).lv : '起手「' + WEAPONS[c.weapon].name + '」') + '</span><span class="ds">' + c.desc + '</span>' +
       (owned ? '' : '<span class="cost">' + (save.embers >= c.cost ? '解锁需 ' + c.cost + ' 余烬' : '还差 ' + (c.cost - save.embers) + ' 余烬（共 ' + c.cost + '）') + '</span>');
     b.addEventListener('click', () => {
       if (owned) { save.char = c.id; persist(); renderMenu(); sfx('click'); return; }
@@ -1874,14 +2012,13 @@ function renderMenu() {
     });
     list.appendChild(b);
   }
-  const ns = $('#nightSel'); ns.innerHTML = '';
-  for (let n = 0; n <= 5; n++) {
-    const b = document.createElement('button'); b.type = 'button'; b.className = 'nt' + (save.night === n ? ' sel' : ''); b.textContent = NIGHT_NAMES[n]; b.disabled = n > save.maxNight;
-    b.addEventListener('click', () => { save.night = n; persist(); renderMenu(); sfx('click'); });
-    ns.appendChild(b);
-  }
-  const n = save.night;
-  $('#nightDesc').textContent = (n === 0 ? '寻常的长夜。' : '敌人生命 +' + 25 * n + '%，伤害 +' + 10 * n + '%，数量 +' + 12 * n + '%；结算余烬 +' + 30 * n + '%。') + (save.maxNight < 5 ? ' 在最深的一层迎来天明，可解锁下一层。' : '');
+  renderHero();
+  const n = hero.night, nm = nightMods(n), rec = recLv(n);
+  $('#nightName').textContent = nightName(n);
+  $('#nightLv').textContent = '妖物 Lv ' + nm.L0 + '–' + (nm.L0 + 5);
+  $('#nightPrev').disabled = n <= 0; $('#nightNext').disabled = n >= hero.maxNight;
+  $('#nightDesc').textContent = (n === 0 ? '寻常的长夜。妖物从 Lv 1 起步，每过一更涨一级。' : '妖物每过一更涨一级，首领也更耐打；萤火经验 +' + 30 * n + '%，结算余烬 +' + 15 * n + '%。建议 Lv ' + rec + ' 以上再来' + (hero.lv < rec ? '（' + cur.name + '现在 Lv ' + hero.lv + '）。' : '。')) +
+    (n >= hero.maxNight ? ' 在这一夜迎来天明，就能走进下一夜。' : '');
   $('#menuEmbers').textContent = save.embers;
   $('#soundBtn').textContent = '音效：' + (AU.on ? '开' : '关');
   $('#ctrlHint').textContent = isTouch ? '按住屏幕任意处拖动来移动 · 右下角「冲」按钮冲刺' : 'WASD / 方向键移动 · 空格冲刺 · Esc 暂停 · 升级时按 1–4 选择';
@@ -1890,8 +2027,9 @@ function renderMenu() {
 function renderShop() {
   $('#shopEmbers').textContent = save.embers;
   $('#shopGrid').innerHTML = META.map((m) => {
-    const lv = save.meta[m.id] || 0, maxed = lv >= m.max, cost = maxed ? 0 : m.cost[lv];
-    let pips = ''; for (let i = 0; i < m.max; i++) pips += '<span class="pip' + (i < lv ? ' on' : '') + '"></span>';
+    const lv = save.meta[m.id] || 0, maxed = lv >= m.max, cost = maxed ? 0 : metaCost(m, lv);
+    let pips = '';
+    if (m.max === Infinity) pips = '<span class="inf">已点 ' + lv + ' 层 · 没有上限</span>'; else for (let i = 0; i < m.max; i++) pips += '<span class="pip' + (i < lv ? ' on' : '') + '"></span>';
     return '<div class="mt"><span class="seal">' + m.glyph + '</span><span class="nm">' + m.name + '</span><span class="ds">' + m.desc + (m.max > 1 ? '（每级）' : '') + '</span><span class="pips">' + pips + '</span>' +
       '<button class="btn" type="button" data-buy="' + m.id + '"' + (maxed || save.embers < cost ? ' disabled' : '') + '>' + (maxed ? '已学满' : '学 · ' + cost + ' 余烬') + '</button></div>';
   }).join('');
@@ -1904,8 +2042,8 @@ function renderShop() {
 }
 function buyMeta(id) {
   const m = META.find((x) => x.id === id), lv = save.meta[id] || 0;
-  if (!m || lv >= m.max || save.embers < m.cost[lv]) return;
-  save.embers -= m.cost[lv]; save.meta[id] = lv + 1; persist(); renderShop(); sfx('chest');
+  if (!m || lv >= m.max || save.embers < metaCost(m, lv)) return;
+  save.embers -= metaCost(m, lv); save.meta[id] = lv + 1; persist(); renderShop(); sfx('chest');
 }
 function toggleSound() { AU.on = !AU.on; save.sound = AU.on; persist(); if (AU.on) { auInit(); sfx('click'); } $('#soundBtn').textContent = $('#pauseSound').textContent = '音效：' + (AU.on ? '开' : '关'); }
 
@@ -1957,6 +2095,10 @@ function bind() {
   $('#endlessBtn').addEventListener('click', goEndless);
   $('#settleBtn').addEventListener('click', () => { if (state === 'victory') endRun(); });
   $('#againBtn').addEventListener('click', () => { sfx('gong'); newRun(); });
+  $('#nextBtn').addEventListener('click', () => { if (state !== 'end' || !run) return; const h = run.hero; h.night = Math.min(h.maxNight, run.night + 1); persist(); sfx('gong'); newRun(); });
+  $('#nightPrev').addEventListener('click', () => stepNight(-1));
+  $('#nightNext').addEventListener('click', () => stepNight(1));
+  $('#heroPanel').addEventListener('click', (e) => { const b = e.target.closest('#respecBtn'); if (b) respec(b); });
   $('#toShopBtn').addEventListener('click', () => { hideScreens(); state = 'shop'; run = null; renderShop(); $('#shop').hidden = false; $('#shop').scrollTop = 0; });
   $('#toMenuBtn').addEventListener('click', toMenu);
 }
@@ -1977,7 +2119,7 @@ function boot() {
   requestAnimationFrame((t) => { last = t; requestAnimationFrame(frame); });
   tryCloud();
 }
-window.__lk = { state: () => state, run: () => run, P: () => P, S: () => S, enemies: () => enemies, pickups: () => pickups, render: () => render(0), step: (dt, n) => { for (let i = 0; i < n && state === 'play'; i++) update(dt); }, choices: () => curChoices, pick: (i) => { luOpenAt = 0; chooseCard(i); }, closeChest: () => { luOpenAt = 0; closeChest(); } };
+window.__lk = { save: () => save, hero: (id) => heroOf(id || curChar().id), menu: toMenu, start: newRun, hpMul: () => hpMul(), mLevel: () => mLevel(), state: () => state, run: () => run, P: () => P, S: () => S, enemies: () => enemies, pickups: () => pickups, render: () => render(0), step: (dt, n) => { for (let i = 0; i < n && state === 'play'; i++) update(dt); }, choices: () => curChoices, pick: (i) => { luOpenAt = 0; chooseCard(i); }, closeChest: () => { luOpenAt = 0; closeChest(); } };
 const hot = window.claude && window.claude.hot;
 if (hot && typeof hot.ready === 'function') hot.ready(boot); else boot();
 })();
